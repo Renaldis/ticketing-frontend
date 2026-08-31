@@ -15,7 +15,9 @@ export default function MyOrdersPage() {
     selectedTicket,
     setSelectedTicket,
     ticketLoading,
+    syncLoadingId,
     handleViewTicket,
+    handleSyncStatus,
     user,
   } = useMyOrders();
 
@@ -39,7 +41,7 @@ export default function MyOrdersPage() {
           <Ticket className="w-12 h-12 text-[#908fa0] mx-auto mb-3" />
           <h3 className="text-lg font-bold text-white">No Tickets Ordered Yet</h3>
           <p className="text-sm text-[#908fa0] mb-6">Explore the live events and reserve your passes.</p>
-          <Link href="/" className="btn-primary text-[#003640] px-6 py-2.5 rounded-xl font-bold text-xs">
+          <Link href="/events" className="btn-primary text-[#003640] px-6 py-2.5 rounded-xl font-bold text-xs">
             Explore Events
           </Link>
         </div>
@@ -50,7 +52,9 @@ export default function MyOrdersPage() {
               key={order.id}
               order={order}
               ticketLoading={ticketLoading}
+              syncLoadingId={syncLoadingId}
               onViewTicket={handleViewTicket}
+              onSyncStatus={handleSyncStatus}
             />
           ))}
         </div>

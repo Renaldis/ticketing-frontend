@@ -11,6 +11,7 @@ export const useMyOrders = () => {
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState<any>(null);
   const [ticketLoading, setTicketLoading] = useState(false);
+  const [syncLoadingId, setSyncLoadingId] = useState<string | null>(null);
 
   const { user, isLoading: authLoading } = useAuth();
   const router = useRouter();
@@ -49,6 +50,24 @@ export const useMyOrders = () => {
     }
   };
 
+  const handleSyncStatus = async (orderId: string) => {
+    setSyncLoadingId(orderId);
+    try {
+      const res = await api.post(`/orders/${orderId}/sync-status`);
+      const updatedOrder = res.data?.data?.order;
+      if (updatedOrder?.status === 'PAID') {
+        alert('Payment Verified! Your ticket is now PAID & active.');
+      } else {
+        alert(`Payment status: ${updatedOrder?.status || 'PENDING'}`);
+      }
+      fetchOrders();
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Failed to sync status.');
+    } finally {
+      setSyncLoadingId(null);
+    }
+  };
+
   return {
     orders,
     loading,
@@ -56,7 +75,9 @@ export const useMyOrders = () => {
     selectedTicket,
     setSelectedTicket,
     ticketLoading,
+    syncLoadingId,
     handleViewTicket,
+    handleSyncStatus,
     user,
   };
 };
