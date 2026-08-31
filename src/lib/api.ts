@@ -20,6 +20,27 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Response Interceptor: Otomatis tangkap 401 Unauthorized dan redirect ke login (Auto-Relog)
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (typeof window !== 'undefined') {
+      const status = error.response?.status;
+      const isAuthRoute =
+        window.location.pathname.startsWith('/login') ||
+        window.location.pathname.startsWith('/register');
+
+      // Jika token expired / user tidak ditemukan di DB, hapus token & minta login ulang
+      if (status === 401 && !isAuthRoute) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login?expired=true';
+      }
+    }
+    return Promise.reject(error);
+  },
+);
+
 // Helper untuk generate Idempotency Key UUID
 export const generateUUID = (): string => {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
