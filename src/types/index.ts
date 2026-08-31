@@ -62,6 +62,12 @@ export interface Order {
   checkedInAt?: string | null;
   createdAt: string;
   updatedAt: string;
+  transaction?: {
+    id?: string;
+    snapToken?: string | null;
+    snapRedirectUrl?: string | null;
+    status?: string;
+  } | null;
   user?: {
     id: string;
     name?: string | null;
@@ -69,6 +75,7 @@ export interface Order {
   };
   event: {
     id: string;
+    slug?: string;
     title: string;
     location: string;
     date: string;
