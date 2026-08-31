@@ -101,7 +101,9 @@ export const useEventDetail = (slugOrId: string) => {
     }
   };
 
-  const activeCategory = event?.ticketCategories.find((c: TicketCategory) => c.id === selectedCategory);
+  const activeCategory = event?.ticketCategories.find(
+    (c: TicketCategory) => c.id === selectedCategory,
+  );
   const subtotal = activeCategory ? Number(activeCategory.price) * quantity : 0;
   const platformFee = Math.round(subtotal * 0.02);
   const grandTotal = subtotal + platformFee;

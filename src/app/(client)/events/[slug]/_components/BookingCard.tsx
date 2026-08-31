@@ -61,8 +61,8 @@ export const BookingCard = ({
                   isSoldOut
                     ? 'opacity-40 border-[#464554]/40 bg-[#13131b] cursor-not-allowed'
                     : isSelected
-                    ? 'border-[#4cd7f6] bg-[#03b5d3]/10'
-                    : 'border-[#464554]/40 hover:border-[#464554] bg-[#13131b]'
+                      ? 'border-[#4cd7f6] bg-[#03b5d3]/10'
+                      : 'border-[#464554]/40 hover:border-[#464554] bg-[#13131b]'
                 }`}
               >
                 <div>
@@ -106,11 +106,15 @@ export const BookingCard = ({
         <div className="pt-4 border-t border-[#464554]/30 space-y-2 text-xs text-[#c7c4d7]">
           <div className="flex justify-between">
             <span>Subtotal ({quantity} items)</span>
-            <span className="font-semibold text-[#e4e1ed]">Rp {subtotal.toLocaleString('id-ID')}</span>
+            <span className="font-semibold text-[#e4e1ed]">
+              Rp {subtotal.toLocaleString('id-ID')}
+            </span>
           </div>
           <div className="flex justify-between">
             <span>Platform Fee (2%)</span>
-            <span className="font-semibold text-[#e4e1ed]">Rp {platformFee.toLocaleString('id-ID')}</span>
+            <span className="font-semibold text-[#e4e1ed]">
+              Rp {platformFee.toLocaleString('id-ID')}
+            </span>
           </div>
           <div className="flex justify-between pt-3 border-t border-[#464554]/30 text-sm">
             <span className="font-bold text-[#e4e1ed]">Total</span>

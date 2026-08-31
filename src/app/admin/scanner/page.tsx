@@ -30,7 +30,9 @@ export default function GateScannerPage() {
               <QrCode className="w-6 h-6" />
             </div>
             <h2 className="text-xl font-bold text-white">Scan Attendee Ticket Pass</h2>
-            <p className="text-xs text-[#908fa0]">Align attendee QR code pass within the optical camera frame</p>
+            <p className="text-xs text-[#908fa0]">
+              Align attendee QR code pass within the optical camera frame
+            </p>
           </div>
 
           <div className="bg-[#0d0d15] rounded-2xl p-4 border border-[#464554]/40 overflow-hidden">
@@ -63,7 +65,9 @@ export default function GateScannerPage() {
               <div className="bg-[#0d0d15]/90 p-3.5 rounded-lg border border-[#464554]/30 text-xs space-y-1.5 text-[#c7c4d7]">
                 <div className="flex justify-between">
                   <span className="text-[#908fa0]">Attendee:</span>
-                  <span className="font-bold text-white">{scanResult.attendee?.name || scanResult.attendee?.email}</span>
+                  <span className="font-bold text-white">
+                    {scanResult.attendee?.name || scanResult.attendee?.email}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#908fa0]">Event:</span>
@@ -72,7 +76,9 @@ export default function GateScannerPage() {
                 <div className="flex justify-between">
                   <span className="text-[#908fa0]">Tier Category:</span>
                   <span className="font-bold text-[#4cd7f6]">
-                    {scanResult.tickets?.map((t: any) => `${t.category} (x${t.quantity})`).join(', ')}
+                    {scanResult.tickets
+                      ?.map((t: any) => `${t.category} (x${t.quantity})`)
+                      .join(', ')}
                   </span>
                 </div>
               </div>

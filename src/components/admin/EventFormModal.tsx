@@ -6,12 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { eventFormSchema, EventFormData } from '@/schemas';
 import { Plus, Trash2, AlertCircle } from 'lucide-react';
 import { api } from '@/lib/api';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
   Select,
   SelectContent,
@@ -58,7 +53,9 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
           description: initialData.description || '',
           category: initialData.category || 'CONCERT',
           location: initialData.location,
-          date: new Date(new Date(initialData.date).getTime() - new Date().getTimezoneOffset() * 60000)
+          date: new Date(
+            new Date(initialData.date).getTime() - new Date().getTimezoneOffset() * 60000,
+          )
             .toISOString()
             .slice(0, 16),
           categories: [{ name: 'VIP Pass', price: 1500000, capacity: 50 }],
@@ -153,11 +150,15 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
               placeholder="e.g. Jakarta Rock Live 2026"
               className="input-glass w-full rounded-xl px-3.5 py-2.5 text-sm text-white"
             />
-            {errors.title && <p className="text-rose-400 text-[11px] mt-1">{errors.title.message}</p>}
+            {errors.title && (
+              <p className="text-rose-400 text-[11px] mt-1">{errors.title.message}</p>
+            )}
           </div>
 
           <div>
-            <label className="block text-[#908fa0] uppercase font-bold mb-1">Description (HTML / Text)</label>
+            <label className="block text-[#908fa0] uppercase font-bold mb-1">
+              Description (HTML / Text)
+            </label>
             <textarea
               {...register('description')}
               rows={3}
@@ -171,7 +172,9 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label className="block text-[#908fa0] uppercase font-bold mb-1">Event Category</label>
+              <label className="block text-[#908fa0] uppercase font-bold mb-1">
+                Event Category
+              </label>
               <Select
                 value={selectedCategory}
                 onValueChange={(val: any) => setValue('category', val)}
@@ -189,17 +192,23 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
                   <SelectItem value="FESTIVAL">🎪 Festival</SelectItem>
                 </SelectContent>
               </Select>
-              {errors.category && <p className="text-rose-400 text-[11px] mt-1">{errors.category.message}</p>}
+              {errors.category && (
+                <p className="text-rose-400 text-[11px] mt-1">{errors.category.message}</p>
+              )}
             </div>
 
             <div>
-              <label className="block text-[#908fa0] uppercase font-bold mb-1">Location Venue</label>
+              <label className="block text-[#908fa0] uppercase font-bold mb-1">
+                Location Venue
+              </label>
               <input
                 {...register('location')}
                 placeholder="GBK Stadium, Jakarta"
                 className="input-glass w-full rounded-xl px-3.5 py-2.5 text-xs text-white"
               />
-              {errors.location && <p className="text-rose-400 text-[11px] mt-1">{errors.location.message}</p>}
+              {errors.location && (
+                <p className="text-rose-400 text-[11px] mt-1">{errors.location.message}</p>
+              )}
             </div>
 
             <div>
@@ -209,7 +218,9 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
                 {...register('date')}
                 className="input-glass w-full rounded-xl px-3.5 py-2.5 text-xs text-white"
               />
-              {errors.date && <p className="text-rose-400 text-[11px] mt-1">{errors.date.message}</p>}
+              {errors.date && (
+                <p className="text-rose-400 text-[11px] mt-1">{errors.date.message}</p>
+              )}
             </div>
           </div>
 
@@ -220,7 +231,9 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
                   <label className="block text-[#908fa0] uppercase font-bold text-[11px]">
                     Ticket Categories & Tiers
                   </label>
-                  <span className="text-[10px] text-[#908fa0]">Set tier name, price, and initial capacity</span>
+                  <span className="text-[10px] text-[#908fa0]">
+                    Set tier name, price, and initial capacity
+                  </span>
                 </div>
 
                 <button
@@ -240,7 +253,9 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
                     className="bg-[#13131b] border border-[#464554]/40 rounded-xl p-3 grid grid-cols-12 gap-2 items-center"
                   >
                     <div className="col-span-5">
-                      <label className="text-[9px] text-[#908fa0] font-bold block uppercase">Tier Name</label>
+                      <label className="text-[9px] text-[#908fa0] font-bold block uppercase">
+                        Tier Name
+                      </label>
                       <input
                         {...register(`categories.${index}.name` as const)}
                         placeholder="VIP / Regular"
@@ -249,7 +264,9 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
                     </div>
 
                     <div className="col-span-4">
-                      <label className="text-[9px] text-[#908fa0] font-bold block uppercase">Price (IDR)</label>
+                      <label className="text-[9px] text-[#908fa0] font-bold block uppercase">
+                        Price (IDR)
+                      </label>
                       <input
                         type="number"
                         {...register(`categories.${index}.price` as const)}
@@ -259,7 +276,9 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
                     </div>
 
                     <div className="col-span-2">
-                      <label className="text-[9px] text-[#908fa0] font-bold block uppercase">Seats</label>
+                      <label className="text-[9px] text-[#908fa0] font-bold block uppercase">
+                        Seats
+                      </label>
                       <input
                         type="number"
                         {...register(`categories.${index}.capacity` as const)}

@@ -52,7 +52,9 @@ export const EventInfo = ({ event }: { event: EventItem }) => {
               <span className="text-xs font-black">DATE</span>
             </div>
             <div>
-              <span className="text-xs text-[#908fa0] uppercase font-bold block">Event Schedule</span>
+              <span className="text-xs text-[#908fa0] uppercase font-bold block">
+                Event Schedule
+              </span>
               <span className="text-sm font-semibold text-white">
                 {new Date(event.date).toLocaleDateString('id-ID', { dateStyle: 'full' })}
               </span>
@@ -64,7 +66,9 @@ export const EventInfo = ({ event }: { event: EventItem }) => {
               <MapPin className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-xs text-[#908fa0] uppercase font-bold block">Location / Venue</span>
+              <span className="text-xs text-[#908fa0] uppercase font-bold block">
+                Location / Venue
+              </span>
               <span className="text-sm font-semibold text-white">{event.location}</span>
             </div>
           </div>

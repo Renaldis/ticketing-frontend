@@ -62,7 +62,9 @@ export const TelemetryTiles = ({ metric }: { metric: PlatformSummary }) => {
           <div className="text-2xl font-black text-[#4cd7f6]">
             {metric.capacity.totalRemaining} Left
           </div>
-          <span className="text-[11px] text-[#4cd7f6] font-bold mt-1 block">Ready for allocation</span>
+          <span className="text-[11px] text-[#4cd7f6] font-bold mt-1 block">
+            Ready for allocation
+          </span>
         </div>
       </div>
     </div>

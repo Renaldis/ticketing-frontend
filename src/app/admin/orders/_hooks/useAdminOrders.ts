@@ -35,7 +35,8 @@ export const useAdminOrders = () => {
       orderSearchQuery === '' ||
       (ord.user?.name && ord.user.name.toLowerCase().includes(orderSearchQuery.toLowerCase())) ||
       (ord.user?.email && ord.user.email.toLowerCase().includes(orderSearchQuery.toLowerCase())) ||
-      (ord.event?.title && ord.event.title.toLowerCase().includes(orderSearchQuery.toLowerCase())) ||
+      (ord.event?.title &&
+        ord.event.title.toLowerCase().includes(orderSearchQuery.toLowerCase())) ||
       ord.id.toLowerCase().includes(orderSearchQuery.toLowerCase());
     return matchesStatus && matchesSearch;
   });

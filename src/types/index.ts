@@ -15,13 +15,7 @@ export interface TicketCategory {
 }
 
 export type EventCategory =
-  | 'CONCERT'
-  | 'SPORTS'
-  | 'SEMINAR'
-  | 'WEBINAR'
-  | 'EXHIBITION'
-  | 'WORKSHOP'
-  | 'FESTIVAL';
+  'CONCERT' | 'SPORTS' | 'SEMINAR' | 'WEBINAR' | 'EXHIBITION' | 'WORKSHOP' | 'FESTIVAL';
 
 export interface EventItem {
   id: string;

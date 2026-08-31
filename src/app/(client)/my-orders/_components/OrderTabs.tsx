@@ -14,7 +14,7 @@ export const OrderTabs = ({ activeTab, setActiveTab, orders }: OrderTabsProps) =
   const now = new Date();
 
   const pendingCount = orders.filter((o) => o.status === 'PENDING').length;
-  
+
   // Tiket Aktif = PAID & Tanggal acara >= sekarang
   const activeCount = orders.filter(
     (o) => o.status === 'PAID' && new Date(o.event?.date) >= now,
@@ -98,8 +98,8 @@ export const OrderTabs = ({ activeTab, setActiveTab, orders }: OrderTabsProps) =
                 isSelected
                   ? 'bg-[#003640] text-[#4cd7f6]'
                   : tab.highlight
-                  ? 'bg-emerald-500/20 text-emerald-300'
-                  : 'bg-[#1f1f27] text-[#908fa0]'
+                    ? 'bg-emerald-500/20 text-emerald-300'
+                    : 'bg-[#1f1f27] text-[#908fa0]'
               }`}
             >
               {tab.count}

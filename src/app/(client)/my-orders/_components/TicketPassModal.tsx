@@ -83,18 +83,14 @@ export const TicketPassModal = ({ ticket, user, onClose }: TicketPassModalProps)
             <span className="text-[#908fa0]">Status Gate</span>
             <span
               className={`font-black ${
-                isValid
-                  ? 'text-emerald-400'
-                  : isCheckedIn
-                  ? 'text-purple-400'
-                  : 'text-rose-400'
+                isValid ? 'text-emerald-400' : isCheckedIn ? 'text-purple-400' : 'text-rose-400'
               }`}
             >
               {isValid
                 ? 'VALID / READY TO SCAN'
                 : isCheckedIn
-                ? 'CHECKED IN (USED)'
-                : 'EVENT PASSED'}
+                  ? 'CHECKED IN (USED)'
+                  : 'EVENT PASSED'}
             </span>
           </div>
         </div>

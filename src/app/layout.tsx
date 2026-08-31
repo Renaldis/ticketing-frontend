@@ -5,7 +5,8 @@ import { Toaster } from '@/components/ui/sonner';
 
 export const metadata: Metadata = {
   title: 'TICKETIX | Cyber-Enterprise Live Event Pass Platform',
-  description: 'Cryptographically verified, atomic concurrency ticket reservation and gate scanner engine.',
+  description:
+    'Cryptographically verified, atomic concurrency ticket reservation and gate scanner engine.',
 };
 
 export default function RootLayout({

@@ -11,7 +11,8 @@ export const FeatureBento = () => {
           </div>
           <h3 className="text-xl font-bold text-[#e4e1ed]">Secure Inventory</h3>
           <p className="text-sm text-[#c7c4d7] leading-relaxed">
-            Real-time cryptographic verification ensures every ticket is authentic and unique to you.
+            Real-time cryptographic verification ensures every ticket is authentic and unique to
+            you.
           </p>
         </div>
 
@@ -21,7 +22,8 @@ export const FeatureBento = () => {
           </div>
           <h3 className="text-xl font-bold text-[#e4e1ed]">Fast Checkout</h3>
           <p className="text-sm text-[#c7c4d7] leading-relaxed">
-            One-click purchasing with integrated wallets. Skip the queue and secure your spot in seconds.
+            One-click purchasing with integrated wallets. Skip the queue and secure your spot in
+            seconds.
           </p>
         </div>
 
@@ -31,7 +33,8 @@ export const FeatureBento = () => {
           </div>
           <h3 className="text-xl font-bold text-[#e4e1ed]">Instant Pass</h3>
           <p className="text-sm text-[#c7c4d7] leading-relaxed">
-            Your dynamic QR code is generated instantly and updates live, preventing unauthorized duplication.
+            Your dynamic QR code is generated instantly and updates live, preventing unauthorized
+            duplication.
           </p>
         </div>
       </div>

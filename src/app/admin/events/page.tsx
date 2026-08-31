@@ -88,13 +88,17 @@ export default function AdminEventsPage() {
       />
 
       {/* SHADCN ALERT DIALOG: CONFIRM DELETE EVENT */}
-      <AlertDialog open={!!deleteTargetEvent} onOpenChange={(open) => !open && setDeleteTargetEvent(null)}>
+      <AlertDialog
+        open={!!deleteTargetEvent}
+        onOpenChange={(open) => !open && setDeleteTargetEvent(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Hapus Event Ini Secara Permanen?</AlertDialogTitle>
             <AlertDialogDescription>
-              Event <strong>&quot;{deleteTargetEvent?.title}&quot;</strong> beserta seluruh kategori tiket dan riwayat
-              kaitannya akan dihapus permanen dari sistem. Aksi ini tidak dapat dibatalkan.
+              Event <strong>&quot;{deleteTargetEvent?.title}&quot;</strong> beserta seluruh kategori
+              tiket dan riwayat kaitannya akan dihapus permanen dari sistem. Aksi ini tidak dapat
+              dibatalkan.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

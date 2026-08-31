@@ -1,7 +1,18 @@
 'use client';
 
 import React from 'react';
-import { Search, MapPin, RotateCcw, Ticket, Flame, Dumbbell, GraduationCap, MonitorPlay, Palette, Sparkles } from 'lucide-react';
+import {
+  Search,
+  MapPin,
+  RotateCcw,
+  Ticket,
+  Flame,
+  Dumbbell,
+  GraduationCap,
+  MonitorPlay,
+  Palette,
+  Sparkles,
+} from 'lucide-react';
 import { useEventsCatalog } from './_hooks/useEventsCatalog';
 import { EventCard } from '../_components/EventCard';
 import {
@@ -152,7 +163,9 @@ export default function EventsCatalogPage() {
           <div className="text-center py-24 glass-panel rounded-3xl">
             <Ticket className="w-12 h-12 text-[#908fa0] mx-auto mb-3" />
             <h3 className="text-lg font-bold text-white mb-2">No Matching Events Found</h3>
-            <p className="text-xs text-[#908fa0] mb-6">Try broadening your search or resetting filter parameters.</p>
+            <p className="text-xs text-[#908fa0] mb-6">
+              Try broadening your search or resetting filter parameters.
+            </p>
             <button
               onClick={handleResetFilters}
               className="btn-secondary text-[#c0c1ff] px-6 py-2.5 rounded-xl text-xs font-bold"

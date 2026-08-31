@@ -2,7 +2,18 @@
 
 import React, { Suspense, useState } from 'react';
 import Link from 'next/link';
-import { Ticket, Lock, Mail, AlertCircle, ArrowRight, ArrowLeft, Clock, Loader2, Eye, EyeOff } from 'lucide-react';
+import {
+  Ticket,
+  Lock,
+  Mail,
+  AlertCircle,
+  ArrowRight,
+  ArrowLeft,
+  Clock,
+  Loader2,
+  Eye,
+  EyeOff,
+} from 'lucide-react';
 import { useLogin } from './_hooks/useLogin';
 
 function LoginForm() {
@@ -68,7 +79,9 @@ function LoginForm() {
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
-          {errors.password && <p className="text-rose-400 text-[11px] mt-1">{errors.password.message}</p>}
+          {errors.password && (
+            <p className="text-rose-400 text-[11px] mt-1">{errors.password.message}</p>
+          )}
         </div>
 
         <button

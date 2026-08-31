@@ -10,7 +10,8 @@ interface AdminEventCardProps {
 }
 
 export const AdminEventCard = ({ event, onEdit, onRequestDelete }: AdminEventCardProps) => {
-  const totalStock = event.ticketCategories?.reduce((acc: number, c) => acc + c.totalCapacity, 0) || 0;
+  const totalStock =
+    event.ticketCategories?.reduce((acc: number, c) => acc + c.totalCapacity, 0) || 0;
   const remainingStock =
     event.ticketCategories?.reduce((acc: number, c) => acc + c.remainingCapacity, 0) || 0;
 

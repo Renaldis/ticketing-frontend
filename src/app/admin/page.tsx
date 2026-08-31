@@ -72,7 +72,10 @@ export default function AdminDashboardPage() {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {eventSummary.categories.map((cat) => (
-                    <div key={cat.id} className="bg-[#13131b] border border-[#464554]/30 rounded-xl p-5 space-y-3">
+                    <div
+                      key={cat.id}
+                      className="bg-[#13131b] border border-[#464554]/30 rounded-xl p-5 space-y-3"
+                    >
                       <div className="flex justify-between items-center text-xs">
                         <span className="font-bold text-white text-sm">{cat.name}</span>
                         <span className="text-[#4cd7f6] font-black">

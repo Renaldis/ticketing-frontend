@@ -9,16 +9,8 @@ import { FeatureBento } from './_components/FeatureBento';
 import { EventCard } from './_components/EventCard';
 
 export default function HomePage() {
-  const {
-    events,
-    search,
-    setSearch,
-    location,
-    setLocation,
-    isLoading,
-    fetchEvents,
-    handleSearch,
-  } = useHomeEvents();
+  const { events, search, setSearch, location, setLocation, isLoading, handleSearch } =
+    useHomeEvents();
 
   return (
     <main className="flex-grow w-full relative z-10 bg-grid">
@@ -33,10 +25,15 @@ export default function HomePage() {
       <FeatureBento />
 
       {/* Upcoming Events Grid */}
-      <section id="upcoming-events" className="max-w-[1440px] mx-auto px-6 sm:px-12 py-16 relative z-10">
+      <section
+        id="upcoming-events"
+        className="max-w-[1440px] mx-auto px-6 sm:px-12 py-16 relative z-10"
+      >
         <div className="flex justify-between items-end mb-10">
           <div>
-            <h2 className="text-3xl sm:text-4xl text-[#e4e1ed] font-extrabold leading-tight">Upcoming Events</h2>
+            <h2 className="text-3xl sm:text-4xl text-[#e4e1ed] font-extrabold leading-tight">
+              Upcoming Events
+            </h2>
             <p className="text-sm text-[#c7c4d7] mt-2">Curated experiences happening soon.</p>
           </div>
           <Link
@@ -57,7 +54,9 @@ export default function HomePage() {
         ) : events.length === 0 ? (
           <div className="text-center py-24 glass-panel rounded-3xl">
             <h3 className="text-lg font-bold text-white mb-2">No Events Found</h3>
-            <p className="text-sm text-[#908fa0]">Try changing your search keywords or location filter.</p>
+            <p className="text-sm text-[#908fa0]">
+              Try changing your search keywords or location filter.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -76,7 +75,8 @@ export default function HomePage() {
             Ready to Host Your Own Event?
           </h2>
           <p className="text-base text-[#c7c4d7] max-w-2xl mx-auto mb-8 relative z-10">
-            Join event organizers using TICKETIX enterprise tools to manage ticketing, atomic access control, and real-time analytics.
+            Join event organizers using TICKETIX enterprise tools to manage ticketing, atomic access
+            control, and real-time analytics.
           </p>
           <Link
             href="/login"

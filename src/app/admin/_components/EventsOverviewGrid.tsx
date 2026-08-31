@@ -21,8 +21,11 @@ export const EventsOverviewGrid = ({ events, onSelectEvent }: EventsOverviewGrid
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {events.map((evt) => {
-          const totalCap = evt.ticketCategories?.reduce((acc: number, c: any) => acc + c.totalCapacity, 0) || 0;
-          const remCap = evt.ticketCategories?.reduce((acc: number, c: any) => acc + c.remainingCapacity, 0) || 0;
+          const totalCap =
+            evt.ticketCategories?.reduce((acc: number, c: any) => acc + c.totalCapacity, 0) || 0;
+          const remCap =
+            evt.ticketCategories?.reduce((acc: number, c: any) => acc + c.remainingCapacity, 0) ||
+            0;
           const soldCap = totalCap - remCap;
           const pct = totalCap > 0 ? Math.round((soldCap / totalCap) * 100) : 0;
 

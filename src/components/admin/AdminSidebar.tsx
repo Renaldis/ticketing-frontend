@@ -89,7 +89,9 @@ export const AdminSidebar = ({
             </div>
           </div>
           <div className="overflow-hidden">
-            <h2 className="text-sm font-bold text-white truncate">{user?.name || 'Event Manager'}</h2>
+            <h2 className="text-sm font-bold text-white truncate">
+              {user?.name || 'Event Manager'}
+            </h2>
             <span className="text-[10px] text-[#4cd7f6] uppercase font-extrabold tracking-wider block">
               Enterprise Tier
             </span>
@@ -114,8 +116,8 @@ export const AdminSidebar = ({
                 item.highlight
                   ? 'text-emerald-400 hover:bg-emerald-500/10'
                   : item.active
-                  ? 'bg-[#03b5d3]/15 text-[#4cd7f6] border-r-4 border-[#4cd7f6]'
-                  : 'text-[#c7c4d7] hover:bg-[#1f1f27] hover:text-white'
+                    ? 'bg-[#03b5d3]/15 text-[#4cd7f6] border-r-4 border-[#4cd7f6]'
+                    : 'text-[#c7c4d7] hover:bg-[#1f1f27] hover:text-white'
               }`}
             >
               <Icon className="w-4 h-4 flex-shrink-0" />

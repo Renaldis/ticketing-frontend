@@ -35,10 +35,7 @@ const SelectScrollUpButton = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.ScrollUpButton
     ref={ref}
-    className={cn(
-      'flex cursor-default items-center justify-center py-1 text-[#908fa0]',
-      className,
-    )}
+    className={cn('flex cursor-default items-center justify-center py-1 text-[#908fa0]', className)}
     {...props}
   >
     <ChevronUp className="h-4 w-4" />
@@ -52,17 +49,13 @@ const SelectScrollDownButton = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.ScrollDownButton
     ref={ref}
-    className={cn(
-      'flex cursor-default items-center justify-center py-1 text-[#908fa0]',
-      className,
-    )}
+    className={cn('flex cursor-default items-center justify-center py-1 text-[#908fa0]', className)}
     {...props}
   >
     <ChevronDown className="h-4 w-4" />
   </SelectPrimitive.ScrollDownButton>
 ));
-SelectScrollDownButton.displayName =
-  SelectPrimitive.ScrollDownButton.displayName;
+SelectScrollDownButton.displayName = SelectPrimitive.ScrollDownButton.displayName;
 
 const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,
@@ -102,7 +95,10 @@ const SelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Label
     ref={ref}
-    className={cn('py-1.5 pl-8 pr-2 text-[10px] font-extrabold uppercase text-[#908fa0] tracking-wider', className)}
+    className={cn(
+      'py-1.5 pl-8 pr-2 text-[10px] font-extrabold uppercase text-[#908fa0] tracking-wider',
+      className,
+    )}
     {...props}
   />
 ));

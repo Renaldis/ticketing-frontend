@@ -74,13 +74,16 @@ export default function AdminTicketsPage() {
       />
 
       {/* SHADCN ALERT DIALOG: CONFIRM DELETE TICKET CATEGORY */}
-      <AlertDialog open={!!deleteTargetCat} onOpenChange={(open) => !open && setDeleteTargetCat(null)}>
+      <AlertDialog
+        open={!!deleteTargetCat}
+        onOpenChange={(open) => !open && setDeleteTargetCat(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Hapus Kategori Tiket Ini?</AlertDialogTitle>
             <AlertDialogDescription>
-              Kategori tier <strong>&quot;{deleteTargetCat?.name}&quot;</strong> akan dihapus permanen. Pesanan yang
-              sedang berjalan pada kategori ini mungkin akan terpengaruh.
+              Kategori tier <strong>&quot;{deleteTargetCat?.name}&quot;</strong> akan dihapus
+              permanen. Pesanan yang sedang berjalan pada kategori ini mungkin akan terpengaruh.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -1,10 +1,14 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @layer base {
   body {
     background-color: #13131b;
     color: #e4e1ed;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-family:
+      'Plus Jakarta Sans',
+      system-ui,
+      -apple-system,
+      sans-serif;
     overflow-x: hidden;
   }
 
@@ -28,14 +32,16 @@
   background: rgba(15, 23, 42, 0.4);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid #1E293B;
+  border: 1px solid #1e293b;
 }
 
 .premium-card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%), rgba(15, 23, 42, 0.8);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%),
+    rgba(15, 23, 42, 0.8);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid #1E293B;
+  border: 1px solid #1e293b;
   transition: all 0.3s ease;
 }
 
@@ -47,7 +53,7 @@
 
 .btn-primary {
   background: linear-gradient(135deg, #03b5d3, #4cd7f6);
-  border-top: 1px solid rgba(255,255,255,0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 0 20px rgba(76, 215, 246, 0.2);
   transition: all 0.3s ease;
 }
@@ -70,7 +76,7 @@
 
 .input-glass {
   background: #13131b;
-  border: 1px solid #1E293B;
+  border: 1px solid #1e293b;
   transition: all 0.3s ease;
 }
 
@@ -84,14 +90,18 @@
   position: absolute;
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(192,193,255,0.15) 0%, rgba(19,19,27,0) 70%);
+  background: radial-gradient(circle, rgba(192, 193, 255, 0.15) 0%, rgba(19, 19, 27, 0) 70%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
 }
 
 .hero-bg {
-  background-image: radial-gradient(circle at 50% 0%, rgba(76, 215, 246, 0.1) 0%, rgba(19, 19, 27, 1) 70%);
+  background-image: radial-gradient(
+    circle at 50% 0%,
+    rgba(76, 215, 246, 0.1) 0%,
+    rgba(19, 19, 27, 1) 70%
+  );
 }
 
 .pulse-dot {
@@ -99,13 +109,20 @@
 }
 
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(76, 215, 246, 0.7); }
-  70% { box-shadow: 0 0 0 6px rgba(76, 215, 246, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(76, 215, 246, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(76, 215, 246, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(76, 215, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 215, 246, 0);
+  }
 }
 
 .bg-grid {
-  background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
   background-size: 40px 40px;
 }

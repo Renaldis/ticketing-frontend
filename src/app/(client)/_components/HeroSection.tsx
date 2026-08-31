@@ -24,19 +24,23 @@ export const HeroSection = ({
       <div className="ambient-glow top-0 left-1/4"></div>
       <div
         className="ambient-glow top-20 right-1/4"
-        style={{ background: 'radial-gradient(circle, rgba(76,215,246,0.15) 0%, rgba(19,19,27,0) 70%)' }}
+        style={{
+          background: 'radial-gradient(circle, rgba(76,215,246,0.15) 0%, rgba(19,19,27,0) 70%)',
+        }}
       ></div>
 
       <div className="max-w-4xl mx-auto z-10 space-y-8">
         <h1 className="text-4xl sm:text-6xl lg:text-[64px] font-extrabold leading-tight text-[#e4e1ed] tracking-tight">
-          Experience Live Events.<br />
+          Experience Live Events.
+          <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4cd7f6] to-[#c0c1ff]">
             Zero Booking Friction.
           </span>
         </h1>
 
         <p className="text-base sm:text-lg text-[#c7c4d7] max-w-2xl mx-auto font-normal leading-relaxed">
-          Discover premium events, secure your tickets with cryptographic certainty, and access your digital pass instantly. The next generation of ticketing.
+          Discover premium events, secure your tickets with cryptographic certainty, and access your
+          digital pass instantly. The next generation of ticketing.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">

@@ -47,6 +47,7 @@ export const useGateScanner = () => {
     return () => {
       scanner.clear().catch((e) => console.error(e));
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleManualSubmit = (e: React.FormEvent) => {

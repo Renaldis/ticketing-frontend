@@ -38,7 +38,9 @@ export const AdminHeader = ({
           <Menu className="w-6 h-6" />
         </button>
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">{title}</h1>
+          <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
+            {title}
+          </h1>
           <p className="text-[11px] text-[#908fa0] leading-normal">{subtitle}</p>
         </div>
       </div>
@@ -66,4 +68,3 @@ export const AdminHeader = ({
     </header>
   );
 };
-

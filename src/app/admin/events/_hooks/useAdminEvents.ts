@@ -14,7 +14,9 @@ export const useAdminEvents = () => {
   const [editingEvent, setEditingEvent] = useState<any>(null);
 
   // State Delete Confirm Dialog
-  const [deleteTargetEvent, setDeleteTargetEvent] = useState<{ id: string; title: string } | null>(null);
+  const [deleteTargetEvent, setDeleteTargetEvent] = useState<{ id: string; title: string } | null>(
+    null,
+  );
   const [deleting, setDeleting] = useState(false);
 
   const fetchEvents = useCallback(async () => {

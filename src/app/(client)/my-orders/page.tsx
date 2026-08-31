@@ -55,7 +55,9 @@ export default function MyOrdersPage() {
         <span className="text-xs font-extrabold text-[#4cd7f6] uppercase tracking-widest block mb-1">
           Pass Management
         </span>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-[#e4e1ed] tracking-tight">My Orders & Passes</h1>
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-[#e4e1ed] tracking-tight">
+          My Orders & Passes
+        </h1>
         <p className="text-[#908fa0] text-sm mt-1">
           Review pending payments, continue checkouts, and access digital entry QR codes
         </p>
@@ -72,10 +74,13 @@ export default function MyOrdersPage() {
             {activeTab === 'PENDING'
               ? 'Tidak ada tagihan yang menunggu pembayaran.'
               : activeTab === 'ACTIVE'
-              ? 'Anda belum memiliki tiket konser yang aktif.'
-              : 'Jelajahi konser dan amankan tiket Anda sekarang.'}
+                ? 'Anda belum memiliki tiket konser yang aktif.'
+                : 'Jelajahi konser dan amankan tiket Anda sekarang.'}
           </p>
-          <Link href="/events" className="btn-primary text-[#003640] px-6 py-2.5 rounded-xl font-bold text-xs">
+          <Link
+            href="/events"
+            className="btn-primary text-[#003640] px-6 py-2.5 rounded-xl font-bold text-xs"
+          >
             Jelajahi Event
           </Link>
         </div>
@@ -98,14 +103,18 @@ export default function MyOrdersPage() {
       )}
 
       {/* SHADCN ALERT DIALOG: CONFIRM CANCEL ORDER */}
-      <AlertDialog open={!!cancelTargetOrder} onOpenChange={(open) => !open && setCancelTargetOrder(null)}>
+      <AlertDialog
+        open={!!cancelTargetOrder}
+        onOpenChange={(open) => !open && setCancelTargetOrder(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Batalkan Pesanan Ini?</AlertDialogTitle>
             <AlertDialogDescription>
               Pesanan untuk <strong>{cancelTargetOrder?.event?.title}</strong> sebesar Rp{' '}
-              {Number(cancelTargetOrder?.totalAmount).toLocaleString('id-ID')} akan dibatalkan. Kuota tiket akan
-              dikembalikan ke pool penjualan dan invoice pembayaran akan dinonaktifkan.
+              {Number(cancelTargetOrder?.totalAmount).toLocaleString('id-ID')} akan dibatalkan.
+              Kuota tiket akan dikembalikan ke pool penjualan dan invoice pembayaran akan
+              dinonaktifkan.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
