@@ -1,9 +1,19 @@
 'use client';
 
 import React from 'react';
-import { Search, MapPin, Filter, RotateCcw, Ticket, Loader2 } from 'lucide-react';
+import { Search, MapPin, RotateCcw, Ticket, Flame, Dumbbell, GraduationCap, MonitorPlay, Palette, Sparkles } from 'lucide-react';
 import { useEventsCatalog } from './_hooks/useEventsCatalog';
 import { EventCard } from '../_components/EventCard';
+
+const categoriesPills = [
+  { key: 'ALL', label: 'All Experiences', icon: Sparkles },
+  { key: 'CONCERT', label: 'Concert & Music', icon: Flame },
+  { key: 'SPORTS', label: 'Sports & Marathon', icon: Dumbbell },
+  { key: 'SEMINAR', label: 'Seminar & Summit', icon: GraduationCap },
+  { key: 'WORKSHOP', label: 'Workshop & Class', icon: GraduationCap },
+  { key: 'EXHIBITION', label: 'Exhibition & Expo', icon: Palette },
+  { key: 'WEBINAR', label: 'Online Webinar', icon: MonitorPlay },
+];
 
 export default function EventsCatalogPage() {
   const {
@@ -12,29 +22,53 @@ export default function EventsCatalogPage() {
     setSearch,
     location,
     setLocation,
+    category,
     sortBy,
     setSortBy,
     loading,
     handleSearchSubmit,
+    handleCategorySelect,
     handleResetFilters,
   } = useEventsCatalog();
 
   return (
-    <main className="flex-grow w-full max-w-[1440px] mx-auto px-6 sm:px-12 py-12 space-y-12">
+    <main className="flex-grow w-full max-w-[1440px] mx-auto px-6 sm:px-12 py-12 space-y-10">
       {/* Header Title */}
       <div className="text-center sm:text-left space-y-2">
         <span className="text-xs font-extrabold text-[#4cd7f6] uppercase tracking-widest block">
-          Discovery Hub
+          Universal Event Discovery
         </span>
         <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-          Explore Live Events & Concerts
+          Find Concerts, Marathons & Tech Summits
         </h1>
         <p className="text-sm text-[#908fa0]">
-          Filter and browse upcoming experiences with verified real-time seat availability.
+          Verified live ticket allocations protected by high-assurance atomic concurrency.
         </p>
       </div>
 
-      {/* Filter & Search Bar Toolbar */}
+      {/* Category Filter Pills (Stitch Horizontal Scroller) */}
+      <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none">
+        {categoriesPills.map((pill) => {
+          const Icon = pill.icon;
+          const isSelected = category === pill.key;
+          return (
+            <button
+              key={pill.key}
+              onClick={() => handleCategorySelect(pill.key)}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition duration-200 border ${
+                isSelected
+                  ? 'bg-gradient-to-r from-[#03b5d3] to-[#4cd7f6] text-[#003640] border-transparent shadow-lg shadow-cyan-500/20 scale-105'
+                  : 'bg-[#13131b] text-[#c7c4d7] border-[#464554]/40 hover:border-[#c0c1ff] hover:text-white'
+              }`}
+            >
+              <Icon className="w-3.5 h-3.5" />
+              <span>{pill.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Search & Location Filter Bar */}
       <form
         onSubmit={handleSearchSubmit}
         className="glass-panel p-4 rounded-2xl flex flex-col md:flex-row items-center gap-3 shadow-xl"
@@ -45,7 +79,7 @@ export default function EventsCatalogPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by event title, genre..."
+            placeholder="Search by event title, organizer, topic..."
             className="w-full bg-transparent text-sm text-white focus:outline-none placeholder-[#908fa0]"
           />
         </div>
@@ -79,7 +113,7 @@ export default function EventsCatalogPage() {
             Filter
           </button>
 
-          {(search || location || sortBy !== 'date') && (
+          {(search || location || category !== 'ALL' || sortBy !== 'date') && (
             <button
               type="button"
               onClick={handleResetFilters}

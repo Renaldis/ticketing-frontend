@@ -41,7 +41,7 @@ export default function AdminDashboardPage() {
         showScopeSelector={true}
       />
 
-      <main className="p-6 sm:p-10 space-y-8 flex-1">
+      <main className="p-6 sm:p-10 space-y-8 flex-1 overflow-y-auto">
         {currentMetric && (
           <>
             <div className="flex items-center justify-between">

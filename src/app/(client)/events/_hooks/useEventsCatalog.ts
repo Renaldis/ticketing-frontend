@@ -8,20 +8,24 @@ export const useEventsCatalog = () => {
   const [events, setEvents] = useState<EventItem[]>([]);
   const [search, setSearch] = useState('');
   const [location, setLocation] = useState('');
+  const [category, setCategory] = useState('ALL');
   const [sortBy, setSortBy] = useState('date');
   const [loading, setLoading] = useState(true);
 
   const fetchEvents = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await api.get(`/events?search=${search}&location=${location}&sortBy=${sortBy}&limit=50`);
+      const categoryParam = category !== 'ALL' ? `&category=${category}` : '';
+      const res = await api.get(
+        `/events?search=${search}&location=${location}${categoryParam}&sortBy=${sortBy}&limit=50`,
+      );
       setEvents(res.data?.data?.events || []);
     } catch (err) {
       console.error('Error fetching catalog:', err);
     } finally {
       setLoading(false);
     }
-  }, [search, location, sortBy]);
+  }, [search, location, category, sortBy]);
 
   useEffect(() => {
     fetchEvents();
@@ -32,9 +36,14 @@ export const useEventsCatalog = () => {
     fetchEvents();
   };
 
+  const handleCategorySelect = (cat: string) => {
+    setCategory(cat);
+  };
+
   const handleResetFilters = () => {
     setSearch('');
     setLocation('');
+    setCategory('ALL');
     setSortBy('date');
   };
 
@@ -44,11 +53,14 @@ export const useEventsCatalog = () => {
     setSearch,
     location,
     setLocation,
+    category,
+    setCategory,
     sortBy,
     setSortBy,
     loading,
     fetchEvents,
     handleSearchSubmit,
+    handleCategorySelect,
     handleResetFilters,
   };
 };

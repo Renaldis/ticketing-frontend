@@ -14,10 +14,20 @@ export interface TicketCategory {
   remainingCapacity: number;
 }
 
+export type EventCategory =
+  | 'CONCERT'
+  | 'SPORTS'
+  | 'SEMINAR'
+  | 'WEBINAR'
+  | 'EXHIBITION'
+  | 'WORKSHOP'
+  | 'FESTIVAL';
+
 export interface EventItem {
   id: string;
   slug?: string;
   title: string;
+  category?: EventCategory;
   description: string;
   location: string;
   date: string;

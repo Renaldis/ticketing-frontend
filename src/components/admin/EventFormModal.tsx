@@ -15,6 +15,7 @@ interface EventModalProps {
     id: string;
     title: string;
     description: string;
+    category?: any;
     location: string;
     date: string;
   } | null;
@@ -39,6 +40,7 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
       ? {
           title: initialData.title,
           description: initialData.description || '',
+          category: initialData.category || 'CONCERT',
           location: initialData.location,
           date: new Date(new Date(initialData.date).getTime() - new Date().getTimezoneOffset() * 60000)
             .toISOString()
@@ -48,6 +50,7 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
       : {
           title: '',
           description: '',
+          category: 'CONCERT',
           location: '',
           date: '',
           categories: [
@@ -72,6 +75,7 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
       const formData = new FormData();
       formData.append('title', data.title);
       formData.append('description', data.description);
+      formData.append('category', data.category || 'CONCERT');
       formData.append('location', data.location);
       formData.append('date', new Date(data.date).toISOString());
       formData.append(
@@ -149,7 +153,24 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
             )}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label className="block text-[#908fa0] uppercase font-bold mb-1">Event Category</label>
+              <select
+                {...register('category')}
+                className="input-glass w-full rounded-xl px-3 py-2.5 text-xs text-white font-bold focus:outline-none"
+              >
+                <option value="CONCERT" className="bg-[#13131b]">🎸 Concert & Music</option>
+                <option value="SPORTS" className="bg-[#13131b]">🏃 Sports & Marathon</option>
+                <option value="SEMINAR" className="bg-[#13131b]">🎤 Seminar & Summit</option>
+                <option value="WORKSHOP" className="bg-[#13131b]">💻 Workshop & Class</option>
+                <option value="EXHIBITION" className="bg-[#13131b]">🎨 Exhibition & Expo</option>
+                <option value="WEBINAR" className="bg-[#13131b]">🌐 Online Webinar</option>
+                <option value="FESTIVAL" className="bg-[#13131b]">🎪 Festival</option>
+              </select>
+              {errors.category && <p className="text-rose-400 text-[11px] mt-1">{errors.category.message}</p>}
+            </div>
+
             <div>
               <label className="block text-[#908fa0] uppercase font-bold mb-1">Location Venue</label>
               <input

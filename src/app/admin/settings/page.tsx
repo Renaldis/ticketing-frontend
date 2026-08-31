@@ -13,7 +13,7 @@ export default function AdminSettingsPage() {
         onOpenSidebar={() => {}}
       />
 
-      <main className="p-6 sm:p-10 space-y-8 flex-1 max-w-4xl">
+      <main className="p-6 sm:p-10 space-y-8 flex-1 max-w-4xl overflow-y-auto">
         <div className="premium-card rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl">
           <h2 className="text-xl font-bold text-white flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-emerald-400" />

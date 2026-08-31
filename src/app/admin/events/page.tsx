@@ -39,7 +39,7 @@ export default function AdminEventsPage() {
         refreshing={refreshing}
       />
 
-      <main className="p-6 sm:p-10 space-y-8 flex-1">
+      <main className="p-6 sm:p-10 space-y-8 flex-1 overflow-y-auto">
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-xl font-bold text-white">Live Concert Catalog ({events.length})</h2>

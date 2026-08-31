@@ -1,6 +1,18 @@
+import React from 'react';
 import Link from 'next/link';
 import { MapPin } from 'lucide-react';
 import { EventItem } from '@/types';
+
+// Helper mapping label & warna untuk kategori event
+const categoryConfig: Record<string, { label: string; color: string }> = {
+  CONCERT: { label: 'Concert', color: 'text-[#4cd7f6] border-[#03b5d3]/40 bg-[#03b5d3]/10' },
+  SPORTS: { label: 'Sports & Run', color: 'text-amber-400 border-amber-500/40 bg-amber-500/10' },
+  SEMINAR: { label: 'Seminar & Summit', color: 'text-purple-400 border-purple-500/40 bg-purple-500/10' },
+  WEBINAR: { label: 'Webinar Online', color: 'text-emerald-400 border-emerald-500/40 bg-emerald-500/10' },
+  EXHIBITION: { label: 'Exhibition & Expo', color: 'text-rose-400 border-rose-500/40 bg-rose-500/10' },
+  WORKSHOP: { label: 'Workshop & Class', color: 'text-indigo-400 border-indigo-500/40 bg-indigo-500/10' },
+  FESTIVAL: { label: 'Festival', color: 'text-pink-400 border-pink-500/40 bg-pink-500/10' },
+};
 
 export const EventCard = ({ event }: { event: EventItem }) => {
   const lowestPrice = event.ticketCategories?.length
@@ -9,8 +21,8 @@ export const EventCard = ({ event }: { event: EventItem }) => {
   const totalRemaining = event.ticketCategories?.reduce((acc, c) => acc + c.remainingCapacity, 0) || 0;
   const eventDate = new Date(event.date);
 
-  // Gunakan SLUG jika tersedia, fallback ke ID
   const eventPath = `/events/${event.slug || event.id}`;
+  const catInfo = categoryConfig[event.category || 'CONCERT'] || categoryConfig.CONCERT;
 
   return (
     <Link
@@ -35,12 +47,14 @@ export const EventCard = ({ event }: { event: EventItem }) => {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#1f1f27] via-transparent to-transparent opacity-80"></div>
 
+        {/* Dynamic Category Pill Badge */}
         <div className="absolute top-4 left-4 flex gap-2">
-          <span className="px-3 py-1 rounded-full glass-panel text-[#4cd7f6] text-[11px] font-bold uppercase tracking-wider backdrop-blur-md">
-            Concert
+          <span className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider backdrop-blur-md border ${catInfo.color}`}>
+            {catInfo.label}
           </span>
         </div>
 
+        {/* Calendar Box Date on Right */}
         <div className="absolute top-4 right-4 px-3 py-1.5 rounded-xl bg-[#1f1f27]/85 backdrop-blur-md text-[#e4e1ed] border border-[#464554]/40 text-center flex flex-col">
           <span className="text-[10px] text-[#c7c4d7] uppercase font-bold">
             {eventDate.toLocaleString('en-US', { month: 'short' })}
@@ -70,7 +84,7 @@ export const EventCard = ({ event }: { event: EventItem }) => {
             {totalRemaining > 0 ? (
               <>
                 <span className="w-2 h-2 rounded-full bg-[#ffb4ab] pulse-dot"></span>
-                <span className="text-xs text-[#ffb4ab] font-bold">{totalRemaining} Tickets Left</span>
+                <span className="text-xs text-[#ffb4ab] font-bold">{totalRemaining} Passes Left</span>
               </>
             ) : (
               <span className="text-xs text-[#908fa0] font-bold px-2.5 py-0.5 rounded-full bg-[#292932]">

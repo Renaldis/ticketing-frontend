@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -28,7 +28,10 @@ export default function RootLayout({
           data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || 'SB-Mid-client-sample'}
         ></script>
       </head>
-      <body className="bg-[#0d0d15] text-[#e4e1ed] min-h-screen antialiased flex flex-col selection:bg-indigo-500/30 selection:text-cyan-300">
+      <body
+        suppressHydrationWarning
+        className="bg-[#0d0d15] text-[#e4e1ed] min-h-screen antialiased flex flex-col selection:bg-indigo-500/30 selection:text-cyan-300"
+      >
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
