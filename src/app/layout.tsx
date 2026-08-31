@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
+import { Toaster } from '@/components/ui/sonner';
 
 export const metadata: Metadata = {
   title: 'TICKETIX | Cyber-Enterprise Live Event Pass Platform',
@@ -32,7 +33,10 @@ export default function RootLayout({
         suppressHydrationWarning
         className="bg-[#0d0d15] text-[#e4e1ed] min-h-screen antialiased flex flex-col selection:bg-indigo-500/30 selection:text-cyan-300"
       >
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+          <Toaster position="bottom-right" richColors />
+        </AuthProvider>
       </body>
     </html>
   );

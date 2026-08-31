@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Menu, Globe2, RefreshCw } from 'lucide-react';
+import { Menu, RefreshCw } from 'lucide-react';
+import { ScopeSelector } from './ScopeSelector';
 import { EventItem } from '@/types';
 
 interface AdminHeaderProps {
@@ -28,7 +29,7 @@ export const AdminHeader = ({
   showScopeSelector = false,
 }: AdminHeaderProps) => {
   return (
-    <header className="h-20 px-6 sm:px-10 bg-[#13131b]/80 backdrop-blur-xl border-b border-[#464554]/30 flex items-center justify-between sticky top-0 z-40">
+    <header className="h-20 min-h-[5rem] flex-shrink-0 px-6 sm:px-10 bg-[#13131b]/85 backdrop-blur-xl border-b border-[#464554]/30 flex items-center justify-between sticky top-0 z-40">
       <div className="flex items-center gap-3">
         <button
           onClick={onOpenSidebar}
@@ -37,32 +38,18 @@ export const AdminHeader = ({
           <Menu className="w-6 h-6" />
         </button>
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">{title}</h1>
-          <p className="text-[11px] text-[#908fa0]">{subtitle}</p>
+          <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">{title}</h1>
+          <p className="text-[11px] text-[#908fa0] leading-normal">{subtitle}</p>
         </div>
       </div>
 
       <div className="flex items-center gap-3">
         {showScopeSelector && onScopeChange && (
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#1f1f27] border border-[#464554]/40">
-            <Globe2 className="w-3.5 h-3.5 text-[#4cd7f6]" />
-            <select
-              value={selectedEventId}
-              onChange={(e) => onScopeChange(e.target.value)}
-              className="bg-transparent text-white text-xs font-bold focus:outline-none max-w-[180px] truncate"
-            >
-              <option value="ALL" className="bg-[#13131b]">
-                🌐 All Events (Aggregate)
-              </option>
-              <optgroup label="Single Event Filter" className="bg-[#13131b]">
-                {events.map((evt) => (
-                  <option key={evt.id} value={evt.id} className="bg-[#13131b]">
-                    📍 {evt.title}
-                  </option>
-                ))}
-              </optgroup>
-            </select>
-          </div>
+          <ScopeSelector
+            events={events}
+            selectedEventId={selectedEventId}
+            onScopeChange={onScopeChange}
+          />
         )}
 
         {onRefresh && (
@@ -79,3 +66,4 @@ export const AdminHeader = ({
     </header>
   );
 };
+

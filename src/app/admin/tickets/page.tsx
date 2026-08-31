@@ -6,6 +6,16 @@ import { useAdminTickets } from './_hooks/useAdminTickets';
 import { AdminHeader } from '@/components/admin/AdminHeader';
 import { EventTicketsCard } from './_components/EventTicketsCard';
 import { AddCategoryModal } from '@/components/admin/AddCategoryModal';
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from '@/components/ui/alert-dialog';
 
 export default function AdminTicketsPage() {
   const {
@@ -15,9 +25,12 @@ export default function AdminTicketsPage() {
     isAddCatModalOpen,
     setIsAddCatModalOpen,
     selectedEventIdForCat,
+    deleteTargetCat,
+    setDeleteTargetCat,
+    deleting,
     fetchEvents,
     handleAdjustStock,
-    handleDeleteCategory,
+    handleConfirmDeleteCategory,
     handleOpenAddCategory,
   } = useAdminTickets();
 
@@ -39,7 +52,7 @@ export default function AdminTicketsPage() {
         refreshing={refreshing}
       />
 
-      <main className="p-6 sm:p-10 space-y-8 flex-1 overflow-y-auto">
+      <main className="p-6 sm:p-10 space-y-8 flex-1">
         <div className="space-y-8">
           {events.map((evt) => (
             <EventTicketsCard
@@ -47,7 +60,7 @@ export default function AdminTicketsPage() {
               event={evt}
               onOpenAddCategory={handleOpenAddCategory}
               onAdjustStock={handleAdjustStock}
-              onDeleteCategory={handleDeleteCategory}
+              onRequestDeleteCategory={setDeleteTargetCat}
             />
           ))}
         </div>
@@ -59,6 +72,29 @@ export default function AdminTicketsPage() {
         onSuccess={fetchEvents}
         eventId={selectedEventIdForCat}
       />
+
+      {/* SHADCN ALERT DIALOG: CONFIRM DELETE TICKET CATEGORY */}
+      <AlertDialog open={!!deleteTargetCat} onOpenChange={(open) => !open && setDeleteTargetCat(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Kategori Tiket Ini?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Kategori tier <strong>&quot;{deleteTargetCat?.name}&quot;</strong> akan dihapus permanen. Pesanan yang
+              sedang berjalan pada kategori ini mungkin akan terpengaruh.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Batal</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmDeleteCategory}
+              disabled={deleting}
+              className="bg-rose-600 hover:bg-rose-500 text-white shadow-rose-600/30"
+            >
+              {deleting ? 'Menghapus...' : 'Ya, Hapus Kategori'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

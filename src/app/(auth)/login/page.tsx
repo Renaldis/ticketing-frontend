@@ -1,12 +1,13 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import Link from 'next/link';
-import { Ticket, Lock, Mail, AlertCircle, ArrowRight, ArrowLeft, Clock, Loader2 } from 'lucide-react';
+import { Ticket, Lock, Mail, AlertCircle, ArrowRight, ArrowLeft, Clock, Loader2, Eye, EyeOff } from 'lucide-react';
 import { useLogin } from './_hooks/useLogin';
 
 function LoginForm() {
   const { form, serverError, sessionExpired, loading, onSubmit } = useLogin();
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -17,7 +18,6 @@ function LoginForm() {
     <div className="premium-card max-w-md w-full rounded-2xl p-8 sm:p-10 shadow-2xl space-y-6">
       <div className="text-center space-y-1.5">
         <h1 className="text-2xl font-extrabold text-[#e4e1ed] tracking-tight">Sign In</h1>
-        <p className="text-xs text-[#908fa0]">Enter credentials to access passes and dashboard</p>
       </div>
 
       {sessionExpired && (
@@ -42,7 +42,7 @@ function LoginForm() {
             <input
               type="email"
               {...register('email')}
-              placeholder="name@example.com"
+              placeholder="name@gmail.com"
               className="input-glass w-full rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-[#908fa0]"
             />
           </div>
@@ -54,11 +54,19 @@ function LoginForm() {
           <div className="relative">
             <Lock className="w-4 h-4 text-[#908fa0] absolute left-3.5 top-3" />
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               {...register('password')}
               placeholder="••••••••"
-              className="input-glass w-full rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-[#908fa0]"
+              className="input-glass w-full rounded-xl pl-10 pr-11 py-2.5 text-sm text-white placeholder-[#908fa0]"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3.5 top-2.5 text-[#908fa0] hover:text-white transition"
+              title={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
           </div>
           {errors.password && <p className="text-rose-400 text-[11px] mt-1">{errors.password.message}</p>}
         </div>

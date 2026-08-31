@@ -41,10 +41,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Centralized Fixed Sidebar */}
       <AdminSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-      {/* Main Container with Header & Scrollable Body */}
+      {/* Main Container with Full Height & Dedicated Internal Scroll View */}
       <div
         suppressHydrationWarning
-        className="flex-1 h-full flex flex-col min-w-0 overflow-hidden"
+        className="flex-1 h-full flex flex-col min-w-0 overflow-y-auto overflow-x-hidden"
       >
         {children}
       </div>

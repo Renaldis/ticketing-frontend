@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
-import { ShieldCheck, Sparkles, Server, Database, Clock, Save, Loader2, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Sparkles, Server, Database, Clock, Save, Loader2 } from 'lucide-react';
 import { AdminHeader } from '@/components/admin/AdminHeader';
+import { toast } from 'sonner';
 
 export default function AdminSettingsPage() {
   const [ttlMinutes, setTtlMinutes] = useState<number>(15);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     fetchSettings();
@@ -22,6 +22,7 @@ export default function AdminSettingsPage() {
       setTtlMinutes(res.data?.data?.ttlMinutes || 15);
     } catch (err) {
       console.error('Error fetching settings:', err);
+      toast.error('Gagal mengambil pengaturan sistem.');
     } finally {
       setLoading(false);
     }
@@ -30,16 +31,14 @@ export default function AdminSettingsPage() {
   const handleSaveTtl = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    setSuccessMessage('');
 
     try {
       await api.put('/admin/settings/expiration', {
         ttlMinutes: Number(ttlMinutes),
       });
-      setSuccessMessage(`Order countdown timer updated to ${ttlMinutes} minutes!`);
-      setTimeout(() => setSuccessMessage(''), 4000);
+      toast.success(`Durasi countdown pembayaran berhasil diubah ke ${ttlMinutes} menit!`);
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to update settings');
+      toast.error(err.response?.data?.message || 'Gagal menyimpan pengaturan durasi.');
     } finally {
       setSaving(false);
     }
@@ -53,7 +52,7 @@ export default function AdminSettingsPage() {
         onOpenSidebar={() => {}}
       />
 
-      <main className="p-6 sm:p-10 space-y-8 flex-1 max-w-4xl overflow-y-auto">
+      <main className="p-6 sm:p-10 space-y-8 flex-1 max-w-4xl">
         {/* DYNAMIC EXPIRATION TIMER CARD */}
         <div className="premium-card rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl border border-[#464554]/30">
           <div className="flex items-center justify-between pb-4 border-b border-[#464554]/30">
@@ -72,13 +71,6 @@ export default function AdminSettingsPage() {
               Live BullMQ Queue
             </span>
           </div>
-
-          {successMessage && (
-            <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2 animate-in fade-in">
-              <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-emerald-400" />
-              <span>{successMessage}</span>
-            </div>
-          )}
 
           <form onSubmit={handleSaveTtl} className="space-y-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">

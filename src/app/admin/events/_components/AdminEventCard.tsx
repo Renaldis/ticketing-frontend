@@ -6,10 +6,10 @@ import { EventItem } from '@/types';
 interface AdminEventCardProps {
   event: EventItem;
   onEdit: (event: EventItem) => void;
-  onDelete: (id: string, title: string) => void;
+  onRequestDelete: (event: { id: string; title: string }) => void;
 }
 
-export const AdminEventCard = ({ event, onEdit, onDelete }: AdminEventCardProps) => {
+export const AdminEventCard = ({ event, onEdit, onRequestDelete }: AdminEventCardProps) => {
   const totalStock = event.ticketCategories?.reduce((acc: number, c) => acc + c.totalCapacity, 0) || 0;
   const remainingStock =
     event.ticketCategories?.reduce((acc: number, c) => acc + c.remainingCapacity, 0) || 0;
@@ -75,14 +75,14 @@ export const AdminEventCard = ({ event, onEdit, onDelete }: AdminEventCardProps)
         <div className="flex items-center gap-2">
           <button
             onClick={() => onEdit(event)}
-            className="p-2 rounded-lg bg-[#1f1f27] hover:bg-[#292932] text-[#c0c1ff] hover:text-white"
+            className="p-2 rounded-lg bg-[#1f1f27] hover:bg-[#292932] text-[#c0c1ff] hover:text-white transition"
             title="Edit Event"
           >
             <Edit className="w-4 h-4" />
           </button>
           <button
-            onClick={() => onDelete(event.id, event.title)}
-            className="p-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400"
+            onClick={() => onRequestDelete({ id: event.id, title: event.title })}
+            className="p-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition"
             title="Delete Event"
           >
             <Trash2 className="w-4 h-4" />

@@ -6,14 +6,14 @@ interface EventTicketsCardProps {
   event: EventItem;
   onOpenAddCategory: (eventId: string) => void;
   onAdjustStock: (categoryId: string, delta: number) => void;
-  onDeleteCategory: (categoryId: string, name: string) => void;
+  onRequestDeleteCategory: (category: { id: string; name: string }) => void;
 }
 
 export const EventTicketsCard = ({
   event,
   onOpenAddCategory,
   onAdjustStock,
-  onDeleteCategory,
+  onRequestDeleteCategory,
 }: EventTicketsCardProps) => {
   return (
     <div className="premium-card rounded-2xl p-6 sm:p-8 space-y-5 border border-[#464554]/30">
@@ -47,7 +47,7 @@ export const EventTicketsCard = ({
               </div>
 
               <button
-                onClick={() => onDeleteCategory(cat.id, cat.name)}
+                onClick={() => onRequestDeleteCategory({ id: cat.id, name: cat.name })}
                 className="p-1.5 text-[#908fa0] hover:text-rose-400 rounded-lg hover:bg-rose-500/10 transition"
                 title="Delete Category"
               >
@@ -67,30 +67,30 @@ export const EventTicketsCard = ({
                 <button
                   onClick={() => onAdjustStock(cat.id, -5)}
                   disabled={cat.remainingCapacity < 5}
-                  className="px-2.5 py-1 rounded-lg bg-[#1f1f27] hover:bg-[#292932] text-xs font-bold text-rose-400 disabled:opacity-30"
-                  title="Reduce stock by 5"
+                  className="px-2.5 py-1 rounded-lg bg-[#1f1f27] hover:bg-[#292932] text-xs font-bold text-rose-400 disabled:opacity-30 transition"
+                  title="Kurangi stok sebanyak 5"
                 >
                   -5
                 </button>
                 <button
                   onClick={() => onAdjustStock(cat.id, -1)}
                   disabled={cat.remainingCapacity < 1}
-                  className="px-2.5 py-1 rounded-lg bg-[#1f1f27] hover:bg-[#292932] text-xs font-bold text-rose-400 disabled:opacity-30"
-                  title="Reduce stock by 1"
+                  className="px-2.5 py-1 rounded-lg bg-[#1f1f27] hover:bg-[#292932] text-xs font-bold text-rose-400 disabled:opacity-30 transition"
+                  title="Kurangi stok sebanyak 1"
                 >
                   -1
                 </button>
                 <button
                   onClick={() => onAdjustStock(cat.id, 1)}
-                  className="px-2.5 py-1 rounded-lg bg-[#1f1f27] hover:bg-[#292932] text-xs font-bold text-[#4cd7f6]"
-                  title="Increase stock by 1"
+                  className="px-2.5 py-1 rounded-lg bg-[#1f1f27] hover:bg-[#292932] text-xs font-bold text-[#4cd7f6] transition"
+                  title="Tambah stok sebanyak 1"
                 >
                   +1
                 </button>
                 <button
                   onClick={() => onAdjustStock(cat.id, 10)}
-                  className="px-2.5 py-1 rounded-lg bg-[#1f1f27] hover:bg-[#292932] text-xs font-bold text-[#4cd7f6]"
-                  title="Increase stock by 10"
+                  className="px-2.5 py-1 rounded-lg bg-[#1f1f27] hover:bg-[#292932] text-xs font-bold text-[#4cd7f6] transition"
+                  title="Tambah stok sebanyak 10"
                 >
                   +10
                 </button>

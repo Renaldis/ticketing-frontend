@@ -1,23 +1,78 @@
 import React from 'react';
-import { Clock, CheckCircle2, XCircle, ListFilter } from 'lucide-react';
+import { Clock, CheckCircle2, XCircle, ListFilter, CalendarCheck2, History } from 'lucide-react';
 import { Order } from '@/types';
 
+export type OrderTabKey = 'ALL' | 'PENDING' | 'ACTIVE' | 'CHECKED_IN' | 'EXPIRED' | 'CANCELLED';
+
 interface OrderTabsProps {
-  activeTab: 'ALL' | 'PENDING' | 'PAID' | 'CANCELLED';
-  setActiveTab: (tab: 'ALL' | 'PENDING' | 'PAID' | 'CANCELLED') => void;
+  activeTab: OrderTabKey;
+  setActiveTab: (tab: OrderTabKey) => void;
   orders: Order[];
 }
 
 export const OrderTabs = ({ activeTab, setActiveTab, orders }: OrderTabsProps) => {
+  const now = new Date();
+
   const pendingCount = orders.filter((o) => o.status === 'PENDING').length;
-  const paidCount = orders.filter((o) => o.status === 'PAID' || o.status === 'CHECKED_IN').length;
+  
+  // Tiket Aktif = PAID & Tanggal acara >= sekarang
+  const activeCount = orders.filter(
+    (o) => o.status === 'PAID' && new Date(o.event?.date) >= now,
+  ).length;
+
+  // Sudah Digunakan = CHECKED_IN
+  const usedCount = orders.filter((o) => o.status === 'CHECKED_IN').length;
+
+  // Acara Selesai / Hangus = PAID tapi tanggal acara < sekarang (tidak hadir)
+  const expiredCount = orders.filter(
+    (o) => o.status === 'PAID' && new Date(o.event?.date) < now,
+  ).length;
+
+  // Dibatalkan = CANCELLED
   const cancelledCount = orders.filter((o) => o.status === 'CANCELLED').length;
 
-  const tabs = [
+  const tabs: Array<{
+    key: OrderTabKey;
+    label: string;
+    count: number;
+    icon: any;
+    highlight?: boolean;
+    color?: string;
+  }> = [
     { key: 'ALL', label: 'Semua Pesanan', count: orders.length, icon: ListFilter },
-    { key: 'PENDING', label: 'Menunggu Pembayaran', count: pendingCount, icon: Clock, highlight: pendingCount > 0 },
-    { key: 'PAID', label: 'Tiket Aktif (Paid)', count: paidCount, icon: CheckCircle2 },
-    { key: 'CANCELLED', label: 'Dibatalkan / Expired', count: cancelledCount, icon: XCircle },
+    {
+      key: 'PENDING',
+      label: 'Menunggu Pembayaran',
+      count: pendingCount,
+      icon: Clock,
+      highlight: pendingCount > 0,
+    },
+    {
+      key: 'ACTIVE',
+      label: 'Tiket Aktif (Ready)',
+      count: activeCount,
+      icon: CalendarCheck2,
+      highlight: activeCount > 0,
+      color: 'text-emerald-400',
+    },
+    {
+      key: 'CHECKED_IN',
+      label: 'Sudah Digunakan',
+      count: usedCount,
+      icon: CheckCircle2,
+    },
+    {
+      key: 'EXPIRED',
+      label: 'Acara Selesai / Hangus',
+      count: expiredCount,
+      icon: History,
+    },
+    {
+      key: 'CANCELLED',
+      label: 'Dibatalkan',
+      count: cancelledCount,
+      icon: XCircle,
+    },
   ];
 
   return (
@@ -29,7 +84,7 @@ export const OrderTabs = ({ activeTab, setActiveTab, orders }: OrderTabsProps) =
         return (
           <button
             key={tab.key}
-            onClick={() => setActiveTab(tab.key as any)}
+            onClick={() => setActiveTab(tab.key)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition duration-200 border ${
               isSelected
                 ? 'bg-gradient-to-r from-[#03b5d3] to-[#4cd7f6] text-[#003640] border-transparent shadow-lg shadow-cyan-500/20 scale-105'
@@ -43,7 +98,7 @@ export const OrderTabs = ({ activeTab, setActiveTab, orders }: OrderTabsProps) =
                 isSelected
                   ? 'bg-[#003640] text-[#4cd7f6]'
                   : tab.highlight
-                  ? 'bg-amber-500/20 text-amber-300'
+                  ? 'bg-emerald-500/20 text-emerald-300'
                   : 'bg-[#1f1f27] text-[#908fa0]'
               }`}
             >

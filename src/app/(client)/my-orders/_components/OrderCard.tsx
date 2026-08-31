@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, MapPin, QrCode, RefreshCw, Loader2, CreditCard, XCircle } from 'lucide-react';
+import { Calendar, MapPin, QrCode, RefreshCw, Loader2, CreditCard, XCircle, AlertTriangle } from 'lucide-react';
 import { StatusBadge } from '@/components/ui/StatusBadge';
 import { Order } from '@/types';
 
@@ -8,11 +8,10 @@ interface OrderCardProps {
   ticketLoading: boolean;
   syncLoadingId: string | null;
   payLoadingId: string | null;
-  cancelLoadingId: string | null;
   onViewTicket: (id: string) => void;
   onSyncStatus: (id: string) => void;
   onResumePayment: (id: string) => void;
-  onCancelOrder: (id: string) => void;
+  onRequestCancel: (order: Order) => void;
 }
 
 export const OrderCard = ({
@@ -20,42 +19,72 @@ export const OrderCard = ({
   ticketLoading,
   syncLoadingId,
   payLoadingId,
-  cancelLoadingId,
   onViewTicket,
   onSyncStatus,
   onResumePayment,
-  onCancelOrder,
+  onRequestCancel,
 }: OrderCardProps) => {
   const isSyncing = syncLoadingId === order.id;
   const isPaying = payLoadingId === order.id;
-  const isCancelling = cancelLoadingId === order.id;
+
+  const now = new Date();
+  const eventDate = order.event?.date ? new Date(order.event.date) : null;
+  const isEventPassed = eventDate ? eventDate < now : false;
+
+  // Cek Status Siklus Hidup Tiket
+  const isTicketActive = order.status === 'PAID' && !isEventPassed;
+  const isTicketExpired = order.status === 'PAID' && isEventPassed;
+  const isTicketUsed = order.status === 'CHECKED_IN';
 
   return (
     <div className="premium-card rounded-2xl p-6 sm:p-7 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-[#464554]/30 hover:border-[#4cd7f6]/40 transition duration-300">
       <div className="space-y-3 flex-grow">
         <div className="flex flex-wrap items-center gap-3">
-          <h3 className="text-lg font-bold text-[#e4e1ed]">{order.event?.title || 'Concert Ticket'}</h3>
-          <StatusBadge status={order.status} />
+          <h3 className="text-lg font-bold text-[#e4e1ed]">{order.event?.title || 'Event Pass'}</h3>
+          
+          {/* Status Badge Siklus Hidup */}
+          {isTicketActive && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>READY / TIKET AKTIF</span>
+            </span>
+          )}
+
+          {isTicketUsed && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-500/15 text-purple-300 border border-purple-500/30">
+              <span>SUDAH DIGUNAKAN</span>
+            </span>
+          )}
+
+          {isTicketExpired && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-800 text-[#908fa0] border border-[#464554]/40">
+              <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+              <span>ACARA SELESAI / HANGUS</span>
+            </span>
+          )}
+
+          {order.status === 'PENDING' && <StatusBadge status="PENDING" />}
+          {order.status === 'CANCELLED' && <StatusBadge status="CANCELLED" />}
         </div>
 
         <div className="flex flex-wrap gap-4 text-xs text-[#c7c4d7]">
           <div className="flex items-center gap-1.5 bg-[#13131b] px-3 py-1.5 rounded-xl border border-[#464554]/30">
             <Calendar className="w-4 h-4 text-[#c0c1ff]" />
             <span>
-              {order.event?.date
-                ? new Date(order.event.date).toLocaleDateString('id-ID', { dateStyle: 'full' })
+              {eventDate
+                ? eventDate.toLocaleDateString('id-ID', { dateStyle: 'full' })
                 : 'Upcoming Date'}
             </span>
           </div>
           <div className="flex items-center gap-1.5 bg-[#13131b] px-3 py-1.5 rounded-xl border border-[#464554]/30">
             <MapPin className="w-4 h-4 text-rose-400" />
-            <span>{order.event?.location || 'Venue'}</span>
+            <span>{order.event?.location || 'Venue Location'}</span>
           </div>
         </div>
 
         <div className="text-xs text-[#908fa0] pt-1 flex items-center gap-2">
           <span className="font-semibold text-white">
-            {order.orderItems?.map((item) => `${item.ticketCategory?.name || 'Ticket'} (x${item.quantity})`).join(', ')}
+            {order.orderItems?.map((item) => `${item.ticketCategory?.name || 'Tier'} (x${item.quantity})`).join(', ')}
           </span>
           <span>•</span>
           <span className="font-extrabold text-[#c0c1ff]">
@@ -65,7 +94,7 @@ export const OrderCard = ({
       </div>
 
       <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto justify-end pt-3 md:pt-0 border-t md:border-t-0 border-[#464554]/20">
-        {/* JIKA STATUS PENDING: Tampilkan tombol Bayar Sekarang, Cek Status, dan Batalkan */}
+        {/* PENDING ACTIONS */}
         {order.status === 'PENDING' && (
           <>
             <button
@@ -88,17 +117,16 @@ export const OrderCard = ({
             </button>
 
             <button
-              onClick={() => onCancelOrder(order.id)}
-              disabled={isCancelling}
+              onClick={() => onRequestCancel(order)}
               className="p-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs font-bold transition"
               title="Batalkan Pesanan Ini"
             >
-              {isCancelling ? <Loader2 className="w-4 h-4 animate-spin" /> : <XCircle className="w-4 h-4" />}
+              <XCircle className="w-4 h-4" />
             </button>
           </>
         )}
 
-        {/* JIKA STATUS CANCELLED: Berikan tombol Cek Status (Auto-Recovery jika user sudah transfer) */}
+        {/* CANCELLED ACTIONS */}
         {order.status === 'CANCELLED' && (
           <button
             onClick={() => onSyncStatus(order.id)}
@@ -111,15 +139,27 @@ export const OrderCard = ({
           </button>
         )}
 
-        {/* JIKA STATUS PAID / CHECKED_IN: Tampilkan E-Ticket QR Pass */}
-        {(order.status === 'PAID' || order.status === 'CHECKED_IN') && (
+        {/* TIKET AKTIF -> VIEW QR PASS */}
+        {isTicketActive && (
           <button
             onClick={() => onViewTicket(order.id)}
             disabled={ticketLoading}
             className="btn-primary text-[#003640] px-6 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-lg shadow-cyan-500/20"
           >
             <QrCode className="w-4 h-4" />
-            <span>View Digital Pass</span>
+            <span>View QR Pass</span>
+          </button>
+        )}
+
+        {/* SUDAH DIGUNAKAN / HANGUS -> LIHAT ARSIP PASS */}
+        {(isTicketUsed || isTicketExpired) && (
+          <button
+            onClick={() => onViewTicket(order.id)}
+            disabled={ticketLoading}
+            className="btn-secondary text-[#c7c4d7] hover:text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2"
+          >
+            <QrCode className="w-4 h-4" />
+            <span>Lihat Arsip Tiket</span>
           </button>
         )}
       </div>

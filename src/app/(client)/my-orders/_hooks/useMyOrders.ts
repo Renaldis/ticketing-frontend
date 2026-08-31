@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { Order } from '@/types';
+import { OrderTabKey } from '../_components/OrderTabs';
+import { toast } from 'sonner';
 
 declare global {
   interface Window {
@@ -14,13 +16,16 @@ declare global {
 
 export const useMyOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
-  const [activeTab, setActiveTab] = useState<'ALL' | 'PENDING' | 'PAID' | 'CANCELLED'>('ALL');
+  const [activeTab, setActiveTab] = useState<OrderTabKey>('ALL');
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState<any>(null);
   const [ticketLoading, setTicketLoading] = useState(false);
   const [syncLoadingId, setSyncLoadingId] = useState<string | null>(null);
   const [payLoadingId, setPayLoadingId] = useState<string | null>(null);
-  const [cancelLoadingId, setCancelLoadingId] = useState<string | null>(null);
+
+  // Dialog Confirm Cancel Order
+  const [cancelTargetOrder, setCancelTargetOrder] = useState<Order | null>(null);
+  const [cancelling, setCancelling] = useState(false);
 
   const { user, isLoading: authLoading } = useAuth();
   const router = useRouter();
@@ -53,7 +58,7 @@ export const useMyOrders = () => {
       const res = await api.get(`/orders/${orderId}/ticket`);
       setSelectedTicket(res.data?.data?.ticket);
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to load ticket pass.');
+      toast.error(err.response?.data?.message || 'Failed to load ticket pass.');
     } finally {
       setTicketLoading(false);
     }
@@ -65,19 +70,18 @@ export const useMyOrders = () => {
       const res = await api.post(`/orders/${orderId}/sync-status`);
       const updatedOrder = res.data?.data?.order;
       if (updatedOrder?.status === 'PAID') {
-        alert('Payment Verified! Your ticket is now PAID & active.');
+        toast.success('Pembayaran Terverifikasi! Tiket Anda aktif.');
       } else {
-        alert(`Payment status: ${updatedOrder?.status || 'PENDING'}`);
+        toast.info(`Status pembayaran: ${updatedOrder?.status || 'PENDING'}`);
       }
       fetchOrders();
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to sync status.');
+      toast.error(err.response?.data?.message || 'Gagal sinkronisasi pembayaran.');
     } finally {
       setSyncLoadingId(null);
     }
   };
 
-  // --- RESUME PAYMENT (BUKA KEMBALI SNAP MODAL) ---
   const handleResumePayment = async (orderId: string) => {
     setPayLoadingId(orderId);
     try {
@@ -93,45 +97,50 @@ export const useMyOrders = () => {
             handleSyncStatus(orderId);
           },
           onError: function () {
-            alert('Payment transaction failed.');
+            toast.error('Pembayaran gagal atau dibatalkan.');
           },
           onClose: function () {
             fetchOrders();
           },
         });
       } else {
-        alert('Could not initialize Midtrans Snap modal.');
+        toast.error('Tidak dapat menginisialisasi pembayaran Midtrans.');
       }
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to resume payment.');
+      toast.error(err.response?.data?.message || 'Gagal melanjutkan pembayaran.');
       fetchOrders();
     } finally {
       setPayLoadingId(null);
     }
   };
 
-  // --- CANCEL ORDER (USER MEMBATALKAN SECARA MANUAL) ---
-  const handleCancelOrder = async (orderId: string) => {
-    if (!confirm('Are you sure you want to cancel this pending booking? Tickets will be returned to pool.')) {
-      return;
-    }
-    setCancelLoadingId(orderId);
+  const handleConfirmCancelOrder = async () => {
+    if (!cancelTargetOrder) return;
+    setCancelling(true);
+
     try {
-      await api.post(`/orders/${orderId}/cancel`);
-      alert('Order cancelled successfully.');
+      await api.post(`/orders/${cancelTargetOrder.id}/cancel`);
+      toast.success('Pesanan berhasil dibatalkan dan tiket dikembalikan ke kuota.');
+      setCancelTargetOrder(null);
       fetchOrders();
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to cancel order.');
+      toast.error(err.response?.data?.message || 'Gagal membatalkan pesanan.');
     } finally {
-      setCancelLoadingId(null);
+      setCancelling(false);
     }
   };
 
   // Filtered orders berdasarkan Tab
+  const now = new Date();
   const filteredOrders = orders.filter((ord) => {
+    const eventDate = ord.event?.date ? new Date(ord.event.date) : null;
+    const isPassed = eventDate ? eventDate < now : false;
+
     if (activeTab === 'ALL') return true;
     if (activeTab === 'PENDING') return ord.status === 'PENDING';
-    if (activeTab === 'PAID') return ord.status === 'PAID' || ord.status === 'CHECKED_IN';
+    if (activeTab === 'ACTIVE') return ord.status === 'PAID' && !isPassed;
+    if (activeTab === 'CHECKED_IN') return ord.status === 'CHECKED_IN';
+    if (activeTab === 'EXPIRED') return ord.status === 'PAID' && isPassed;
     if (activeTab === 'CANCELLED') return ord.status === 'CANCELLED';
     return true;
   });
@@ -148,11 +157,13 @@ export const useMyOrders = () => {
     ticketLoading,
     syncLoadingId,
     payLoadingId,
-    cancelLoadingId,
+    cancelTargetOrder,
+    setCancelTargetOrder,
+    cancelling,
     handleViewTicket,
     handleSyncStatus,
     handleResumePayment,
-    handleCancelOrder,
+    handleConfirmCancelOrder,
     user,
   };
 };

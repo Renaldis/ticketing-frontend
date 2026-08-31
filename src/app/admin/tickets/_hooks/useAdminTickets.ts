@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import { EventItem } from '@/types';
+import { toast } from 'sonner';
 
 export const useAdminTickets = () => {
   const [events, setEvents] = useState<EventItem[]>([]);
@@ -12,6 +13,10 @@ export const useAdminTickets = () => {
   const [isAddCatModalOpen, setIsAddCatModalOpen] = useState(false);
   const [selectedEventIdForCat, setSelectedEventIdForCat] = useState<string>('');
 
+  // Delete Category Confirm Dialog State
+  const [deleteTargetCat, setDeleteTargetCat] = useState<{ id: string; name: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
   const fetchEvents = useCallback(async () => {
     setLoading(true);
     try {
@@ -19,6 +24,7 @@ export const useAdminTickets = () => {
       setEvents(res.data?.data?.events || []);
     } catch (err) {
       console.error(err);
+      toast.error('Gagal memuat kategori tiket.');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -32,20 +38,26 @@ export const useAdminTickets = () => {
   const handleAdjustStock = async (categoryId: string, delta: number) => {
     try {
       await api.patch(`/events/categories/${categoryId}/stock`, { delta });
+      toast.success(`Stok berhasil ${delta > 0 ? `ditambah +${delta}` : `dikurangi ${delta}`}`);
       fetchEvents();
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to adjust stock.');
+      toast.error(err.response?.data?.message || 'Gagal menyesuaikan kuota stok.');
     }
   };
 
-  const handleDeleteCategory = async (categoryId: string, catName: string) => {
-    if (!confirm(`Delete ticket category "${catName}"?`)) return;
+  const handleConfirmDeleteCategory = async () => {
+    if (!deleteTargetCat) return;
+    setDeleting(true);
 
     try {
-      await api.delete(`/events/categories/${categoryId}`);
+      await api.delete(`/events/categories/${deleteTargetCat.id}`);
+      toast.success(`Kategori "${deleteTargetCat.name}" berhasil dihapus.`);
+      setDeleteTargetCat(null);
       fetchEvents();
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to delete category.');
+      toast.error(err.response?.data?.message || 'Gagal menghapus kategori.');
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -61,9 +73,12 @@ export const useAdminTickets = () => {
     isAddCatModalOpen,
     setIsAddCatModalOpen,
     selectedEventIdForCat,
+    deleteTargetCat,
+    setDeleteTargetCat,
+    deleting,
     fetchEvents,
     handleAdjustStock,
-    handleDeleteCategory,
+    handleConfirmDeleteCategory,
     handleOpenAddCategory,
   };
 };

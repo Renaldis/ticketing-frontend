@@ -6,6 +6,16 @@ import { useAdminEvents } from './_hooks/useAdminEvents';
 import { AdminHeader } from '@/components/admin/AdminHeader';
 import { AdminEventCard } from './_components/AdminEventCard';
 import { EventFormModal } from '@/components/admin/EventFormModal';
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from '@/components/ui/alert-dialog';
 
 export default function AdminEventsPage() {
   const {
@@ -15,10 +25,13 @@ export default function AdminEventsPage() {
     isModalOpen,
     setIsModalOpen,
     editingEvent,
+    deleteTargetEvent,
+    setDeleteTargetEvent,
+    deleting,
     fetchEvents,
     handleOpenCreate,
     handleOpenEdit,
-    handleDeleteEvent,
+    handleConfirmDeleteEvent,
   } = useAdminEvents();
 
   if (loading) {
@@ -39,7 +52,7 @@ export default function AdminEventsPage() {
         refreshing={refreshing}
       />
 
-      <main className="p-6 sm:p-10 space-y-8 flex-1 overflow-y-auto">
+      <main className="p-6 sm:p-10 space-y-8 flex-1">
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-xl font-bold text-white">Live Concert Catalog ({events.length})</h2>
@@ -61,7 +74,7 @@ export default function AdminEventsPage() {
               key={evt.id}
               event={evt}
               onEdit={handleOpenEdit}
-              onDelete={handleDeleteEvent}
+              onRequestDelete={setDeleteTargetEvent}
             />
           ))}
         </div>
@@ -73,6 +86,29 @@ export default function AdminEventsPage() {
         onSuccess={fetchEvents}
         initialData={editingEvent}
       />
+
+      {/* SHADCN ALERT DIALOG: CONFIRM DELETE EVENT */}
+      <AlertDialog open={!!deleteTargetEvent} onOpenChange={(open) => !open && setDeleteTargetEvent(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Event Ini Secara Permanen?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Event <strong>&quot;{deleteTargetEvent?.title}&quot;</strong> beserta seluruh kategori tiket dan riwayat
+              kaitannya akan dihapus permanen dari sistem. Aksi ini tidak dapat dibatalkan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Batal</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmDeleteEvent}
+              disabled={deleting}
+              className="bg-rose-600 hover:bg-rose-500 text-white shadow-rose-600/30"
+            >
+              {deleting ? 'Menghapus...' : 'Ya, Hapus Event'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

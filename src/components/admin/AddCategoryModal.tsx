@@ -4,8 +4,15 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addCategorySchema, AddCategoryFormData } from '@/schemas';
-import { X, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { api } from '@/lib/api';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { toast } from 'sonner';
 
 interface AddCategoryModalProps {
   isOpen: boolean;
@@ -27,8 +34,6 @@ export const AddCategoryModal = ({ isOpen, onClose, onSuccess, eventId }: AddCat
     resolver: zodResolver(addCategorySchema),
   });
 
-  if (!isOpen) return null;
-
   const onSubmit = async (data: AddCategoryFormData) => {
     setSubmitting(true);
     setServerError('');
@@ -40,25 +45,24 @@ export const AddCategoryModal = ({ isOpen, onClose, onSuccess, eventId }: AddCat
         capacity: Number(data.capacity),
       });
 
+      toast.success(`Kategori tier "${data.name}" berhasil ditambahkan!`);
       reset();
       onSuccess();
       onClose();
     } catch (err: any) {
-      setServerError(err.response?.data?.message || 'Failed to add category tier');
+      setServerError(err.response?.data?.message || 'Gagal menambahkan kategori tier');
+      toast.error('Gagal menambahkan kategori tier.');
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="premium-card rounded-2xl max-w-md w-full p-7 space-y-5 shadow-2xl relative">
-        <div className="flex justify-between items-center pb-3 border-b border-[#464554]/30">
-          <h3 className="text-lg font-bold text-white">Add Ticket Category Tier</h3>
-          <button onClick={onClose} className="p-1 rounded-lg text-[#908fa0] hover:text-white">
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>Add Ticket Category Tier</DialogTitle>
+        </DialogHeader>
 
         {serverError && (
           <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2">
@@ -117,7 +121,7 @@ export const AddCategoryModal = ({ isOpen, onClose, onSuccess, eventId }: AddCat
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };

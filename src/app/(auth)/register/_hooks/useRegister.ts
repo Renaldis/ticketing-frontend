@@ -23,7 +23,11 @@ export const useRegister = () => {
     setLoading(true);
 
     try {
-      await api.post('/auth/register', data);
+      await api.post('/auth/register', {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
       setSuccess(true);
       setTimeout(() => {
         router.push('/login');

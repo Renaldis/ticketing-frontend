@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import { EventItem } from '@/types';
+import { toast } from 'sonner';
 
 export const useAdminEvents = () => {
   const [events, setEvents] = useState<EventItem[]>([]);
@@ -12,6 +13,10 @@ export const useAdminEvents = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<any>(null);
 
+  // State Delete Confirm Dialog
+  const [deleteTargetEvent, setDeleteTargetEvent] = useState<{ id: string; title: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
   const fetchEvents = useCallback(async () => {
     setLoading(true);
     try {
@@ -19,6 +24,7 @@ export const useAdminEvents = () => {
       setEvents(res.data?.data?.events || []);
     } catch (err) {
       console.error(err);
+      toast.error('Gagal memuat daftar event.');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -39,20 +45,26 @@ export const useAdminEvents = () => {
       id: evt.id,
       title: evt.title,
       description: evt.description,
+      category: evt.category,
       location: evt.location,
       date: evt.date,
     });
     setIsModalOpen(true);
   };
 
-  const handleDeleteEvent = async (eventId: string, title: string) => {
-    if (!confirm(`Are you sure you want to permanently delete "${title}"?`)) return;
+  const handleConfirmDeleteEvent = async () => {
+    if (!deleteTargetEvent) return;
+    setDeleting(true);
 
     try {
-      await api.delete(`/events/${eventId}`);
+      await api.delete(`/events/${deleteTargetEvent.id}`);
+      toast.success(`Event "${deleteTargetEvent.title}" berhasil dihapus.`);
+      setDeleteTargetEvent(null);
       fetchEvents();
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to delete event.');
+      toast.error(err.response?.data?.message || 'Gagal menghapus event.');
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -63,9 +75,12 @@ export const useAdminEvents = () => {
     isModalOpen,
     setIsModalOpen,
     editingEvent,
+    deleteTargetEvent,
+    setDeleteTargetEvent,
+    deleting,
     fetchEvents,
     handleOpenCreate,
     handleOpenEdit,
-    handleDeleteEvent,
+    handleConfirmDeleteEvent,
   };
 };

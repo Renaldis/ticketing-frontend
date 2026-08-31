@@ -23,7 +23,7 @@ export default function GateScannerPage() {
         onOpenSidebar={() => {}}
       />
 
-      <main className="p-6 sm:p-10 space-y-8 flex-1 max-w-2xl mx-auto w-full overflow-y-auto">
+      <main className="p-6 sm:p-10 space-y-8 flex-1 max-w-2xl mx-auto w-full">
         <div className="premium-card rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl">
           <div className="text-center space-y-2">
             <div className="inline-flex p-3 bg-cyan-500/10 text-[#4cd7f6] rounded-xl border border-cyan-500/30">

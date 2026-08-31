@@ -4,8 +4,22 @@ import React, { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { eventFormSchema, EventFormData } from '@/schemas';
-import { Plus, Trash2, X, AlertCircle } from 'lucide-react';
+import { Plus, Trash2, AlertCircle } from 'lucide-react';
 import { api } from '@/lib/api';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { toast } from 'sonner';
 
 interface EventModalProps {
   isOpen: boolean;
@@ -32,6 +46,8 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
     register,
     control,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
     reset,
   } = useForm<EventFormData>({
@@ -60,12 +76,12 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
         },
   });
 
+  const selectedCategory = watch('category');
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'categories',
   });
-
-  if (!isOpen) return null;
 
   const onSubmit = async (data: EventFormData) => {
     setSubmitting(true);
@@ -96,31 +112,31 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
         await api.put(`/events/${initialData.id}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
+        toast.success('Event berhasil diperbarui!');
       } else {
         await api.post('/events', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
+        toast.success('Event baru berhasil dipublikasikan!');
       }
 
       reset();
       onSuccess();
       onClose();
     } catch (err: any) {
-      setServerError(err.response?.data?.message || 'Failed to save event');
+      setServerError(err.response?.data?.message || 'Gagal menyimpan event');
+      toast.error('Gagal menyimpan event.');
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="premium-card rounded-2xl max-w-xl w-full p-7 space-y-6 shadow-2xl relative max-h-[92vh] overflow-y-auto">
-        <div className="flex justify-between items-center pb-3 border-b border-[#464554]/30">
-          <h3 className="text-xl font-bold text-white">{isEdit ? 'Edit Event Details' : 'Create New Event'}</h3>
-          <button onClick={onClose} className="p-1 rounded-lg text-[#908fa0] hover:text-white">
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-xl">
+        <DialogHeader>
+          <DialogTitle>{isEdit ? 'Edit Event Details' : 'Create New Event'}</DialogTitle>
+        </DialogHeader>
 
         {serverError && (
           <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2">
@@ -156,18 +172,23 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label className="block text-[#908fa0] uppercase font-bold mb-1">Event Category</label>
-              <select
-                {...register('category')}
-                className="input-glass w-full rounded-xl px-3 py-2.5 text-xs text-white font-bold focus:outline-none"
+              <Select
+                value={selectedCategory}
+                onValueChange={(val: any) => setValue('category', val)}
               >
-                <option value="CONCERT" className="bg-[#13131b]">🎸 Concert & Music</option>
-                <option value="SPORTS" className="bg-[#13131b]">🏃 Sports & Marathon</option>
-                <option value="SEMINAR" className="bg-[#13131b]">🎤 Seminar & Summit</option>
-                <option value="WORKSHOP" className="bg-[#13131b]">💻 Workshop & Class</option>
-                <option value="EXHIBITION" className="bg-[#13131b]">🎨 Exhibition & Expo</option>
-                <option value="WEBINAR" className="bg-[#13131b]">🌐 Online Webinar</option>
-                <option value="FESTIVAL" className="bg-[#13131b]">🎪 Festival</option>
-              </select>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Pilih Kategori" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="CONCERT">🎸 Concert & Music</SelectItem>
+                  <SelectItem value="SPORTS">🏃 Sports & Marathon</SelectItem>
+                  <SelectItem value="SEMINAR">🎤 Seminar & Summit</SelectItem>
+                  <SelectItem value="WORKSHOP">💻 Workshop & Class</SelectItem>
+                  <SelectItem value="EXHIBITION">🎨 Exhibition & Expo</SelectItem>
+                  <SelectItem value="WEBINAR">🌐 Online Webinar</SelectItem>
+                  <SelectItem value="FESTIVAL">🎪 Festival</SelectItem>
+                </SelectContent>
+              </Select>
               {errors.category && <p className="text-rose-400 text-[11px] mt-1">{errors.category.message}</p>}
             </div>
 
@@ -292,7 +313,7 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };

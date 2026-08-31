@@ -4,6 +4,13 @@ import React from 'react';
 import { Search, MapPin, RotateCcw, Ticket, Flame, Dumbbell, GraduationCap, MonitorPlay, Palette, Sparkles } from 'lucide-react';
 import { useEventsCatalog } from './_hooks/useEventsCatalog';
 import { EventCard } from '../_components/EventCard';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const categoriesPills = [
   { key: 'ALL', label: 'All Experiences', icon: Sparkles },
@@ -68,7 +75,7 @@ export default function EventsCatalogPage() {
         })}
       </div>
 
-      {/* Search & Location Filter Bar */}
+      {/* Search & Location Filter Bar with Shadcn Select */}
       <form
         onSubmit={handleSearchSubmit}
         className="glass-panel p-4 rounded-2xl flex flex-col md:flex-row items-center gap-3 shadow-xl"
@@ -96,19 +103,20 @@ export default function EventsCatalogPage() {
         </div>
 
         <div className="flex items-center gap-2 w-full md:w-auto">
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="input-glass text-xs text-white rounded-xl px-4 py-3 font-bold focus:outline-none w-full md:w-auto"
-          >
-            <option value="date" className="bg-[#13131b]">Date: Upcoming</option>
-            <option value="title" className="bg-[#13131b]">Title: A-Z</option>
-            <option value="createdAt" className="bg-[#13131b]">Newly Added</option>
-          </select>
+          <Select value={sortBy} onValueChange={setSortBy}>
+            <SelectTrigger className="w-full md:w-[170px]">
+              <SelectValue placeholder="Sort By" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="date">Date: Upcoming</SelectItem>
+              <SelectItem value="title">Title: A-Z</SelectItem>
+              <SelectItem value="createdAt">Newly Added</SelectItem>
+            </SelectContent>
+          </Select>
 
           <button
             type="submit"
-            className="btn-primary text-[#003640] font-bold text-xs px-6 py-3 rounded-xl flex-shrink-0"
+            className="btn-primary text-[#003640] font-bold text-xs px-6 py-2.5 rounded-xl flex-shrink-0 h-10"
           >
             Filter
           </button>
@@ -117,7 +125,7 @@ export default function EventsCatalogPage() {
             <button
               type="button"
               onClick={handleResetFilters}
-              className="p-3 rounded-xl bg-[#1f1f27] hover:bg-[#292932] text-[#908fa0] hover:text-white transition"
+              className="p-2.5 rounded-xl bg-[#1f1f27] hover:bg-[#292932] text-[#908fa0] hover:text-white transition h-10 w-10 flex items-center justify-center flex-shrink-0"
               title="Reset Filters"
             >
               <RotateCcw className="w-4 h-4" />

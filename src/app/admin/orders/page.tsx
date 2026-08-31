@@ -5,6 +5,13 @@ import { Search, Loader2 } from 'lucide-react';
 import { useAdminOrders } from './_hooks/useAdminOrders';
 import { AdminHeader } from '@/components/admin/AdminHeader';
 import { OrdersTable } from './_components/OrdersTable';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export default function AdminOrdersPage() {
   const {
@@ -36,7 +43,7 @@ export default function AdminOrdersPage() {
         refreshing={refreshing}
       />
 
-      <main className="p-6 sm:p-10 space-y-8 flex-1 overflow-y-auto">
+      <main className="p-6 sm:p-10 space-y-8 flex-1">
         <div className="premium-card rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -44,6 +51,7 @@ export default function AdminOrdersPage() {
               <p className="text-xs text-[#908fa0]">Full ledger history captured across all events</p>
             </div>
 
+            {/* Filter Bar with Shadcn Select */}
             <div className="flex flex-wrap items-center gap-3">
               <div className="relative">
                 <Search className="w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#908fa0]" />
@@ -52,21 +60,22 @@ export default function AdminOrdersPage() {
                   placeholder="Search customer, order ID..."
                   value={orderSearchQuery}
                   onChange={(e) => setOrderSearchQuery(e.target.value)}
-                  className="input-glass pl-9 pr-3.5 py-2 rounded-xl text-xs text-white placeholder-[#908fa0] w-64"
+                  className="input-glass pl-9 pr-3.5 py-2 rounded-xl text-xs text-white placeholder-[#908fa0] w-64 h-10"
                 />
               </div>
 
-              <select
-                value={orderStatusFilter}
-                onChange={(e) => setOrderStatusFilter(e.target.value)}
-                className="input-glass text-xs text-white rounded-xl px-4 py-2 font-bold focus:outline-none"
-              >
-                <option value="ALL" className="bg-[#13131b]">All Statuses</option>
-                <option value="PAID" className="bg-[#13131b]">PAID</option>
-                <option value="CHECKED_IN" className="bg-[#13131b]">CHECKED_IN</option>
-                <option value="PENDING" className="bg-[#13131b]">PENDING</option>
-                <option value="CANCELLED" className="bg-[#13131b]">CANCELLED</option>
-              </select>
+              <Select value={orderStatusFilter} onValueChange={setOrderStatusFilter}>
+                <SelectTrigger className="w-[160px] h-10">
+                  <SelectValue placeholder="All Statuses" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">All Statuses</SelectItem>
+                  <SelectItem value="PAID">PAID</SelectItem>
+                  <SelectItem value="CHECKED_IN">CHECKED_IN</SelectItem>
+                  <SelectItem value="PENDING">PENDING</SelectItem>
+                  <SelectItem value="CANCELLED">CANCELLED</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 

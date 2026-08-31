@@ -1,12 +1,15 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { Ticket, Lock, Mail, User, AlertCircle, CheckCircle2, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Ticket, Lock, Mail, User, AlertCircle, CheckCircle2, ArrowRight, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { useRegister } from './_hooks/useRegister';
 
 export default function RegisterPage() {
   const { form, serverError, success, loading, onSubmit } = useRegister();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -37,7 +40,6 @@ export default function RegisterPage() {
       <div className="premium-card max-w-md w-full rounded-2xl p-8 sm:p-10 shadow-2xl space-y-6">
         <div className="text-center space-y-1.5">
           <h1 className="text-2xl font-extrabold text-[#e4e1ed] tracking-tight">Create Account</h1>
-          <p className="text-xs text-[#908fa0]">Register for instant cryptographic ticket access</p>
         </div>
 
         {serverError && (
@@ -62,7 +64,7 @@ export default function RegisterPage() {
               <input
                 type="text"
                 {...register('name')}
-                placeholder="Budi Pembeli"
+                placeholder="your fullname"
                 className="input-glass w-full rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-[#908fa0]"
               />
             </div>
@@ -76,7 +78,7 @@ export default function RegisterPage() {
               <input
                 type="email"
                 {...register('email')}
-                placeholder="name@example.com"
+                placeholder="name@gmail.com"
                 className="input-glass w-full rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-[#908fa0]"
               />
             </div>
@@ -88,13 +90,45 @@ export default function RegisterPage() {
             <div className="relative">
               <Lock className="w-4 h-4 text-[#908fa0] absolute left-3.5 top-3" />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 {...register('password')}
                 placeholder="Min. 6 characters"
-                className="input-glass w-full rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-[#908fa0]"
+                className="input-glass w-full rounded-xl pl-10 pr-11 py-2.5 text-sm text-white placeholder-[#908fa0]"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3.5 top-2.5 text-[#908fa0] hover:text-white transition"
+                title={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
             {errors.password && <p className="text-rose-400 text-[11px] mt-1">{errors.password.message}</p>}
+          </div>
+
+          <div>
+            <label className="block text-[#908fa0] uppercase font-bold mb-1.5">Confirm Password</label>
+            <div className="relative">
+              <Lock className="w-4 h-4 text-[#908fa0] absolute left-3.5 top-3" />
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                {...register('confirmPassword')}
+                placeholder="Re-type your password"
+                className="input-glass w-full rounded-xl pl-10 pr-11 py-2.5 text-sm text-white placeholder-[#908fa0]"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3.5 top-2.5 text-[#908fa0] hover:text-white transition"
+                title={showConfirmPassword ? 'Hide password' : 'Show password'}
+              >
+                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <p className="text-rose-400 text-[11px] mt-1">{errors.confirmPassword.message}</p>
+            )}
           </div>
 
           <button
