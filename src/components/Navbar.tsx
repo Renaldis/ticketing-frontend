@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { Ticket, LogOut, LayoutDashboard, QrCode, Menu, X } from 'lucide-react';
+import { Ticket, LogOut, LayoutDashboard, QrCode, Menu, X, User as UserIcon } from 'lucide-react';
 
 export const Navbar = () => {
   const { user, logout } = useAuth();
@@ -81,7 +81,14 @@ export const Navbar = () => {
       <div className="flex items-center gap-4">
         {user ? (
           <div className="hidden md:flex items-center gap-3">
-            <span className="text-xs text-[#c7c4d7] font-semibold">{user.name || user.email}</span>
+            <Link
+              href="/profile"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#1f1f27] hover:bg-[#292932] border border-[#464554]/40 text-xs text-[#c7c4d7] hover:text-white transition"
+              title="Profil Akun"
+            >
+              <UserIcon className="w-3.5 h-3.5 text-[#4cd7f6]" />
+              <span className="font-bold max-w-[120px] truncate">{user.name || user.email}</span>
+            </Link>
             <button
               onClick={logout}
               className="p-2 text-[#908fa0] hover:text-rose-400 rounded-lg hover:bg-[#1f1f27] transition"
@@ -158,6 +165,15 @@ export const Navbar = () => {
               </Link>
             </>
           )}
+          {user ? (
+            <Link
+              href="/profile"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-sm font-semibold text-[#c7c4d7] hover:text-white"
+            >
+              Profil Akun
+            </Link>
+          ) : null}
           <div className="pt-3 border-t border-[#292932] flex items-center justify-between">
             {user ? (
               <>
