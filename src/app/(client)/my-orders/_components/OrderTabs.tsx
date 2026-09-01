@@ -15,17 +15,21 @@ export const OrderTabs = ({ activeTab, setActiveTab, orders }: OrderTabsProps) =
 
   const pendingCount = orders.filter((o) => o.status === 'PENDING').length;
 
-  // Tiket Aktif = PAID & Tanggal acara >= sekarang
+  // Tiket Aktif = PAID & Belum melewati 24 jam setelah jam mulai acara
   const activeCount = orders.filter(
-    (o) => o.status === 'PAID' && new Date(o.event?.date) >= now,
+    (o) =>
+      o.status === 'PAID' &&
+      new Date(o.event?.date).getTime() + 24 * 60 * 60 * 1000 >= now.getTime(),
   ).length;
 
   // Sudah Digunakan = CHECKED_IN
   const usedCount = orders.filter((o) => o.status === 'CHECKED_IN').length;
 
-  // Acara Selesai / Hangus = PAID tapi tanggal acara < sekarang (tidak hadir)
+  // Acara Selesai / Hangus = PAID tapi sudah melewati 24 jam setelah acara
   const expiredCount = orders.filter(
-    (o) => o.status === 'PAID' && new Date(o.event?.date) < now,
+    (o) =>
+      o.status === 'PAID' &&
+      new Date(o.event?.date).getTime() + 24 * 60 * 60 * 1000 < now.getTime(),
   ).length;
 
   // Dibatalkan = CANCELLED

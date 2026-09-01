@@ -13,7 +13,9 @@ export const TicketPassModal = ({ ticket, user, onClose }: TicketPassModalProps)
 
   const now = new Date();
   const eventDate = ticket.event?.date ? new Date(ticket.event.date) : null;
-  const isEventPassed = eventDate ? eventDate < now : false;
+  // Tiket tetap berlaku hingga 24 jam setelah jam mulai acara (selaras dengan backend check-in)
+  const eventEndTime = eventDate ? new Date(eventDate.getTime() + 24 * 60 * 60 * 1000) : null;
+  const isEventPassed = eventEndTime ? now > eventEndTime : false;
 
   const isCheckedIn = ticket.status === 'CHECKED_IN';
   const isExpired = !isCheckedIn && isEventPassed;

@@ -48,7 +48,9 @@ export const OrderCard = ({
 
   const now = new Date();
   const eventDate = order.event?.date ? new Date(order.event.date) : null;
-  const isEventPassed = eventDate ? eventDate < now : false;
+  // Tiket tetap berlaku hingga 24 jam setelah jam mulai acara (selaras dengan backend check-in)
+  const eventEndTime = eventDate ? new Date(eventDate.getTime() + 24 * 60 * 60 * 1000) : null;
+  const isEventPassed = eventEndTime ? now > eventEndTime : false;
 
   const isTicketActive = currentStatus === 'PAID' && !isEventPassed;
   const isTicketExpired = currentStatus === 'PAID' && isEventPassed;
