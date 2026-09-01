@@ -9,6 +9,7 @@ import {
   Calendar,
   Ticket,
   Receipt,
+  Users,
   QrCode,
   Settings,
   PlusCircle,
@@ -58,6 +59,12 @@ export const AdminSidebar = ({
       href: '/admin/orders',
       active: pathname.startsWith('/admin/orders'),
       icon: Receipt,
+    },
+    {
+      label: 'Kelola Pengguna',
+      href: '/admin/users',
+      active: pathname.startsWith('/admin/users'),
+      icon: Users,
     },
     {
       label: 'Aplikasi Scanner Gate',

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Ticket, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useMyOrders } from './_hooks/useMyOrders';
@@ -18,7 +18,7 @@ import {
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
 
-export default function MyOrdersPage() {
+function MyOrdersContent() {
   const {
     orders,
     filteredOrders,
@@ -136,5 +136,19 @@ export default function MyOrdersPage() {
         onClose={() => setSelectedTicket(null)}
       />
     </main>
+  );
+}
+
+export default function MyOrdersPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-[70vh] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 text-[#4cd7f6] animate-spin" />
+        </div>
+      }
+    >
+      <MyOrdersContent />
+    </Suspense>
   );
 }

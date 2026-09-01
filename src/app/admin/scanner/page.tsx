@@ -12,6 +12,7 @@ export default function GateScannerPage() {
     manualOrderId,
     setManualOrderId,
     isProcessing,
+    cooldownSeconds,
     handleManualSubmit,
   } = useGateScanner();
 
@@ -35,8 +36,14 @@ export default function GateScannerPage() {
             </p>
           </div>
 
-          <div className="bg-[#0d0d15] rounded-2xl p-4 border border-[#464554]/40 overflow-hidden">
+          <div className="bg-[#0d0d15] rounded-2xl p-4 border border-[#464554]/40 overflow-hidden relative">
             <div id="qr-reader" className="w-full text-[#908fa0] text-xs"></div>
+            {cooldownSeconds > 0 && (
+              <div className="absolute top-3 right-3 bg-cyan-950/90 text-[#4cd7f6] border border-cyan-500/40 text-[11px] font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 animate-pulse shadow-lg">
+                <span className="w-2 h-2 rounded-full bg-[#4cd7f6]"></span>
+                <span>Siap Pindai Berikutnya dalam {cooldownSeconds}s</span>
+              </div>
+            )}
           </div>
 
           <form onSubmit={handleManualSubmit} className="flex gap-2 text-xs">

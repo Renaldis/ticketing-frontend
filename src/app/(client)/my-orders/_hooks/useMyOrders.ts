@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { Order } from '@/types';
@@ -29,18 +29,29 @@ export const useMyOrders = () => {
 
   const { user, isLoading: authLoading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const fetchOrders = useCallback(async () => {
     setLoading(true);
     try {
       const res = await api.get('/orders/my-orders');
-      setOrders(res.data?.data?.orders || []);
+      const fetchedOrders: Order[] = res.data?.data?.orders || [];
+      setOrders(fetchedOrders);
+
+      // Auto-sync status pembayaran jika mendarat dari Midtrans redirect dengan order_id / orderId
+      const targetOrderId = searchParams.get('order_id') || searchParams.get('orderId');
+      if (targetOrderId) {
+        const found = fetchedOrders.find((o) => o.id === targetOrderId);
+        if (found && found.status === 'PENDING') {
+          handleSyncStatus(targetOrderId);
+        }
+      }
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     if (!authLoading) {
