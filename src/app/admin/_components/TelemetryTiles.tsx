@@ -49,7 +49,9 @@ export const TelemetryTiles = ({ metric }: { metric: PlatformSummary }) => {
           <div className="text-2xl font-black text-purple-400">
             {metric.attendance.checkedInAttendees} Pengunjung
           </div>
-          <span className="text-[11px] text-[#908fa0] mt-1 block">Telah di-scan di pintu masuk</span>
+          <span className="text-[11px] text-[#908fa0] mt-1 block">
+            Telah di-scan di pintu masuk
+          </span>
         </div>
       </div>
 
@@ -62,7 +64,9 @@ export const TelemetryTiles = ({ metric }: { metric: PlatformSummary }) => {
           <div className="text-2xl font-black text-[#4cd7f6]">
             {metric.capacity.totalRemaining} Tiket
           </div>
-          <span className="text-[11px] text-[#4cd7f6] font-bold mt-1 block">Siap untuk dipesan</span>
+          <span className="text-[11px] text-[#4cd7f6] font-bold mt-1 block">
+            Siap untuk dipesan
+          </span>
         </div>
       </div>
     </div>

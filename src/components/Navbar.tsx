@@ -162,12 +162,26 @@ export const Navbar = () => {
             {user ? (
               <>
                 <span className="text-xs text-slate-300 font-bold">{user.name || user.email}</span>
-                <button onClick={logout} className="text-xs text-rose-400 font-bold">Keluar</button>
+                <button onClick={logout} className="text-xs text-rose-400 font-bold">
+                  Keluar
+                </button>
               </>
             ) : (
               <div className="grid grid-cols-2 gap-2 w-full">
-                <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="text-center btn-secondary py-2 rounded-lg text-xs font-bold text-white">Masuk</Link>
-                <Link href="/register" onClick={() => setMobileMenuOpen(false)} className="text-center btn-primary py-2 rounded-lg text-xs font-bold text-[#003640]">Daftar</Link>
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-center btn-secondary py-2 rounded-lg text-xs font-bold text-white"
+                >
+                  Masuk
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-center btn-primary py-2 rounded-lg text-xs font-bold text-[#003640]"
+                >
+                  Daftar
+                </Link>
               </div>
             )}
           </div>

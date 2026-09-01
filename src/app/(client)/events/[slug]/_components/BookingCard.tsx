@@ -1,6 +1,7 @@
 import React from 'react';
-import { Lock, ShieldCheck, AlertCircle, Loader2, Plus, Minus } from 'lucide-react';
+import { Lock, ShieldCheck, AlertCircle, Loader2, Plus, Minus, Flame } from 'lucide-react';
 import { EventItem, TicketCategory } from '@/types';
+import { useEventRealtimeQuota } from '../_hooks/useEventRealtimeQuota';
 
 interface BookingCardProps {
   event: EventItem;
@@ -33,19 +34,26 @@ export const BookingCard = ({
 }: BookingCardProps) => {
   const isEventEnded = new Date(event.date) < new Date();
 
+  // Integrasi Real-time SSE Live Quota
+  const liveCategories = useEventRealtimeQuota(event.id, event.ticketCategories);
+  const currentActiveCat = liveCategories.find((c) => c.id === selectedCategory) || activeCategory;
+
   return (
     <div className="lg:col-span-4">
       <div className="premium-card rounded-2xl p-6 sm:p-7 sticky top-24 space-y-6 shadow-2xl">
         <div className="flex justify-between items-center pb-4 border-b border-[#464554]/30">
           <h2 className="text-xl font-bold text-[#e4e1ed]">Pilih Kategori Tiket</h2>
           <span
-            className={`text-xs font-bold px-2.5 py-1 rounded-full border ${
+            className={`text-xs font-bold px-2.5 py-1 rounded-full border flex items-center gap-1 ${
               isEventEnded
                 ? 'bg-rose-500/10 border-rose-500/30 text-rose-400'
                 : 'bg-[#03b5d3]/10 border-[#03b5d3]/30 text-[#4cd7f6]'
             }`}
           >
-            {isEventEnded ? 'Acara Selesai' : 'Alokasi Live'}
+            {!isEventEnded && (
+              <Flame className="w-3 h-3 text-orange-400 fill-orange-400 animate-pulse" />
+            )}
+            <span>{isEventEnded ? 'Acara Selesai' : 'Live Quota'}</span>
           </span>
         </div>
 
@@ -64,7 +72,7 @@ export const BookingCard = ({
         )}
 
         <div className="space-y-3">
-          {event.ticketCategories.map((cat: TicketCategory) => {
+          {liveCategories.map((cat: TicketCategory) => {
             const isSoldOut = cat.remainingCapacity <= 0;
             const isSelected = selectedCategory === cat.id;
 
@@ -86,7 +94,13 @@ export const BookingCard = ({
                     Rp {Number(cat.price).toLocaleString('id-ID')}
                   </p>
                   <span className="text-[11px] text-[#908fa0] block mt-1">
-                    {isSoldOut ? 'Habis Terjual' : `Tersisa ${cat.remainingCapacity} tiket`}
+                    {isSoldOut ? (
+                      <span className="text-rose-400 font-bold">Habis Terjual</span>
+                    ) : (
+                      <span className="text-emerald-400 font-semibold">
+                        Tersisa {cat.remainingCapacity} tiket
+                      </span>
+                    )}
                   </span>
                 </div>
 
@@ -145,8 +159,8 @@ export const BookingCard = ({
           disabled={
             isEventEnded ||
             bookingLoading ||
-            !activeCategory ||
-            activeCategory.remainingCapacity <= 0
+            !currentActiveCat ||
+            currentActiveCat.remainingCapacity <= 0
           }
           className="btn-primary w-full text-[#003640] font-bold py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 disabled:opacity-40"
         >

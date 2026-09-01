@@ -77,7 +77,8 @@ export default function HomePage() {
             Siap Mengadakan Event Anda Sendiri?
           </h2>
           <p className="text-base text-[#c7c4d7] max-w-2xl mx-auto mb-8 relative z-10">
-            Bergabunglah bersama penyelenggara event profesional menggunakan infrastruktur TICKETIX untuk mengelola tiket, kontrol akses pintu gerbang, dan laporan keuangan real-time.
+            Bergabunglah bersama penyelenggara event profesional menggunakan infrastruktur TICKETIX
+            untuk mengelola tiket, kontrol akses pintu gerbang, dan laporan keuangan real-time.
           </p>
           <Link
             href="/login"

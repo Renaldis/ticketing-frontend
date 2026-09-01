@@ -2,7 +2,18 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Ticket, Lock, Mail, User, AlertCircle, CheckCircle2, ArrowRight, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import {
+  Ticket,
+  Lock,
+  Mail,
+  User,
+  AlertCircle,
+  CheckCircle2,
+  ArrowRight,
+  ArrowLeft,
+  Eye,
+  EyeOff,
+} from 'lucide-react';
 import { useRegister } from './_hooks/useRegister';
 
 export default function RegisterPage() {
@@ -39,8 +50,12 @@ export default function RegisterPage() {
 
       <div className="premium-card max-w-md w-full rounded-2xl p-8 sm:p-10 shadow-2xl space-y-6">
         <div className="text-center space-y-1.5">
-          <h1 className="text-2xl font-extrabold text-[#e4e1ed] tracking-tight">Daftar Akun Baru</h1>
-          <p className="text-xs text-[#908fa0]">Buat akun untuk memesan tiket event dengan alokasi instan</p>
+          <h1 className="text-2xl font-extrabold text-[#e4e1ed] tracking-tight">
+            Daftar Akun Baru
+          </h1>
+          <p className="text-xs text-[#908fa0]">
+            Buat akun untuk memesan tiket event dengan alokasi instan
+          </p>
         </div>
 
         {serverError && (
@@ -83,7 +98,9 @@ export default function RegisterPage() {
                 className="input-glass w-full rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-[#908fa0]"
               />
             </div>
-            {errors.email && <p className="text-rose-400 text-[11px] mt-1">{errors.email.message}</p>}
+            {errors.email && (
+              <p className="text-rose-400 text-[11px] mt-1">{errors.email.message}</p>
+            )}
           </div>
 
           <div>
@@ -105,11 +122,15 @@ export default function RegisterPage() {
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
-            {errors.password && <p className="text-rose-400 text-[11px] mt-1">{errors.password.message}</p>}
+            {errors.password && (
+              <p className="text-rose-400 text-[11px] mt-1">{errors.password.message}</p>
+            )}
           </div>
 
           <div>
-            <label className="block text-[#908fa0] uppercase font-bold mb-1.5">Konfirmasi Kata Sandi</label>
+            <label className="block text-[#908fa0] uppercase font-bold mb-1.5">
+              Konfirmasi Kata Sandi
+            </label>
             <div className="relative">
               <Lock className="w-4 h-4 text-[#908fa0] absolute left-3.5 top-3" />
               <input

@@ -30,7 +30,9 @@ export default function GateScannerPage() {
               <QrCode className="w-6 h-6" />
             </div>
             <h2 className="text-xl font-bold text-white">Pindai Kode QR Tiket Pengunjung</h2>
-            <p className="text-xs text-[#908fa0]">Arahkan kamera optik ke kode QR digital pengunjung</p>
+            <p className="text-xs text-[#908fa0]">
+              Arahkan kamera optik ke kode QR digital pengunjung
+            </p>
           </div>
 
           <div className="bg-[#0d0d15] rounded-2xl p-4 border border-[#464554]/40 overflow-hidden">
@@ -58,12 +60,16 @@ export default function GateScannerPage() {
             <div className="p-5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 space-y-3 animate-in fade-in duration-300">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-6 h-6 text-emerald-400" />
-                <span className="font-extrabold text-sm text-white">AKSES DIIZINKAN / TELAH MASUK</span>
+                <span className="font-extrabold text-sm text-white">
+                  AKSES DIIZINKAN / TELAH MASUK
+                </span>
               </div>
               <div className="bg-[#0d0d15]/90 p-3.5 rounded-lg border border-[#464554]/30 text-xs space-y-1.5 text-[#c7c4d7]">
                 <div className="flex justify-between">
                   <span className="text-[#908fa0]">Pengunjung:</span>
-                  <span className="font-bold text-white">{scanResult.attendee?.name || scanResult.attendee?.email}</span>
+                  <span className="font-bold text-white">
+                    {scanResult.attendee?.name || scanResult.attendee?.email}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#908fa0]">Nama Event:</span>
@@ -72,7 +78,9 @@ export default function GateScannerPage() {
                 <div className="flex justify-between">
                   <span className="text-[#908fa0]">Kategori Tiket:</span>
                   <span className="font-bold text-[#4cd7f6]">
-                    {scanResult.tickets?.map((t: any) => `${t.category} (x${t.quantity})`).join(', ')}
+                    {scanResult.tickets
+                      ?.map((t: any) => `${t.category} (x${t.quantity})`)
+                      .join(', ')}
                   </span>
                 </div>
               </div>

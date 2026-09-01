@@ -89,7 +89,9 @@ export const AdminSidebar = ({
             </div>
           </div>
           <div className="overflow-hidden">
-            <h2 className="text-sm font-bold text-white truncate">{user?.name || 'Manajer Event'}</h2>
+            <h2 className="text-sm font-bold text-white truncate">
+              {user?.name || 'Manajer Event'}
+            </h2>
             <span className="text-[10px] text-[#4cd7f6] uppercase font-extrabold tracking-wider block">
               Tier Eksekutif
             </span>

@@ -39,7 +39,10 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
     return (
       <div className="max-w-4xl mx-auto px-4 py-24 text-center">
         <h2 className="text-xl font-bold text-white mb-2">Event Tidak Ditemukan</h2>
-        <Link href="/events" className="text-[#c0c1ff] hover:underline text-sm inline-flex items-center gap-1">
+        <Link
+          href="/events"
+          className="text-[#c0c1ff] hover:underline text-sm inline-flex items-center gap-1"
+        >
           <ArrowLeft className="w-4 h-4" />
           <span>Kembali ke Katalog</span>
         </Link>

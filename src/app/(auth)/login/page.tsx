@@ -2,7 +2,18 @@
 
 import React, { Suspense, useState } from 'react';
 import Link from 'next/link';
-import { Ticket, Lock, Mail, AlertCircle, ArrowRight, ArrowLeft, Clock, Loader2, Eye, EyeOff } from 'lucide-react';
+import {
+  Ticket,
+  Lock,
+  Mail,
+  AlertCircle,
+  ArrowRight,
+  ArrowLeft,
+  Clock,
+  Loader2,
+  Eye,
+  EyeOff,
+} from 'lucide-react';
 import { useLogin } from './_hooks/useLogin';
 
 function LoginForm() {
@@ -18,7 +29,9 @@ function LoginForm() {
     <div className="premium-card max-w-md w-full rounded-2xl p-8 sm:p-10 shadow-2xl space-y-6">
       <div className="text-center space-y-1.5">
         <h1 className="text-2xl font-extrabold text-[#e4e1ed] tracking-tight">Masuk ke Akun</h1>
-        <p className="text-xs text-[#908fa0]">Masukkan email dan kata sandi Anda untuk mengakses tiket</p>
+        <p className="text-xs text-[#908fa0]">
+          Masukkan email dan kata sandi Anda untuk mengakses tiket
+        </p>
       </div>
 
       {sessionExpired && (
@@ -69,7 +82,9 @@ function LoginForm() {
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
-          {errors.password && <p className="text-rose-400 text-[11px] mt-1">{errors.password.message}</p>}
+          {errors.password && (
+            <p className="text-rose-400 text-[11px] mt-1">{errors.password.message}</p>
+          )}
         </div>
 
         <button

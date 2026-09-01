@@ -6,12 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { eventFormSchema, EventFormData } from '@/schemas';
 import { Plus, Trash2, AlertCircle } from 'lucide-react';
 import { api } from '@/lib/api';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
   Select,
   SelectContent,
@@ -58,7 +53,9 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
           description: initialData.description || '',
           category: initialData.category || 'CONCERT',
           location: initialData.location,
-          date: new Date(new Date(initialData.date).getTime() - new Date().getTimezoneOffset() * 60000)
+          date: new Date(
+            new Date(initialData.date).getTime() - new Date().getTimezoneOffset() * 60000,
+          )
             .toISOString()
             .slice(0, 16),
           categories: [{ name: 'VIP Pass', price: 1500000, capacity: 50 }],
@@ -153,11 +150,15 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
               placeholder="contoh: Jakarta Rock Live 2026"
               className="input-glass w-full rounded-xl px-3.5 py-2.5 text-sm text-white"
             />
-            {errors.title && <p className="text-rose-400 text-[11px] mt-1">{errors.title.message}</p>}
+            {errors.title && (
+              <p className="text-rose-400 text-[11px] mt-1">{errors.title.message}</p>
+            )}
           </div>
 
           <div>
-            <label className="block text-[#908fa0] uppercase font-bold mb-1">Deskripsi Event (HTML / Teks)</label>
+            <label className="block text-[#908fa0] uppercase font-bold mb-1">
+              Deskripsi Event (HTML / Teks)
+            </label>
             <textarea
               {...register('description')}
               rows={3}
@@ -171,7 +172,9 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label className="block text-[#908fa0] uppercase font-bold mb-1">Kategori Event</label>
+              <label className="block text-[#908fa0] uppercase font-bold mb-1">
+                Kategori Event
+              </label>
               <Select
                 value={selectedCategory}
                 onValueChange={(val: any) => setValue('category', val)}
@@ -189,27 +192,37 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
                   <SelectItem value="FESTIVAL">🎪 Festival</SelectItem>
                 </SelectContent>
               </Select>
-              {errors.category && <p className="text-rose-400 text-[11px] mt-1">{errors.category.message}</p>}
+              {errors.category && (
+                <p className="text-rose-400 text-[11px] mt-1">{errors.category.message}</p>
+              )}
             </div>
 
             <div>
-              <label className="block text-[#908fa0] uppercase font-bold mb-1">Lokasi Gedung / Venue</label>
+              <label className="block text-[#908fa0] uppercase font-bold mb-1">
+                Lokasi Gedung / Venue
+              </label>
               <input
                 {...register('location')}
                 placeholder="GBK Stadium, Jakarta"
                 className="input-glass w-full rounded-xl px-3.5 py-2.5 text-xs text-white"
               />
-              {errors.location && <p className="text-rose-400 text-[11px] mt-1">{errors.location.message}</p>}
+              {errors.location && (
+                <p className="text-rose-400 text-[11px] mt-1">{errors.location.message}</p>
+              )}
             </div>
 
             <div>
-              <label className="block text-[#908fa0] uppercase font-bold mb-1">Jadwal Tanggal & Jam</label>
+              <label className="block text-[#908fa0] uppercase font-bold mb-1">
+                Jadwal Tanggal & Jam
+              </label>
               <input
                 type="datetime-local"
                 {...register('date')}
                 className="input-glass w-full rounded-xl px-3.5 py-2.5 text-xs text-white"
               />
-              {errors.date && <p className="text-rose-400 text-[11px] mt-1">{errors.date.message}</p>}
+              {errors.date && (
+                <p className="text-rose-400 text-[11px] mt-1">{errors.date.message}</p>
+              )}
             </div>
           </div>
 
@@ -220,7 +233,9 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
                   <label className="block text-[#908fa0] uppercase font-bold text-[11px]">
                     Kategori Tier & Kuota Tiket
                   </label>
-                  <span className="text-[10px] text-[#908fa0]">Tentukan nama tier, harga, dan kapasitas awal</span>
+                  <span className="text-[10px] text-[#908fa0]">
+                    Tentukan nama tier, harga, dan kapasitas awal
+                  </span>
                 </div>
 
                 <button
@@ -240,7 +255,9 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
                     className="bg-[#13131b] border border-[#464554]/40 rounded-xl p-3 grid grid-cols-12 gap-2 items-center"
                   >
                     <div className="col-span-5">
-                      <label className="text-[9px] text-[#908fa0] font-bold block uppercase">Nama Tier</label>
+                      <label className="text-[9px] text-[#908fa0] font-bold block uppercase">
+                        Nama Tier
+                      </label>
                       <input
                         {...register(`categories.${index}.name` as const)}
                         placeholder="VIP / Reguler"
@@ -249,7 +266,9 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
                     </div>
 
                     <div className="col-span-4">
-                      <label className="text-[9px] text-[#908fa0] font-bold block uppercase">Harga (IDR)</label>
+                      <label className="text-[9px] text-[#908fa0] font-bold block uppercase">
+                        Harga (IDR)
+                      </label>
                       <input
                         type="number"
                         {...register(`categories.${index}.price` as const)}
@@ -259,7 +278,9 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
                     </div>
 
                     <div className="col-span-2">
-                      <label className="text-[9px] text-[#908fa0] font-bold block uppercase">Kursi</label>
+                      <label className="text-[9px] text-[#908fa0] font-bold block uppercase">
+                        Kursi
+                      </label>
                       <input
                         type="number"
                         {...register(`categories.${index}.capacity` as const)}

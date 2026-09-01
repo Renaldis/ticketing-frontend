@@ -15,9 +15,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               TICKET<span className="text-[#4cd7f6]">IX</span>
             </span>
             <span className="text-slate-600">|</span>
-            <span>Platform Tiket Berkecepatan Tinggi</span>
+            <span>Platform Pemesanan Tiket Event & Konser</span>
           </div>
-          <p>&copy; {new Date().getFullYear()} TICKETIX Concurrency Platform. Hak Cipta Dilindungi.</p>
+          <p>&copy; {new Date().getFullYear()} TICKETIX. Hak Cipta Dilindungi.</p>
         </div>
       </footer>
     </>

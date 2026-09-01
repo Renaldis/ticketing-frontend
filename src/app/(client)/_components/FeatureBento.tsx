@@ -11,7 +11,8 @@ export const FeatureBento = () => {
           </div>
           <h3 className="text-xl font-bold text-[#e4e1ed]">Inventori Kuota Aman</h3>
           <p className="text-sm text-[#c7c4d7] leading-relaxed">
-            Penguncian level baris database PostgreSQL menjamin tidak ada tiket ganda atau overselling saat rebutan tiket.
+            Penguncian level baris database PostgreSQL menjamin tidak ada tiket ganda atau
+            overselling saat rebutan tiket.
           </p>
         </div>
 
@@ -21,7 +22,8 @@ export const FeatureBento = () => {
           </div>
           <h3 className="text-xl font-bold text-[#e4e1ed]">Checkout Cepat & Idempoten</h3>
           <p className="text-sm text-[#c7c4d7] leading-relaxed">
-            Pemesanan instan dengan gateway pembayaran terintegrasi dan proteksi kunci idempotensi anti-transaksi dobel.
+            Pemesanan instan dengan gateway pembayaran terintegrasi dan proteksi kunci idempotensi
+            anti-transaksi dobel.
           </p>
         </div>
 
@@ -31,7 +33,8 @@ export const FeatureBento = () => {
           </div>
           <h3 className="text-xl font-bold text-[#e4e1ed]">E-Tiket QR Dinamis</h3>
           <p className="text-sm text-[#c7c4d7] leading-relaxed">
-            Kode QR digital otomatis terbit setelah pembayaran lunas, siap di-scan langsung di pintu gerbang masuk acara.
+            Kode QR digital otomatis terbit setelah pembayaran lunas, siap di-scan langsung di pintu
+            gerbang masuk acara.
           </p>
         </div>
       </div>

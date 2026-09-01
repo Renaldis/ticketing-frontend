@@ -47,8 +47,12 @@ export default function AdminOrdersPage() {
         <div className="premium-card rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 className="text-xl font-bold text-white">Log Transaksi ({filteredOrders.length})</h2>
-              <p className="text-xs text-[#908fa0]">Seluruh riwayat transaksi pelanggan di semua event</p>
+              <h2 className="text-xl font-bold text-white">
+                Log Transaksi ({filteredOrders.length})
+              </h2>
+              <p className="text-xs text-[#908fa0]">
+                Seluruh riwayat transaksi pelanggan di semua event
+              </p>
             </div>
 
             {/* Filter Bar with Shadcn Select */}

@@ -55,7 +55,9 @@ export default function AdminEventsPage() {
       <main className="p-6 sm:p-10 space-y-8 flex-1">
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-xl font-bold text-white">Daftar Event Langsung ({events.length})</h2>
+            <h2 className="text-xl font-bold text-white">
+              Daftar Event Langsung ({events.length})
+            </h2>
             <p className="text-xs text-[#908fa0]">Kontrol penuh inventori dan publikasi event</p>
           </div>
 
@@ -88,13 +90,17 @@ export default function AdminEventsPage() {
       />
 
       {/* SHADCN ALERT DIALOG: CONFIRM DELETE EVENT */}
-      <AlertDialog open={!!deleteTargetEvent} onOpenChange={(open) => !open && setDeleteTargetEvent(null)}>
+      <AlertDialog
+        open={!!deleteTargetEvent}
+        onOpenChange={(open) => !open && setDeleteTargetEvent(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Hapus Event Ini Secara Permanen?</AlertDialogTitle>
             <AlertDialogDescription>
-              Event <strong>&quot;{deleteTargetEvent?.title}&quot;</strong> beserta seluruh kategori tiket dan riwayat
-              kaitannya akan dihapus permanen dari sistem. Aksi ini tidak dapat dibatalkan.
+              Event <strong>&quot;{deleteTargetEvent?.title}&quot;</strong> beserta seluruh kategori
+              tiket dan riwayat kaitannya akan dihapus permanen dari sistem. Aksi ini tidak dapat
+              dibatalkan.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

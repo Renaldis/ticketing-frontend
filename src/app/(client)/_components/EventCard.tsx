@@ -7,10 +7,19 @@ import { EventItem } from '@/types';
 const categoryConfig: Record<string, { label: string; color: string }> = {
   CONCERT: { label: 'Konser Musik', color: 'text-[#4cd7f6] border-[#03b5d3]/40 bg-[#03b5d3]/10' },
   SPORTS: { label: 'Olahraga & Lari', color: 'text-amber-400 border-amber-500/40 bg-amber-500/10' },
-  SEMINAR: { label: 'Seminar & Konferensi', color: 'text-purple-400 border-purple-500/40 bg-purple-500/10' },
-  WEBINAR: { label: 'Webinar Online', color: 'text-emerald-400 border-emerald-500/40 bg-emerald-500/10' },
+  SEMINAR: {
+    label: 'Seminar & Konferensi',
+    color: 'text-purple-400 border-purple-500/40 bg-purple-500/10',
+  },
+  WEBINAR: {
+    label: 'Webinar Online',
+    color: 'text-emerald-400 border-emerald-500/40 bg-emerald-500/10',
+  },
   EXHIBITION: { label: 'Pameran & Expo', color: 'text-rose-400 border-rose-500/40 bg-rose-500/10' },
-  WORKSHOP: { label: 'Workshop & Kelas', color: 'text-indigo-400 border-indigo-500/40 bg-indigo-500/10' },
+  WORKSHOP: {
+    label: 'Workshop & Kelas',
+    color: 'text-indigo-400 border-indigo-500/40 bg-indigo-500/10',
+  },
   FESTIVAL: { label: 'Festival', color: 'text-pink-400 border-pink-500/40 bg-pink-500/10' },
 };
 
@@ -18,7 +27,8 @@ export const EventCard = ({ event }: { event: EventItem }) => {
   const lowestPrice = event.ticketCategories?.length
     ? Math.min(...event.ticketCategories.map((c) => Number(c.price)))
     : null;
-  const totalRemaining = event.ticketCategories?.reduce((acc, c) => acc + c.remainingCapacity, 0) || 0;
+  const totalRemaining =
+    event.ticketCategories?.reduce((acc, c) => acc + c.remainingCapacity, 0) || 0;
   const eventDate = new Date(event.date);
 
   const eventPath = `/events/${event.slug || event.id}`;
@@ -42,14 +52,18 @@ export const EventCard = ({ event }: { event: EventItem }) => {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-tr from-[#13131b] via-[#1f1f27] to-[#13131b]">
-            <span className="text-[#464554] text-xs font-bold uppercase tracking-widest">Tidak Ada Poster</span>
+            <span className="text-[#464554] text-xs font-bold uppercase tracking-widest">
+              Tidak Ada Poster
+            </span>
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#1f1f27] via-transparent to-transparent opacity-80"></div>
 
         {/* Dynamic Category Pill Badge */}
         <div className="absolute top-4 left-4 flex gap-2">
-          <span className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider backdrop-blur-md border ${catInfo.color}`}>
+          <span
+            className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider backdrop-blur-md border ${catInfo.color}`}
+          >
             {catInfo.label}
           </span>
         </div>
@@ -84,7 +98,9 @@ export const EventCard = ({ event }: { event: EventItem }) => {
             {totalRemaining > 0 ? (
               <>
                 <span className="w-2 h-2 rounded-full bg-[#ffb4ab] pulse-dot"></span>
-                <span className="text-xs text-[#ffb4ab] font-bold">Sisa {totalRemaining} Tiket</span>
+                <span className="text-xs text-[#ffb4ab] font-bold">
+                  Sisa {totalRemaining} Tiket
+                </span>
               </>
             ) : (
               <span className="text-xs text-[#908fa0] font-bold px-2.5 py-0.5 rounded-full bg-[#292932]">

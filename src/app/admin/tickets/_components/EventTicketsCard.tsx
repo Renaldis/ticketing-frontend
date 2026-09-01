@@ -57,7 +57,9 @@ export const EventTicketsCard = ({
 
             <div className="pt-3 border-t border-[#464554]/20 flex items-center justify-between">
               <div>
-                <span className="text-[10px] text-[#908fa0] block font-bold uppercase">Kuota Live</span>
+                <span className="text-[10px] text-[#908fa0] block font-bold uppercase">
+                  Kuota Live
+                </span>
                 <span className="text-xs font-black text-emerald-400">
                   {cat.remainingCapacity} / {cat.totalCapacity}
                 </span>

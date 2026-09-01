@@ -112,8 +112,9 @@ export default function MyOrdersPage() {
             <AlertDialogTitle>Batalkan Pesanan Ini?</AlertDialogTitle>
             <AlertDialogDescription>
               Pesanan untuk <strong>{cancelTargetOrder?.event?.title}</strong> sebesar Rp{' '}
-              {Number(cancelTargetOrder?.totalAmount).toLocaleString('id-ID')} akan dibatalkan. Kuota
-              tiket akan dikembalikan ke pool penjualan dan invoice pembayaran akan dinonaktifkan.
+              {Number(cancelTargetOrder?.totalAmount).toLocaleString('id-ID')} akan dibatalkan.
+              Kuota tiket akan dikembalikan ke pool penjualan dan invoice pembayaran akan
+              dinonaktifkan.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

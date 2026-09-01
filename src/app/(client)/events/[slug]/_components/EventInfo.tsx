@@ -64,7 +64,9 @@ export const EventInfo = ({ event }: { event: EventItem }) => {
               <MapPin className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-xs text-[#908fa0] uppercase font-bold block">Lokasi / Gedung Venue</span>
+              <span className="text-xs text-[#908fa0] uppercase font-bold block">
+                Lokasi / Gedung Venue
+              </span>
               <span className="text-sm font-semibold text-white">{event.location}</span>
             </div>
           </div>

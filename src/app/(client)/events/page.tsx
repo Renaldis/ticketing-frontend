@@ -1,7 +1,18 @@
 'use client';
 
 import React from 'react';
-import { Search, MapPin, RotateCcw, Ticket, Flame, Dumbbell, GraduationCap, MonitorPlay, Palette, Sparkles } from 'lucide-react';
+import {
+  Search,
+  MapPin,
+  RotateCcw,
+  Ticket,
+  Flame,
+  Dumbbell,
+  GraduationCap,
+  MonitorPlay,
+  Palette,
+  Sparkles,
+} from 'lucide-react';
 import { useEventsCatalog } from './_hooks/useEventsCatalog';
 import { EventCard } from '../_components/EventCard';
 import {
@@ -114,13 +125,6 @@ export default function EventsCatalogPage() {
             </SelectContent>
           </Select>
 
-          <button
-            type="submit"
-            className="btn-primary text-[#003640] font-bold text-xs px-6 py-2.5 rounded-xl flex-shrink-0 h-10"
-          >
-            Saring
-          </button>
-
           {(search || location || category !== 'ALL' || sortBy !== 'date') && (
             <button
               type="button"
@@ -138,7 +142,8 @@ export default function EventsCatalogPage() {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <span className="text-xs font-bold text-[#c7c4d7]">
-            Menampilkan <span className="text-white font-extrabold">{events.length}</span> event langsung
+            Menampilkan <span className="text-white font-extrabold">{events.length}</span> event
+            langsung
           </span>
         </div>
 

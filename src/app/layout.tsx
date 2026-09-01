@@ -4,9 +4,9 @@ import { AuthProvider } from '@/context/AuthContext';
 import { Toaster } from '@/components/ui/sonner';
 
 export const metadata: Metadata = {
-  title: 'TICKETIX | Cyber-Enterprise Live Event Pass Platform',
+  title: 'TICKETIX | Platform Pemesanan Tiket Konser & Event Resmi',
   description:
-    'Cryptographically verified, atomic concurrency ticket reservation and gate scanner engine.',
+    'Pesan tiket konser, maraton, dan seminar resmi tanpa antre dengan alokasi kuota instan dan e-tiket QR digital.',
 };
 
 export default function RootLayout({
