@@ -1,10 +1,10 @@
 import React from 'react';
 import { Lock, ShieldCheck, AlertCircle, Loader2, Plus, Minus, Flame } from 'lucide-react';
 import { EventItem, TicketCategory } from '@/types';
-import { useEventRealtimeQuota } from '../_hooks/useEventRealtimeQuota';
 
 interface BookingCardProps {
   event: EventItem;
+  categories: TicketCategory[];
   selectedCategory: string;
   setSelectedCategory: (id: string) => void;
   quantity: number;
@@ -20,6 +20,7 @@ interface BookingCardProps {
 
 export const BookingCard = ({
   event,
+  categories,
   selectedCategory,
   setSelectedCategory,
   quantity,
@@ -33,10 +34,6 @@ export const BookingCard = ({
   onBooking,
 }: BookingCardProps) => {
   const isEventEnded = new Date(event.date) < new Date();
-
-  // Integrasi Real-time SSE Live Quota
-  const liveCategories = useEventRealtimeQuota(event.id, event.ticketCategories);
-  const currentActiveCat = liveCategories.find((c) => c.id === selectedCategory) || activeCategory;
 
   return (
     <div className="lg:col-span-4">
@@ -72,7 +69,7 @@ export const BookingCard = ({
         )}
 
         <div className="space-y-3">
-          {liveCategories.map((cat: TicketCategory) => {
+          {categories.map((cat: TicketCategory) => {
             const isSoldOut = cat.remainingCapacity <= 0;
             const isSelected = selectedCategory === cat.id;
 
@@ -159,8 +156,8 @@ export const BookingCard = ({
           disabled={
             isEventEnded ||
             bookingLoading ||
-            !currentActiveCat ||
-            currentActiveCat.remainingCapacity <= 0
+            !activeCategory ||
+            activeCategory.remainingCapacity <= 0
           }
           className="btn-primary w-full text-[#003640] font-bold py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 disabled:opacity-40"
         >

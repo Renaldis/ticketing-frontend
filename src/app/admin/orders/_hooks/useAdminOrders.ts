@@ -29,6 +29,27 @@ export const useAdminOrders = () => {
     fetchOrders();
   }, [fetchOrders]);
 
+  // Admin Real-time SSE Orders Stream
+  useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+    const eventSource = new EventSource(`${apiUrl}/realtime/admin/stream`);
+
+    eventSource.onmessage = (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        if (data.type === 'ADMIN_TELEMETRY_SYNC') {
+          fetchOrders();
+        }
+      } catch (err) {
+        console.error('[Admin Orders SSE Error]:', err);
+      }
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [fetchOrders]);
+
   const filteredOrders = orders.filter((ord) => {
     const matchesStatus = orderStatusFilter === 'ALL' || ord.status === orderStatusFilter;
     const matchesSearch =

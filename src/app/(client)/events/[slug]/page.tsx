@@ -13,6 +13,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
 
   const {
     event,
+    categories,
     selectedCategory,
     setSelectedCategory,
     quantity,
@@ -64,6 +65,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
         <EventInfo event={event} />
         <BookingCard
           event={event}
+          categories={categories}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
           quantity={quantity}

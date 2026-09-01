@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { eventFormSchema, EventFormData } from '@/schemas';
@@ -80,6 +80,47 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
     name: 'categories',
   });
 
+  // Re-populate form values whenever initialData or modal open state changes
+  useEffect(() => {
+    if (isOpen) {
+      setServerError('');
+      setPosterFile(null);
+
+      if (initialData) {
+        let formattedDate = '';
+        try {
+          const d = new Date(initialData.date);
+          formattedDate = new Date(d.getTime() - d.getTimezoneOffset() * 60000)
+            .toISOString()
+            .slice(0, 16);
+        } catch {
+          formattedDate = '';
+        }
+
+        reset({
+          title: initialData.title || '',
+          description: initialData.description || '',
+          category: initialData.category || 'CONCERT',
+          location: initialData.location || '',
+          date: formattedDate,
+          categories: [{ name: 'VIP Pass', price: 1500000, capacity: 50 }],
+        });
+      } else {
+        reset({
+          title: '',
+          description: '',
+          category: 'CONCERT',
+          location: '',
+          date: '',
+          categories: [
+            { name: 'VIP Pass', price: 1500000, capacity: 50 },
+            { name: 'Reguler Festival', price: 500000, capacity: 200 },
+          ],
+        });
+      }
+    }
+  }, [isOpen, initialData, reset]);
+
   const onSubmit = async (data: EventFormData) => {
     setSubmitting(true);
     setServerError('');
@@ -91,16 +132,20 @@ export const EventFormModal = ({ isOpen, onClose, onSuccess, initialData }: Even
       formData.append('category', data.category || 'CONCERT');
       formData.append('location', data.location);
       formData.append('date', new Date(data.date).toISOString());
-      formData.append(
-        'categories',
-        JSON.stringify(
-          data.categories.map((c) => ({
-            name: c.name,
-            price: Number(c.price),
-            capacity: Number(c.capacity),
-          })),
-        ),
-      );
+
+      if (!isEdit) {
+        formData.append(
+          'categories',
+          JSON.stringify(
+            data.categories.map((c) => ({
+              name: c.name,
+              price: Number(c.price),
+              capacity: Number(c.capacity),
+            })),
+          ),
+        );
+      }
+
       if (posterFile) {
         formData.append('image', posterFile);
       }

@@ -35,6 +35,27 @@ export const useAdminTickets = () => {
     fetchEvents();
   }, [fetchEvents]);
 
+  // Admin Real-time SSE Stock Stream
+  useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+    const eventSource = new EventSource(`${apiUrl}/realtime/admin/stream`);
+
+    eventSource.onmessage = (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        if (data.type === 'ADMIN_TELEMETRY_SYNC') {
+          fetchEvents();
+        }
+      } catch (err) {
+        console.error('[Admin Tickets SSE Error]:', err);
+      }
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [fetchEvents]);
+
   const handleAdjustStock = async (categoryId: string, delta: number) => {
     try {
       await api.patch(`/events/categories/${categoryId}/stock`, { delta });

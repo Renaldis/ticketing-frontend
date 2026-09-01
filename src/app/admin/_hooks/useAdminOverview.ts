@@ -48,6 +48,28 @@ export const useAdminOverview = () => {
     fetchInitialData();
   }, [fetchInitialData]);
 
+  // Admin Real-time SSE Telemetry Stream
+  useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+    const eventSource = new EventSource(`${apiUrl}/realtime/admin/stream`);
+
+    eventSource.onmessage = (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        if (data.type === 'ADMIN_TELEMETRY_SYNC') {
+          // Re-fetch data terbaru di background tanpa full page reload
+          fetchInitialData();
+        }
+      } catch (err) {
+        console.error('[Admin SSE Stream Error]:', err);
+      }
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [fetchInitialData]);
+
   const handleScopeChange = (scope: string) => {
     setTelemetryScope(scope);
     if (scope !== 'ALL') {
