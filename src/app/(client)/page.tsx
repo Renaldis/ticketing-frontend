@@ -32,15 +32,17 @@ export default function HomePage() {
         <div className="flex justify-between items-end mb-10">
           <div>
             <h2 className="text-3xl sm:text-4xl text-[#e4e1ed] font-extrabold leading-tight">
-              Upcoming Events
+              Event Mendatang Pilihan
             </h2>
-            <p className="text-sm text-[#c7c4d7] mt-2">Curated experiences happening soon.</p>
+            <p className="text-sm text-[#c7c4d7] mt-2">
+              Pengalaman langsung pilihan yang akan segera hadir.
+            </p>
           </div>
           <Link
             href="/events"
             className="hidden md:flex items-center gap-2 text-[#c0c1ff] font-bold text-sm hover:text-[#4cd7f6] transition-colors"
           >
-            <span>View All</span>
+            <span>Lihat Semua</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -53,9 +55,9 @@ export default function HomePage() {
           </div>
         ) : events.length === 0 ? (
           <div className="text-center py-24 glass-panel rounded-3xl">
-            <h3 className="text-lg font-bold text-white mb-2">No Events Found</h3>
+            <h3 className="text-lg font-bold text-white mb-2">Belum Ada Event Ditemukan</h3>
             <p className="text-sm text-[#908fa0]">
-              Try changing your search keywords or location filter.
+              Coba sesuaikan kata kunci pencarian atau filter lokasi Anda.
             </p>
           </div>
         ) : (
@@ -72,17 +74,16 @@ export default function HomePage() {
         <div className="glass-panel rounded-3xl p-10 sm:p-14 text-center relative overflow-hidden border-[#c0c1ff]/20">
           <div className="absolute inset-0 bg-gradient-to-r from-[#c0c1ff]/10 via-transparent to-[#4cd7f6]/10 pointer-events-none"></div>
           <h2 className="text-3xl sm:text-4xl text-[#e4e1ed] font-extrabold mb-4 relative z-10">
-            Ready to Host Your Own Event?
+            Siap Mengadakan Event Anda Sendiri?
           </h2>
           <p className="text-base text-[#c7c4d7] max-w-2xl mx-auto mb-8 relative z-10">
-            Join event organizers using TICKETIX enterprise tools to manage ticketing, atomic access
-            control, and real-time analytics.
+            Bergabunglah bersama penyelenggara event profesional menggunakan infrastruktur TICKETIX untuk mengelola tiket, kontrol akses pintu gerbang, dan laporan keuangan real-time.
           </p>
           <Link
             href="/login"
             className="btn-primary text-[#003640] font-bold text-sm px-8 py-3.5 rounded-xl relative z-10 inline-flex items-center gap-2"
           >
-            <span>Organize Event</span>
+            <span>Daftar Sebagai Penyelenggara</span>
             <Rocket className="w-4 h-4" />
           </Link>
         </div>

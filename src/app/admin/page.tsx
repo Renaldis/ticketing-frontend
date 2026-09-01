@@ -30,8 +30,8 @@ export default function AdminDashboardPage() {
   return (
     <>
       <AdminHeader
-        title="Platform Telemetry & Metrics"
-        subtitle="Real-time revenue stream, quota allocations, and attendance velocity"
+        title="Telemetri & Metrik Platform"
+        subtitle="Aliran pendapatan real-time, alokasi kuota, dan pemantauan turnstile masuk"
         onOpenSidebar={() => {}}
         onRefresh={fetchInitialData}
         refreshing={refreshing}
@@ -50,14 +50,14 @@ export default function AdminDashboardPage() {
                   <Activity className="w-5 h-5 text-[#4cd7f6]" />
                   <span>
                     {telemetryScope === 'ALL'
-                      ? 'Platform Aggregate Telemetry'
+                      ? 'Telemetri Agregasi Seluruh Platform'
                       : `Event: ${eventSummary?.title}`}
                   </span>
                 </h2>
                 <p className="text-xs text-[#908fa0] mt-0.5">
                   {telemetryScope === 'ALL'
-                    ? 'Consolidated data across all events, settled revenues, and turnstile entries'
-                    : `Live metrics and category utilization for ${eventSummary?.location}`}
+                    ? 'Data terkonsolidasi dari semua event, total pendapatan lunas, dan pemindaian gate'
+                    : `Metrik penjualan dan penggunaan kuota kategori untuk ${eventSummary?.location}`}
                 </p>
               </div>
             </div>
@@ -68,7 +68,7 @@ export default function AdminDashboardPage() {
             {telemetryScope !== 'ALL' && eventSummary?.categories && (
               <div className="premium-card rounded-2xl p-6 sm:p-8 space-y-6">
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-                  Tier-by-Tier Allocation Progress ({eventSummary.title})
+                  Progres Pemanfaatan Kuota Tier ({eventSummary.title})
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {eventSummary.categories.map((cat) => (

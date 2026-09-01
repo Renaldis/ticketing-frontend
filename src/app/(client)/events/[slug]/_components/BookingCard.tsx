@@ -31,15 +31,30 @@ export const BookingCard = ({
   error,
   onBooking,
 }: BookingCardProps) => {
+  const isEventEnded = new Date(event.date) < new Date();
+
   return (
     <div className="lg:col-span-4">
       <div className="premium-card rounded-2xl p-6 sm:p-7 sticky top-24 space-y-6 shadow-2xl">
         <div className="flex justify-between items-center pb-4 border-b border-[#464554]/30">
-          <h2 className="text-xl font-bold text-[#e4e1ed]">Select Tickets</h2>
-          <span className="text-xs font-bold text-[#4cd7f6] px-2.5 py-1 rounded-full bg-[#03b5d3]/10 border border-[#03b5d3]/30">
-            Live Availability
+          <h2 className="text-xl font-bold text-[#e4e1ed]">Pilih Kategori Tiket</h2>
+          <span
+            className={`text-xs font-bold px-2.5 py-1 rounded-full border ${
+              isEventEnded
+                ? 'bg-rose-500/10 border-rose-500/30 text-rose-400'
+                : 'bg-[#03b5d3]/10 border-[#03b5d3]/30 text-[#4cd7f6]'
+            }`}
+          >
+            {isEventEnded ? 'Acara Selesai' : 'Alokasi Live'}
           </span>
         </div>
+
+        {isEventEnded && (
+          <div className="p-3.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 flex-shrink-0 text-amber-400" />
+            <span>Penjualan ditutup. Jadwal acara ini telah berakhir.</span>
+          </div>
+        )}
 
         {error && (
           <div className="p-3.5 rounded-xl bg-[#93000a]/20 border border-[#ffb4ab]/30 text-[#ffb4ab] text-xs flex items-center gap-2">
@@ -71,7 +86,7 @@ export const BookingCard = ({
                     Rp {Number(cat.price).toLocaleString('id-ID')}
                   </p>
                   <span className="text-[11px] text-[#908fa0] block mt-1">
-                    {isSoldOut ? 'Sold Out' : `Only ${cat.remainingCapacity} left`}
+                    {isSoldOut ? 'Habis Terjual' : `Tersisa ${cat.remainingCapacity} tiket`}
                   </span>
                 </div>
 
@@ -105,19 +120,19 @@ export const BookingCard = ({
 
         <div className="pt-4 border-t border-[#464554]/30 space-y-2 text-xs text-[#c7c4d7]">
           <div className="flex justify-between">
-            <span>Subtotal ({quantity} items)</span>
+            <span>Subtotal ({quantity} tiket)</span>
             <span className="font-semibold text-[#e4e1ed]">
               Rp {subtotal.toLocaleString('id-ID')}
             </span>
           </div>
           <div className="flex justify-between">
-            <span>Platform Fee (2%)</span>
+            <span>Biaya Layanan Platform (2%)</span>
             <span className="font-semibold text-[#e4e1ed]">
               Rp {platformFee.toLocaleString('id-ID')}
             </span>
           </div>
           <div className="flex justify-between pt-3 border-t border-[#464554]/30 text-sm">
-            <span className="font-bold text-[#e4e1ed]">Total</span>
+            <span className="font-bold text-[#e4e1ed]">Total Pembayaran</span>
             <span className="font-extrabold text-[#4cd7f6] text-lg">
               Rp {grandTotal.toLocaleString('id-ID')}
             </span>
@@ -127,27 +142,34 @@ export const BookingCard = ({
         <button
           type="button"
           onClick={onBooking}
-          disabled={bookingLoading || !activeCategory || activeCategory.remainingCapacity <= 0}
+          disabled={
+            isEventEnded ||
+            bookingLoading ||
+            !activeCategory ||
+            activeCategory.remainingCapacity <= 0
+          }
           className="btn-primary w-full text-[#003640] font-bold py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 disabled:opacity-40"
         >
-          {bookingLoading ? (
+          {isEventEnded ? (
+            <span>Acara Telah Berakhir</span>
+          ) : bookingLoading ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin text-[#003640]" />
-              <span>Processing...</span>
+              <span>Memproses Pesanan...</span>
             </>
           ) : (
-            <span>Book Tickets</span>
+            <span>Pesan Tiket Sekarang</span>
           )}
         </button>
 
         <div className="flex items-center justify-center gap-4 text-xs text-[#908fa0] pt-2">
           <span className="flex items-center gap-1">
             <Lock className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Encrypted</span>
+            <span>Terenkripsi</span>
           </span>
           <span className="flex items-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Verified</span>
+            <span>Terproteksi Kunci Idempotensi</span>
           </span>
         </div>
       </div>

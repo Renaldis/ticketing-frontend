@@ -28,7 +28,7 @@ export const EventTicketsCard = ({
           className="btn-secondary text-[#4cd7f6] px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 w-fit"
         >
           <Plus className="w-4 h-4" />
-          <span>Add Tier Category</span>
+          <span>Tambah Kategori Tier</span>
         </button>
       </div>
 
@@ -49,7 +49,7 @@ export const EventTicketsCard = ({
               <button
                 onClick={() => onRequestDeleteCategory({ id: cat.id, name: cat.name })}
                 className="p-1.5 text-[#908fa0] hover:text-rose-400 rounded-lg hover:bg-rose-500/10 transition"
-                title="Delete Category"
+                title="Hapus Kategori"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -57,9 +57,7 @@ export const EventTicketsCard = ({
 
             <div className="pt-3 border-t border-[#464554]/20 flex items-center justify-between">
               <div>
-                <span className="text-[10px] text-[#908fa0] block font-bold uppercase">
-                  Live Capacity
-                </span>
+                <span className="text-[10px] text-[#908fa0] block font-bold uppercase">Kuota Live</span>
                 <span className="text-xs font-black text-emerald-400">
                   {cat.remainingCapacity} / {cat.totalCapacity}
                 </span>

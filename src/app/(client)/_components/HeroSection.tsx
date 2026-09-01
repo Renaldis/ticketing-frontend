@@ -24,23 +24,19 @@ export const HeroSection = ({
       <div className="ambient-glow top-0 left-1/4"></div>
       <div
         className="ambient-glow top-20 right-1/4"
-        style={{
-          background: 'radial-gradient(circle, rgba(76,215,246,0.15) 0%, rgba(19,19,27,0) 70%)',
-        }}
+        style={{ background: 'radial-gradient(circle, rgba(76,215,246,0.15) 0%, rgba(19,19,27,0) 70%)' }}
       ></div>
 
       <div className="max-w-4xl mx-auto z-10 space-y-8">
         <h1 className="text-4xl sm:text-6xl lg:text-[64px] font-extrabold leading-tight text-[#e4e1ed] tracking-tight">
-          Experience Live Events.
-          <br />
+          Nikmati Acara Langsung.<br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4cd7f6] to-[#c0c1ff]">
-            Zero Booking Friction.
+            Pemesanan Cepat Tanpa Antre.
           </span>
         </h1>
 
         <p className="text-base sm:text-lg text-[#c7c4d7] max-w-2xl mx-auto font-normal leading-relaxed">
-          Discover premium events, secure your tickets with cryptographic certainty, and access your
-          digital pass instantly. The next generation of ticketing.
+          Temukan konser musik, maraton olahraga, seminar, dan festival terbaik. Amankan tiket dengan kepastian alokasi kuota instan dan e-tiket QR digital.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
@@ -48,14 +44,14 @@ export const HeroSection = ({
             href="/events"
             className="btn-primary text-[#003640] font-bold text-sm px-8 py-3.5 rounded-xl w-full sm:w-auto flex items-center justify-center gap-2"
           >
-            <span>Explore Events</span>
+            <span>Jelajahi Semua Event</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
           <Link
             href="/my-orders"
             className="btn-secondary text-[#c0c1ff] font-bold text-sm px-8 py-3.5 rounded-xl w-full sm:w-auto flex items-center justify-center gap-2"
           >
-            <span>View My Tickets</span>
+            <span>Lihat Tiket Saya</span>
           </Link>
         </div>
       </div>
@@ -70,7 +66,7 @@ export const HeroSection = ({
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search for artists, venues, or events..."
+            placeholder="Cari nama event, artis, seminar..."
             className="w-full bg-transparent border-none text-[#e4e1ed] focus:outline-none placeholder-[#908fa0] text-sm"
           />
         </div>
@@ -81,7 +77,7 @@ export const HeroSection = ({
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            placeholder="Location"
+            placeholder="Kota / Lokasi"
             className="w-full bg-transparent border-none text-[#e4e1ed] focus:outline-none placeholder-[#908fa0] text-sm"
           />
         </div>
@@ -90,7 +86,7 @@ export const HeroSection = ({
           type="submit"
           className="btn-primary text-[#003640] rounded-xl px-8 py-3 font-bold text-sm flex items-center justify-center"
         >
-          Search
+          Cari Event
         </button>
       </form>
     </section>

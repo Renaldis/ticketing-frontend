@@ -22,7 +22,7 @@ export const useAdminEvents = () => {
   const fetchEvents = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await api.get('/events?limit=100');
+      const res = await api.get('/events?limit=100&upcomingOnly=false');
       setEvents(res.data?.data?.events || []);
     } catch (err) {
       console.error(err);

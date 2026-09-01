@@ -20,7 +20,7 @@ export const Navbar = () => {
     <nav className="flex justify-between items-center px-6 sm:px-10 w-full h-16 sticky top-0 z-50 bg-[#13131b]/85 backdrop-blur-xl border-b border-[#464554]/30 shadow-sm">
       <div className="flex items-center gap-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
+        <Link href="/" className="flex items-center gap-2.5 group">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-cyan-400 p-[1px] shadow-md shadow-cyan-500/20">
             <div className="w-full h-full bg-[#13131b] rounded-[7px] flex items-center justify-center">
               <Ticket className="w-4 h-4 text-[#4cd7f6]" />
@@ -39,7 +39,7 @@ export const Navbar = () => {
               : 'text-[#c7c4d7] hover:text-[#c0c1ff]'
           }`}
         >
-          Explore
+          Jelajahi Event
         </Link>
 
         <Link
@@ -50,7 +50,7 @@ export const Navbar = () => {
               : 'text-[#c7c4d7] hover:text-[#c0c1ff]'
           }`}
         >
-          My Orders
+          Tiket Saya
         </Link>
 
         {user?.role === 'ADMIN' && (
@@ -62,7 +62,7 @@ export const Navbar = () => {
               }`}
             >
               <LayoutDashboard className="w-3.5 h-3.5" />
-              <span>Portal</span>
+              <span>Portal Admin</span>
             </Link>
             <span className="text-[#464554]">|</span>
             <Link
@@ -72,7 +72,7 @@ export const Navbar = () => {
               }`}
             >
               <QrCode className="w-3.5 h-3.5" />
-              <span>Scanner</span>
+              <span>Scanner Gate</span>
             </Link>
           </div>
         )}
@@ -85,7 +85,7 @@ export const Navbar = () => {
             <button
               onClick={logout}
               className="p-2 text-[#908fa0] hover:text-rose-400 rounded-lg hover:bg-[#1f1f27] transition"
-              title="Logout"
+              title="Keluar Akun"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -96,13 +96,13 @@ export const Navbar = () => {
               href="/login"
               className="btn-secondary text-[#c0c1ff] font-semibold text-xs px-6 py-2 rounded-lg"
             >
-              Login
+              Masuk
             </Link>
             <Link
               href="/register"
               className="btn-primary text-[#003640] font-bold text-xs px-6 py-2 rounded-lg"
             >
-              Sign Up
+              Daftar
             </Link>
           </div>
         )}
@@ -125,7 +125,7 @@ export const Navbar = () => {
               isExploreActive ? 'text-[#c0c1ff] font-bold' : 'text-[#c7c4d7]'
             }`}
           >
-            Explore Events
+            Jelajahi Event
           </Link>
           <Link
             href="/my-orders"
@@ -134,7 +134,7 @@ export const Navbar = () => {
               isMyOrdersActive ? 'text-[#c0c1ff] font-bold' : 'text-[#c7c4d7]'
             }`}
           >
-            My Orders
+            Tiket Saya
           </Link>
           {user?.role === 'ADMIN' && (
             <>
@@ -145,7 +145,7 @@ export const Navbar = () => {
                   isAdminPortalActive ? 'text-cyan-300 font-bold' : 'text-indigo-300'
                 }`}
               >
-                Executive Portal
+                Portal Eksekutif Admin
               </Link>
               <Link
                 href="/admin/scanner"
@@ -154,7 +154,7 @@ export const Navbar = () => {
                   isAdminScannerActive ? 'text-cyan-300 font-bold' : 'text-cyan-300'
                 }`}
               >
-                Gate Scanner
+                Scanner Tiket Gate
               </Link>
             </>
           )}
@@ -162,26 +162,12 @@ export const Navbar = () => {
             {user ? (
               <>
                 <span className="text-xs text-slate-300 font-bold">{user.name || user.email}</span>
-                <button onClick={logout} className="text-xs text-rose-400 font-bold">
-                  Logout
-                </button>
+                <button onClick={logout} className="text-xs text-rose-400 font-bold">Keluar</button>
               </>
             ) : (
               <div className="grid grid-cols-2 gap-2 w-full">
-                <Link
-                  href="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-center btn-secondary py-2 rounded-lg text-xs font-bold text-white"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/register"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-center btn-primary py-2 rounded-lg text-xs font-bold text-[#003640]"
-                >
-                  Sign Up
-                </Link>
+                <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="text-center btn-secondary py-2 rounded-lg text-xs font-bold text-white">Masuk</Link>
+                <Link href="/register" onClick={() => setMobileMenuOpen(false)} className="text-center btn-primary py-2 rounded-lg text-xs font-bold text-[#003640]">Daftar</Link>
               </div>
             )}
           </div>

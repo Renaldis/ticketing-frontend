@@ -38,13 +38,10 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
   if (!event) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-24 text-center">
-        <h2 className="text-xl font-bold text-white mb-2">Event Not Found</h2>
-        <Link
-          href="/events"
-          className="text-[#c0c1ff] hover:underline text-sm inline-flex items-center gap-1"
-        >
+        <h2 className="text-xl font-bold text-white mb-2">Event Tidak Ditemukan</h2>
+        <Link href="/events" className="text-[#c0c1ff] hover:underline text-sm inline-flex items-center gap-1">
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Catalog</span>
+          <span>Kembali ke Katalog</span>
         </Link>
       </div>
     );
@@ -57,7 +54,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
         className="inline-flex items-center gap-2 text-xs font-semibold text-[#c7c4d7] hover:text-white transition mb-6"
       >
         <ArrowLeft className="w-4 h-4 text-[#4cd7f6]" />
-        <span>Back to Events</span>
+        <span>Kembali ke Daftar Event</span>
       </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">

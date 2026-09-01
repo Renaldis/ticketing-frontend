@@ -1,18 +1,7 @@
 'use client';
 
 import React from 'react';
-import {
-  Search,
-  MapPin,
-  RotateCcw,
-  Ticket,
-  Flame,
-  Dumbbell,
-  GraduationCap,
-  MonitorPlay,
-  Palette,
-  Sparkles,
-} from 'lucide-react';
+import { Search, MapPin, RotateCcw, Ticket, Flame, Dumbbell, GraduationCap, MonitorPlay, Palette, Sparkles } from 'lucide-react';
 import { useEventsCatalog } from './_hooks/useEventsCatalog';
 import { EventCard } from '../_components/EventCard';
 import {
@@ -24,13 +13,13 @@ import {
 } from '@/components/ui/select';
 
 const categoriesPills = [
-  { key: 'ALL', label: 'All Experiences', icon: Sparkles },
-  { key: 'CONCERT', label: 'Concert & Music', icon: Flame },
-  { key: 'SPORTS', label: 'Sports & Marathon', icon: Dumbbell },
+  { key: 'ALL', label: 'Semua Kategori', icon: Sparkles },
+  { key: 'CONCERT', label: 'Konser Musik', icon: Flame },
+  { key: 'SPORTS', label: 'Olahraga & Maraton', icon: Dumbbell },
   { key: 'SEMINAR', label: 'Seminar & Summit', icon: GraduationCap },
-  { key: 'WORKSHOP', label: 'Workshop & Class', icon: GraduationCap },
-  { key: 'EXHIBITION', label: 'Exhibition & Expo', icon: Palette },
-  { key: 'WEBINAR', label: 'Online Webinar', icon: MonitorPlay },
+  { key: 'WORKSHOP', label: 'Workshop & Kelas', icon: GraduationCap },
+  { key: 'EXHIBITION', label: 'Pameran & Expo', icon: Palette },
+  { key: 'WEBINAR', label: 'Webinar Online', icon: MonitorPlay },
 ];
 
 export default function EventsCatalogPage() {
@@ -54,13 +43,13 @@ export default function EventsCatalogPage() {
       {/* Header Title */}
       <div className="text-center sm:text-left space-y-2">
         <span className="text-xs font-extrabold text-[#4cd7f6] uppercase tracking-widest block">
-          Universal Event Discovery
+          Pusat Eksplorasi Event
         </span>
         <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-          Find Concerts, Marathons & Tech Summits
+          Temukan Konser, Maraton & Seminar Terbaik
         </h1>
         <p className="text-sm text-[#908fa0]">
-          Verified live ticket allocations protected by high-assurance atomic concurrency.
+          Alokasi tiket live terverifikasi dengan kepastian kuota bebas double-booking.
         </p>
       </div>
 
@@ -97,7 +86,7 @@ export default function EventsCatalogPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by event title, organizer, topic..."
+            placeholder="Cari berdasarkan judul event, pengisi acara, topik..."
             className="w-full bg-transparent text-sm text-white focus:outline-none placeholder-[#908fa0]"
           />
         </div>
@@ -108,20 +97,20 @@ export default function EventsCatalogPage() {
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            placeholder="City / Venue"
+            placeholder="Kota / Gedung Venue"
             className="w-full bg-transparent text-sm text-white focus:outline-none placeholder-[#908fa0]"
           />
         </div>
 
         <div className="flex items-center gap-2 w-full md:w-auto">
           <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-full md:w-[170px]">
-              <SelectValue placeholder="Sort By" />
+            <SelectTrigger className="w-full md:w-[180px]">
+              <SelectValue placeholder="Urutkan" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="date">Date: Upcoming</SelectItem>
-              <SelectItem value="title">Title: A-Z</SelectItem>
-              <SelectItem value="createdAt">Newly Added</SelectItem>
+              <SelectItem value="date">Jadwal: Terdekat</SelectItem>
+              <SelectItem value="title">Judul: A-Z</SelectItem>
+              <SelectItem value="createdAt">Paling Baru Ditambah</SelectItem>
             </SelectContent>
           </Select>
 
@@ -129,7 +118,7 @@ export default function EventsCatalogPage() {
             type="submit"
             className="btn-primary text-[#003640] font-bold text-xs px-6 py-2.5 rounded-xl flex-shrink-0 h-10"
           >
-            Filter
+            Saring
           </button>
 
           {(search || location || category !== 'ALL' || sortBy !== 'date') && (
@@ -137,7 +126,7 @@ export default function EventsCatalogPage() {
               type="button"
               onClick={handleResetFilters}
               className="p-2.5 rounded-xl bg-[#1f1f27] hover:bg-[#292932] text-[#908fa0] hover:text-white transition h-10 w-10 flex items-center justify-center flex-shrink-0"
-              title="Reset Filters"
+              title="Reset Filter"
             >
               <RotateCcw className="w-4 h-4" />
             </button>
@@ -149,7 +138,7 @@ export default function EventsCatalogPage() {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <span className="text-xs font-bold text-[#c7c4d7]">
-            Showing <span className="text-white font-extrabold">{events.length}</span> live events
+            Menampilkan <span className="text-white font-extrabold">{events.length}</span> event langsung
           </span>
         </div>
 
@@ -162,15 +151,15 @@ export default function EventsCatalogPage() {
         ) : events.length === 0 ? (
           <div className="text-center py-24 glass-panel rounded-3xl">
             <Ticket className="w-12 h-12 text-[#908fa0] mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-white mb-2">No Matching Events Found</h3>
+            <h3 className="text-lg font-bold text-white mb-2">Tidak Ada Event yang Sesuai</h3>
             <p className="text-xs text-[#908fa0] mb-6">
-              Try broadening your search or resetting filter parameters.
+              Coba perluas pencarian Anda atau reset filter yang dipilih.
             </p>
             <button
               onClick={handleResetFilters}
               className="btn-secondary text-[#c0c1ff] px-6 py-2.5 rounded-xl text-xs font-bold"
             >
-              Reset Filters
+              Reset Filter
             </button>
           </div>
         ) : (

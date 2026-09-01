@@ -45,8 +45,8 @@ export default function AdminEventsPage() {
   return (
     <>
       <AdminHeader
-        title="Event Catalog Management"
-        subtitle="Manage active inventory, update concert schedules, and tier configurations"
+        title="Manajemen Katalog Event"
+        subtitle="Kelola inventori aktif, perbarui jadwal konser, dan konfigurasi tier tiket"
         onOpenSidebar={() => {}}
         onRefresh={fetchEvents}
         refreshing={refreshing}
@@ -55,8 +55,8 @@ export default function AdminEventsPage() {
       <main className="p-6 sm:p-10 space-y-8 flex-1">
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-xl font-bold text-white">Live Concert Catalog ({events.length})</h2>
-            <p className="text-xs text-[#908fa0]">Full CRUD inventory control</p>
+            <h2 className="text-xl font-bold text-white">Daftar Event Langsung ({events.length})</h2>
+            <p className="text-xs text-[#908fa0]">Kontrol penuh inventori dan publikasi event</p>
           </div>
 
           <button
@@ -64,7 +64,7 @@ export default function AdminEventsPage() {
             className="btn-primary text-[#003640] px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5"
           >
             <PlusCircle className="w-4 h-4" />
-            <span>Add New Event</span>
+            <span>Tambah Event Baru</span>
           </button>
         </div>
 
@@ -88,17 +88,13 @@ export default function AdminEventsPage() {
       />
 
       {/* SHADCN ALERT DIALOG: CONFIRM DELETE EVENT */}
-      <AlertDialog
-        open={!!deleteTargetEvent}
-        onOpenChange={(open) => !open && setDeleteTargetEvent(null)}
-      >
+      <AlertDialog open={!!deleteTargetEvent} onOpenChange={(open) => !open && setDeleteTargetEvent(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Hapus Event Ini Secara Permanen?</AlertDialogTitle>
             <AlertDialogDescription>
-              Event <strong>&quot;{deleteTargetEvent?.title}&quot;</strong> beserta seluruh kategori
-              tiket dan riwayat kaitannya akan dihapus permanen dari sistem. Aksi ini tidak dapat
-              dibatalkan.
+              Event <strong>&quot;{deleteTargetEvent?.title}&quot;</strong> beserta seluruh kategori tiket dan riwayat
+              kaitannya akan dihapus permanen dari sistem. Aksi ini tidak dapat dibatalkan.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

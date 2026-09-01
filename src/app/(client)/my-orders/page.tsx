@@ -53,13 +53,13 @@ export default function MyOrdersPage() {
     <main className="flex-grow w-full max-w-[1440px] mx-auto px-6 sm:px-12 py-10 space-y-8">
       <div className="pb-6 border-b border-[#464554]/30">
         <span className="text-xs font-extrabold text-[#4cd7f6] uppercase tracking-widest block mb-1">
-          Pass Management
+          Manajemen Tiket & Pembayaran
         </span>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-[#e4e1ed] tracking-tight">
-          My Orders & Passes
+          Tiket & Pesanan Saya
         </h1>
         <p className="text-[#908fa0] text-sm mt-1">
-          Review pending payments, continue checkouts, and access digital entry QR codes
+          Lanjutkan pembayaran tagihan, cek status transaksi, dan akses kode QR digital masuk acara
         </p>
       </div>
 
@@ -74,7 +74,7 @@ export default function MyOrdersPage() {
             {activeTab === 'PENDING'
               ? 'Tidak ada tagihan yang menunggu pembayaran.'
               : activeTab === 'ACTIVE'
-                ? 'Anda belum memiliki tiket konser yang aktif.'
+                ? 'Anda belum memiliki tiket acara yang aktif.'
                 : 'Jelajahi konser dan amankan tiket Anda sekarang.'}
           </p>
           <Link
@@ -112,9 +112,8 @@ export default function MyOrdersPage() {
             <AlertDialogTitle>Batalkan Pesanan Ini?</AlertDialogTitle>
             <AlertDialogDescription>
               Pesanan untuk <strong>{cancelTargetOrder?.event?.title}</strong> sebesar Rp{' '}
-              {Number(cancelTargetOrder?.totalAmount).toLocaleString('id-ID')} akan dibatalkan.
-              Kuota tiket akan dikembalikan ke pool penjualan dan invoice pembayaran akan
-              dinonaktifkan.
+              {Number(cancelTargetOrder?.totalAmount).toLocaleString('id-ID')} akan dibatalkan. Kuota
+              tiket akan dikembalikan ke pool penjualan dan invoice pembayaran akan dinonaktifkan.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -36,38 +36,38 @@ export const AdminSidebar = ({
 
   const navItems = [
     {
-      label: 'Overview & Telemetry',
+      label: 'Ringkasan & Telemetri',
       href: '/admin',
       active: pathname === '/admin',
       icon: LayoutDashboard,
     },
     {
-      label: `Event Catalog ${eventCount ? `(${eventCount})` : ''}`,
+      label: `Katalog Event ${eventCount ? `(${eventCount})` : ''}`,
       href: '/admin/events',
       active: pathname.startsWith('/admin/events'),
       icon: Calendar,
     },
     {
-      label: 'Ticket & Stock Manager',
+      label: 'Manajer Tiket & Kuota',
       href: '/admin/tickets',
       active: pathname.startsWith('/admin/tickets'),
       icon: Ticket,
     },
     {
-      label: `Order Ledger ${orderCount ? `(${orderCount})` : ''}`,
+      label: `Buku Transaksi ${orderCount ? `(${orderCount})` : ''}`,
       href: '/admin/orders',
       active: pathname.startsWith('/admin/orders'),
       icon: Receipt,
     },
     {
-      label: 'Gate Scanner App',
+      label: 'Aplikasi Scanner Gate',
       href: '/admin/scanner',
       active: pathname.startsWith('/admin/scanner'),
       icon: QrCode,
       highlight: true,
     },
     {
-      label: 'Platform Security',
+      label: 'Keamanan Sistem',
       href: '/admin/settings',
       active: pathname.startsWith('/admin/settings'),
       icon: Settings,
@@ -89,11 +89,9 @@ export const AdminSidebar = ({
             </div>
           </div>
           <div className="overflow-hidden">
-            <h2 className="text-sm font-bold text-white truncate">
-              {user?.name || 'Event Manager'}
-            </h2>
+            <h2 className="text-sm font-bold text-white truncate">{user?.name || 'Manajer Event'}</h2>
             <span className="text-[10px] text-[#4cd7f6] uppercase font-extrabold tracking-wider block">
-              Enterprise Tier
+              Tier Eksekutif
             </span>
           </div>
         </div>
@@ -135,7 +133,7 @@ export const AdminSidebar = ({
             className="btn-primary w-full text-[#003640] font-black text-xs py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20"
           >
             <PlusCircle className="w-4 h-4" />
-            <span>Create Event</span>
+            <span>Buat Event Baru</span>
           </button>
         )}
 
@@ -143,7 +141,7 @@ export const AdminSidebar = ({
           href="/"
           className="w-full flex items-center justify-center gap-2 text-[#908fa0] hover:text-white text-[11px] py-2 font-semibold"
         >
-          <span>Exit to Public Portal</span>
+          <span>Kembali ke Web Publik</span>
           <ArrowUpRight className="w-3.5 h-3.5" />
         </Link>
       </div>

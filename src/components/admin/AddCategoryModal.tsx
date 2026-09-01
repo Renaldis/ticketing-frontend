@@ -6,7 +6,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { addCategorySchema, AddCategoryFormData } from '@/schemas';
 import { AlertCircle } from 'lucide-react';
 import { api } from '@/lib/api';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { toast } from 'sonner';
 
 interface AddCategoryModalProps {
@@ -16,12 +21,7 @@ interface AddCategoryModalProps {
   eventId: string;
 }
 
-export const AddCategoryModal = ({
-  isOpen,
-  onClose,
-  onSuccess,
-  eventId,
-}: AddCategoryModalProps) => {
+export const AddCategoryModal = ({ isOpen, onClose, onSuccess, eventId }: AddCategoryModalProps) => {
   const [submitting, setSubmitting] = React.useState(false);
   const [serverError, setServerError] = React.useState('');
 
@@ -61,7 +61,7 @@ export const AddCategoryModal = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Add Ticket Category Tier</DialogTitle>
+          <DialogTitle>Tambah Kategori Tiket Tier Baru</DialogTitle>
         </DialogHeader>
 
         {serverError && (
@@ -73,43 +73,35 @@ export const AddCategoryModal = ({
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-xs">
           <div>
-            <label className="block text-[#908fa0] uppercase font-bold mb-1">
-              Category Tier Name
-            </label>
+            <label className="block text-[#908fa0] uppercase font-bold mb-1">Nama Kategori Tier</label>
             <input
               {...register('name')}
-              placeholder="e.g. VIP Pass, Early Bird"
+              placeholder="contoh: VIP Pass, Early Bird, Reguler"
               className="input-glass w-full rounded-xl px-3.5 py-2.5 text-sm text-white"
             />
             {errors.name && <p className="text-rose-400 text-[11px] mt-1">{errors.name.message}</p>}
           </div>
 
           <div>
-            <label className="block text-[#908fa0] uppercase font-bold mb-1">Price (IDR)</label>
+            <label className="block text-[#908fa0] uppercase font-bold mb-1">Harga Tiket (IDR)</label>
             <input
               type="number"
               {...register('price')}
               placeholder="1500000"
               className="input-glass w-full rounded-xl px-3.5 py-2.5 text-sm text-white"
             />
-            {errors.price && (
-              <p className="text-rose-400 text-[11px] mt-1">{errors.price.message}</p>
-            )}
+            {errors.price && <p className="text-rose-400 text-[11px] mt-1">{errors.price.message}</p>}
           </div>
 
           <div>
-            <label className="block text-[#908fa0] uppercase font-bold mb-1">
-              Total Capacity Seats
-            </label>
+            <label className="block text-[#908fa0] uppercase font-bold mb-1">Kapasitas Kuota Tiket</label>
             <input
               type="number"
               {...register('capacity')}
               placeholder="100"
               className="input-glass w-full rounded-xl px-3.5 py-2.5 text-sm text-white"
             />
-            {errors.capacity && (
-              <p className="text-rose-400 text-[11px] mt-1">{errors.capacity.message}</p>
-            )}
+            {errors.capacity && <p className="text-rose-400 text-[11px] mt-1">{errors.capacity.message}</p>}
           </div>
 
           <div className="flex gap-3 pt-3 border-t border-[#464554]/30">
@@ -118,14 +110,14 @@ export const AddCategoryModal = ({
               onClick={onClose}
               className="btn-secondary w-1/2 py-2.5 rounded-xl text-white font-bold"
             >
-              Cancel
+              Batal
             </button>
             <button
               type="submit"
               disabled={submitting}
               className="btn-primary w-1/2 py-2.5 rounded-xl text-[#003640] font-bold disabled:opacity-40"
             >
-              {submitting ? 'Adding...' : 'Add Tier'}
+              {submitting ? 'Menambahkan...' : 'Simpan Kategori'}
             </button>
           </div>
         </form>

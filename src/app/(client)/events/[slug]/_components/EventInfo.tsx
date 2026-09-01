@@ -3,17 +3,17 @@ import { MapPin, Ticket } from 'lucide-react';
 import { EventItem } from '@/types';
 
 const categoryLabels: Record<string, string> = {
-  CONCERT: 'Concert & Music',
-  SPORTS: 'Sports & Marathon',
-  SEMINAR: 'Seminar & Summit',
-  WEBINAR: 'Online Webinar',
-  EXHIBITION: 'Exhibition & Expo',
-  WORKSHOP: 'Workshop & Class',
-  FESTIVAL: 'Festival Experience',
+  CONCERT: 'Konser Musik',
+  SPORTS: 'Olahraga & Maraton',
+  SEMINAR: 'Seminar & Konferensi',
+  WEBINAR: 'Webinar Online',
+  EXHIBITION: 'Pameran & Expo',
+  WORKSHOP: 'Workshop & Kelas',
+  FESTIVAL: 'Festival Langsung',
 };
 
 export const EventInfo = ({ event }: { event: EventItem }) => {
-  const categoryLabel = categoryLabels[event.category || 'CONCERT'] || 'Live Event';
+  const categoryLabel = categoryLabels[event.category || 'CONCERT'] || 'Event Langsung';
 
   return (
     <div className="lg:col-span-8 space-y-8">
@@ -49,12 +49,10 @@ export const EventInfo = ({ event }: { event: EventItem }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-6 border-b border-[#464554]/30">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-[#c0c1ff]">
-              <span className="text-xs font-black">DATE</span>
+              <span className="text-xs font-black">WAKTU</span>
             </div>
             <div>
-              <span className="text-xs text-[#908fa0] uppercase font-bold block">
-                Event Schedule
-              </span>
+              <span className="text-xs text-[#908fa0] uppercase font-bold block">Jadwal Acara</span>
               <span className="text-sm font-semibold text-white">
                 {new Date(event.date).toLocaleDateString('id-ID', { dateStyle: 'full' })}
               </span>
@@ -66,9 +64,7 @@ export const EventInfo = ({ event }: { event: EventItem }) => {
               <MapPin className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-xs text-[#908fa0] uppercase font-bold block">
-                Location / Venue
-              </span>
+              <span className="text-xs text-[#908fa0] uppercase font-bold block">Lokasi / Gedung Venue</span>
               <span className="text-sm font-semibold text-white">{event.location}</span>
             </div>
           </div>
@@ -76,10 +72,10 @@ export const EventInfo = ({ event }: { event: EventItem }) => {
       </div>
 
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-white">About The Experience</h2>
+        <h2 className="text-xl font-bold text-white">Tentang Acara Ini</h2>
         <div
           className="text-[#c7c4d7] text-sm leading-relaxed prose prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: event.description || 'No description provided.' }}
+          dangerouslySetInnerHTML={{ __html: event.description || 'Tidak ada deskripsi rinci.' }}
         />
       </div>
     </div>

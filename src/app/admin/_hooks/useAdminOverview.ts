@@ -16,7 +16,7 @@ export const useAdminOverview = () => {
     setLoading(true);
     try {
       const [eventsRes, overallRes] = await Promise.all([
-        api.get('/events?limit=50'),
+        api.get('/events?limit=50&upcomingOnly=false'),
         api.get('/admin/summary'),
       ]);
 
