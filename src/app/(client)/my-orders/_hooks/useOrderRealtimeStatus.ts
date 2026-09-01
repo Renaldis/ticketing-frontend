@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { API_BASE_URL } from '@/lib/api';
 
 export const useOrderRealtimeStatus = (
   orderId?: string,
@@ -17,8 +18,7 @@ export const useOrderRealtimeStatus = (
   useEffect(() => {
     if (!orderId || status === 'PAID' || status === 'CHECKED_IN') return;
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-    const eventSource = new EventSource(`${apiUrl}/realtime/orders/${orderId}/status`);
+    const eventSource = new EventSource(`${API_BASE_URL}/realtime/orders/${orderId}/status`);
 
     eventSource.onmessage = (event) => {
       try {
@@ -26,9 +26,13 @@ export const useOrderRealtimeStatus = (
         if (data.type === 'ORDER_STATUS_UPDATE' && data.status) {
           setStatus(data.status);
           if (data.status === 'PAID') {
-            toast.success('Pembayaran Berhasil! Tiket Anda telah aktif.');
+            toast.success('Pembayaran Terverifikasi! Tiket Anda aktif.', {
+              id: `payment-status-${orderId}`,
+            });
           } else if (data.status === 'CANCELLED') {
-            toast.error('Pesanan telah dibatalkan / waktu pembayaran habis.');
+            toast.error('Pesanan telah dibatalkan / waktu pembayaran habis.', {
+              id: `payment-status-${orderId}`,
+            });
           }
           if (onStatusChanged) {
             onStatusChanged(data.status);

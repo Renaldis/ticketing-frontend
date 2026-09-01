@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { TicketCategory } from '@/types';
+import { API_BASE_URL } from '@/lib/api';
 
 export const useEventRealtimeQuota = (
   eventId?: string,
@@ -18,8 +19,8 @@ export const useEventRealtimeQuota = (
   useEffect(() => {
     if (!eventId) return;
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-    const eventSource = new EventSource(`${apiUrl}/realtime/events/${eventId}/quota`);
+    // Gunakan basis API_BASE_URL dinamis dari central api lib
+    const eventSource = new EventSource(`${API_BASE_URL}/realtime/events/${eventId}/quota`);
 
     eventSource.onmessage = (event) => {
       try {

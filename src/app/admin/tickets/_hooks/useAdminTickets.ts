@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { api } from '@/lib/api';
+import { api, API_BASE_URL } from '@/lib/api';
 import { EventItem } from '@/types';
 import { toast } from 'sonner';
 
@@ -37,8 +37,7 @@ export const useAdminTickets = () => {
 
   // Admin Real-time SSE Stock Stream
   useEffect(() => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-    const eventSource = new EventSource(`${apiUrl}/realtime/admin/stream`);
+    const eventSource = new EventSource(`${API_BASE_URL}/realtime/admin/stream`);
 
     eventSource.onmessage = (e) => {
       try {

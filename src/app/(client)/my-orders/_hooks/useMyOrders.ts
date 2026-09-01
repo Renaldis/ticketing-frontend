@@ -45,13 +45,15 @@ export const useMyOrders = () => {
         if (found && found.status === 'PENDING') {
           handleSyncStatus(targetOrderId);
         }
+        // Bersihkan query string agar tidak re-trigger sync saat refresh
+        router.replace('/my-orders');
       }
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }, [searchParams]);
+  }, [searchParams, router]);
 
   useEffect(() => {
     if (!authLoading) {
@@ -81,9 +83,13 @@ export const useMyOrders = () => {
       const res = await api.post(`/orders/${orderId}/sync-status`);
       const updatedOrder = res.data?.data?.order;
       if (updatedOrder?.status === 'PAID') {
-        toast.success('Pembayaran Terverifikasi! Tiket Anda aktif.');
+        toast.success('Pembayaran Terverifikasi! Tiket Anda aktif.', {
+          id: `payment-status-${orderId}`,
+        });
       } else {
-        toast.info(`Status pembayaran: ${updatedOrder?.status || 'PENDING'}`);
+        toast.info(`Status pembayaran: ${updatedOrder?.status || 'PENDING'}`, {
+          id: `payment-status-${orderId}`,
+        });
       }
       fetchOrders();
     } catch (err: any) {

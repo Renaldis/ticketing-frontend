@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { api, generateUUID } from '@/lib/api';
+import { api, API_BASE_URL, generateUUID } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { EventItem, TicketCategory } from '@/types';
 import { toast } from 'sonner';
@@ -58,8 +58,7 @@ export const useEventDetail = (slugOrId: string) => {
   useEffect(() => {
     if (!slugOrId) return;
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-    const eventSource = new EventSource(`${apiUrl}/realtime/events/${slugOrId}/quota`);
+    const eventSource = new EventSource(`${API_BASE_URL}/realtime/events/${slugOrId}/quota`);
 
     eventSource.onmessage = (e) => {
       try {
@@ -144,20 +143,23 @@ export const useEventDetail = (slugOrId: string) => {
       }
 
       if (payment?.token && window.snap) {
+        // Dapatkan ID order yang baru dibuat dari response checkout
+        const newOrderId = order.id;
+
         window.snap.pay(payment.token, {
           onSuccess: function () {
             toast.success('Pembayaran Berhasil! Mengalihkan ke Tiket Saya...');
-            router.push('/my-orders');
+            router.push(`/my-orders?order_id=${newOrderId}&status=success`);
           },
           onPending: function () {
             toast.info('Menunggu penyelesaian pembayaran...');
-            router.push('/my-orders');
+            router.push(`/my-orders?order_id=${newOrderId}&status=pending`);
           },
           onError: function () {
             setError('Transaksi pembayaran dibatalkan.');
           },
           onClose: function () {
-            router.push('/my-orders');
+            router.push(`/my-orders?order_id=${newOrderId}`);
           },
         });
       } else {
