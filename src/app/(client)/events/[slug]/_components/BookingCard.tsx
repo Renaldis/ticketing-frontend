@@ -1,6 +1,7 @@
 import React from 'react';
 import { Lock, ShieldCheck, AlertCircle, Loader2, Plus, Minus, Flame } from 'lucide-react';
 import { EventItem, TicketCategory } from '@/types';
+import { useEventRealtimeQuota } from '../_hooks/useEventRealtimeQuota';
 
 interface BookingCardProps {
   event: EventItem;
@@ -11,8 +12,10 @@ interface BookingCardProps {
   setQuantity: React.Dispatch<React.SetStateAction<number>>;
   activeCategory?: TicketCategory;
   subtotal: number;
+  feePercent?: number;
   platformFee: number;
   grandTotal: number;
+  isFree?: boolean;
   bookingLoading: boolean;
   error: string;
   onBooking: () => void;
@@ -27,13 +30,20 @@ export const BookingCard = ({
   setQuantity,
   activeCategory,
   subtotal,
+  feePercent = 2,
   platformFee,
   grandTotal,
+  isFree = false,
   bookingLoading,
   error,
   onBooking,
 }: BookingCardProps) => {
   const isEventEnded = new Date(event.date) < new Date();
+
+  // Integrasi Real-time SSE Live Quota
+  const liveCategories = useEventRealtimeQuota(event.id, categories);
+  const currentActiveCat =
+    liveCategories.find((c: TicketCategory) => c.id === selectedCategory) || activeCategory;
 
   return (
     <div className="lg:col-span-4">
@@ -69,7 +79,7 @@ export const BookingCard = ({
         )}
 
         <div className="space-y-3">
-          {categories.map((cat: TicketCategory) => {
+          {liveCategories.map((cat: TicketCategory) => {
             const isSoldOut = cat.remainingCapacity <= 0;
             const isSelected = selectedCategory === cat.id;
 
@@ -88,7 +98,9 @@ export const BookingCard = ({
                 <div>
                   <h3 className="font-bold text-sm text-[#e4e1ed]">{cat.name}</h3>
                   <p className="text-xs text-[#c0c1ff] font-semibold mt-0.5">
-                    Rp {Number(cat.price).toLocaleString('id-ID')}
+                    {Number(cat.price) === 0
+                      ? 'Gratis'
+                      : `Rp ${Number(cat.price).toLocaleString('id-ID')}`}
                   </p>
                   <span className="text-[11px] text-[#908fa0] block mt-1">
                     {isSoldOut ? (
@@ -133,19 +145,21 @@ export const BookingCard = ({
           <div className="flex justify-between">
             <span>Subtotal ({quantity} tiket)</span>
             <span className="font-semibold text-[#e4e1ed]">
-              Rp {subtotal.toLocaleString('id-ID')}
+              {subtotal === 0 ? 'Gratis' : `Rp ${subtotal.toLocaleString('id-ID')}`}
             </span>
           </div>
-          <div className="flex justify-between">
-            <span>Biaya Layanan Platform (2%)</span>
-            <span className="font-semibold text-[#e4e1ed]">
-              Rp {platformFee.toLocaleString('id-ID')}
-            </span>
-          </div>
+          {!isFree && (
+            <div className="flex justify-between">
+              <span>Biaya Layanan Platform ({feePercent}%)</span>
+              <span className="font-semibold text-[#e4e1ed]">
+                Rp {platformFee.toLocaleString('id-ID')}
+              </span>
+            </div>
+          )}
           <div className="flex justify-between pt-3 border-t border-[#464554]/30 text-sm">
             <span className="font-bold text-[#e4e1ed]">Total Pembayaran</span>
             <span className="font-extrabold text-[#4cd7f6] text-lg">
-              Rp {grandTotal.toLocaleString('id-ID')}
+              {grandTotal === 0 ? 'Gratis' : `Rp ${grandTotal.toLocaleString('id-ID')}`}
             </span>
           </div>
         </div>
@@ -156,8 +170,8 @@ export const BookingCard = ({
           disabled={
             isEventEnded ||
             bookingLoading ||
-            !activeCategory ||
-            activeCategory.remainingCapacity <= 0
+            !currentActiveCat ||
+            currentActiveCat.remainingCapacity <= 0
           }
           className="btn-primary w-full text-[#003640] font-bold py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 disabled:opacity-40"
         >
@@ -168,6 +182,8 @@ export const BookingCard = ({
               <Loader2 className="w-4 h-4 animate-spin text-[#003640]" />
               <span>Memproses Pesanan...</span>
             </>
+          ) : isFree ? (
+            <span>Klaim Tiket Gratis Sekarang</span>
           ) : (
             <span>Pesan Tiket Sekarang</span>
           )}

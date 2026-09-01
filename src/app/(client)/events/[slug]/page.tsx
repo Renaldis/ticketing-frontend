@@ -23,8 +23,10 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
     error,
     activeCategory,
     subtotal,
+    feePercent,
     platformFee,
     grandTotal,
+    isFree,
     handleBooking,
   } = useEventDetail(slugOrId);
 
@@ -72,8 +74,10 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
           setQuantity={setQuantity}
           activeCategory={activeCategory}
           subtotal={subtotal}
+          feePercent={feePercent}
           platformFee={platformFee}
           grandTotal={grandTotal}
+          isFree={isFree}
           bookingLoading={bookingLoading}
           error={error}
           onBooking={handleBooking}

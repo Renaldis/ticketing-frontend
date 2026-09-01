@@ -2,14 +2,25 @@
 
 import React, { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
-import { ShieldCheck, Sparkles, Server, Database, Clock, Save, Loader2 } from 'lucide-react';
+import {
+  ShieldCheck,
+  Sparkles,
+  Server,
+  Database,
+  Clock,
+  Save,
+  Loader2,
+  Percent,
+} from 'lucide-react';
 import { AdminHeader } from '@/components/admin/AdminHeader';
 import { toast } from 'sonner';
 
 export default function AdminSettingsPage() {
   const [ttlMinutes, setTtlMinutes] = useState<number>(15);
+  const [feePercent, setFeePercent] = useState<number>(2);
   const [_loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+  const [savingTtl, setSavingTtl] = useState(false);
+  const [savingFee, setSavingFee] = useState(false);
 
   useEffect(() => {
     fetchSettings();
@@ -18,8 +29,12 @@ export default function AdminSettingsPage() {
   const fetchSettings = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/admin/settings/expiration');
-      setTtlMinutes(res.data?.data?.ttlMinutes || 15);
+      const [ttlRes, feeRes] = await Promise.all([
+        api.get('/admin/settings/expiration'),
+        api.get('/admin/settings/fee'),
+      ]);
+      setTtlMinutes(ttlRes.data?.data?.ttlMinutes || 15);
+      setFeePercent(feeRes.data?.data?.feePercent ?? 2);
     } catch (err) {
       console.error('Error fetching settings:', err);
       toast.error('Gagal mengambil pengaturan sistem.');
@@ -30,7 +45,7 @@ export default function AdminSettingsPage() {
 
   const handleSaveTtl = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSaving(true);
+    setSavingTtl(true);
 
     try {
       await api.put('/admin/settings/expiration', {
@@ -40,15 +55,31 @@ export default function AdminSettingsPage() {
     } catch (err: any) {
       toast.error(err.response?.data?.message || 'Gagal menyimpan pengaturan durasi.');
     } finally {
-      setSaving(false);
+      setSavingTtl(false);
+    }
+  };
+
+  const handleSaveFee = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSavingFee(true);
+
+    try {
+      await api.put('/admin/settings/fee', {
+        feePercent: Number(feePercent),
+      });
+      toast.success(`Biaya layanan platform berhasil diubah ke ${feePercent}%!`);
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || 'Gagal menyimpan pengaturan biaya layanan.');
+    } finally {
+      setSavingFee(false);
     }
   };
 
   return (
     <>
       <AdminHeader
-        title="Platform Security & Infrastructure"
-        subtitle="Manage dynamic expiration countdown, concurrency engines, and BullMQ workers"
+        title="Keamanan & Pengaturan Sistem"
+        subtitle="Kelola timer countdown pembayaran, persentase fee platform, dan proteksi concurrency"
         onOpenSidebar={() => {}}
       />
 
@@ -62,16 +93,16 @@ export default function AdminSettingsPage() {
               </div>
               <div>
                 <h2 className="text-lg font-bold text-white">
-                  Payment Reservation Countdown (BullMQ TTL)
+                  Batas Waktu Pembayaran (BullMQ & Midtrans TTL)
                 </h2>
                 <p className="text-xs text-[#908fa0]">
-                  Configure how long tickets remain reserved before un-paid orders auto-cancel and
-                  restock
+                  Atur durasi countdown pembayaran invoice sebelum pesanan hangus dan stok tiket
+                  direstock otomatis
                 </p>
               </div>
             </div>
             <span className="text-xs font-bold text-[#4cd7f6] bg-[#03b5d3]/10 px-3 py-1 rounded-full border border-[#03b5d3]/30">
-              Live BullMQ Queue
+              Antrean BullMQ Live
             </span>
           </div>
 
@@ -79,8 +110,8 @@ export default function AdminSettingsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
               <div>
                 <label className="block text-xs font-bold uppercase text-[#908fa0] mb-2">
-                  Timer Duration:{' '}
-                  <span className="text-white font-extrabold">{ttlMinutes} Minutes</span>
+                  Durasi Countdown:{' '}
+                  <span className="text-white font-extrabold">{ttlMinutes} Menit</span>
                 </label>
                 <input
                   type="range"
@@ -92,18 +123,18 @@ export default function AdminSettingsPage() {
                   className="w-full accent-[#4cd7f6] cursor-pointer"
                 />
                 <div className="flex justify-between text-[10px] text-[#908fa0] mt-1">
-                  <span>2 Mins (Fast Test)</span>
-                  <span>15 Mins (Standard)</span>
-                  <span>60 Mins (Max)</span>
+                  <span>2 Menit (Uji Kilat)</span>
+                  <span>15 Menit (Standar)</span>
+                  <span>60 Menit (Maksimal)</span>
                 </div>
               </div>
 
               <div className="bg-[#13131b] p-4 rounded-xl border border-[#464554]/30 text-xs space-y-1 text-[#c7c4d7]">
-                <span className="font-bold text-white block">Applied Delay:</span>
+                <span className="font-bold text-white block">Sinkronisasi Midtrans:</span>
                 <p className="text-[#908fa0]">
-                  New checkouts will queue a delayed BullMQ job of{' '}
+                  Invoice Snap akan otomatis kadaluarsa dalam{' '}
                   <code className="text-[#4cd7f6] font-mono">
-                    {(ttlMinutes * 60).toLocaleString()} seconds
+                    {(ttlMinutes * 60).toLocaleString()} detik
                   </code>{' '}
                   ({(ttlMinutes * 60 * 1000).toLocaleString()}ms).
                 </p>
@@ -112,11 +143,86 @@ export default function AdminSettingsPage() {
 
             <button
               type="submit"
-              disabled={saving}
+              disabled={savingTtl}
               className="btn-primary text-[#003640] font-bold px-6 py-2.5 rounded-xl text-xs flex items-center gap-2 disabled:opacity-40"
             >
-              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-              <span>Save Timer Configuration</span>
+              {savingTtl ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Save className="w-4 h-4" />
+              )}
+              <span>Simpan Batas Waktu</span>
+            </button>
+          </form>
+        </div>
+
+        {/* DYNAMIC PLATFORM FEE CARD */}
+        <div className="premium-card rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl border border-[#464554]/30">
+          <div className="flex items-center justify-between pb-4 border-b border-[#464554]/30">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center text-[#4cd7f6]">
+                <Percent className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-white">
+                  Biaya Layanan Platform (Platform Fee %)
+                </h2>
+                <p className="text-xs text-[#908fa0]">
+                  Tentukan persentase biaya admin layanan pada setiap transaksi checkout tiket
+                </p>
+              </div>
+            </div>
+            <span className="text-xs font-bold text-[#c0c1ff] bg-indigo-950/60 px-3 py-1 rounded-full border border-indigo-500/30">
+              Kalkulasi Dinamis
+            </span>
+          </div>
+
+          <form onSubmit={handleSaveFee} className="space-y-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+              <div>
+                <label className="block text-xs font-bold uppercase text-[#908fa0] mb-2">
+                  Biaya Layanan:{' '}
+                  <span className="text-[#4cd7f6] font-extrabold text-base">{feePercent}%</span>
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="10"
+                  step="0.5"
+                  value={feePercent}
+                  onChange={(e) => setFeePercent(parseFloat(e.target.value))}
+                  className="w-full accent-[#4cd7f6] cursor-pointer"
+                />
+                <div className="flex justify-between text-[10px] text-[#908fa0] mt-1">
+                  <span>0% (Bebas Biaya)</span>
+                  <span>2% (Standar)</span>
+                  <span>10% (Maksimal)</span>
+                </div>
+              </div>
+
+              <div className="bg-[#13131b] p-4 rounded-xl border border-[#464554]/30 text-xs space-y-1 text-[#c7c4d7]">
+                <span className="font-bold text-white block">Simulasi Perhitungan:</span>
+                <p className="text-[#908fa0]">
+                  Tiket Rp 100.000 + Fee {feePercent}% = Total tagihan resmi Midtrans adalah{' '}
+                  <strong className="text-white">
+                    Rp {(100000 + (100000 * feePercent) / 100).toLocaleString('id-ID')}
+                  </strong>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={savingFee}
+              className="btn-primary text-[#003640] font-bold px-6 py-2.5 rounded-xl text-xs flex items-center gap-2 disabled:opacity-40"
+            >
+              {savingFee ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Save className="w-4 h-4" />
+              )}
+              <span>Simpan Persentase Fee</span>
             </button>
           </form>
         </div>
@@ -125,53 +231,53 @@ export default function AdminSettingsPage() {
         <div className="premium-card rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl">
           <h2 className="text-xl font-bold text-white flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-emerald-400" />
-            <span>High-Concurrency Protection Engines</span>
+            <span>Mesin Proteksi Concurrency & Kemananan</span>
           </h2>
 
           <div className="space-y-4 text-xs">
             <div className="bg-[#13131b] p-5 rounded-xl border border-[#464554]/30 space-y-2">
               <div className="flex items-center gap-2 text-white font-bold text-sm">
                 <Database className="w-4 h-4 text-indigo-400" />
-                <span>PostgreSQL Row-Level Locking & Atomic Decrement</span>
+                <span>Penguncian Baris Database PostgreSQL & Atomic Decrement</span>
               </div>
               <p className="text-[#908fa0] leading-relaxed">
-                Every ticket booking request executes SQL atomic conditional update{' '}
+                Setiap pemesanan mengeksekusi update kondisional atomik{' '}
                 <code className="text-[#4cd7f6] font-mono">
                   WHERE remaining_capacity &gt;= quantity
                 </code>{' '}
-                to mathematically prevent overselling during flash sale traffic bursts.
+                untuk menjamin ketiadaan overselling saat lonjakan traffic flash sale.
               </p>
               <span className="inline-block text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md">
-                Active & Guaranteed Zero Race-Condition
+                Aktif & Bergaransi Bebas Race-Condition
               </span>
             </div>
 
             <div className="bg-[#13131b] p-5 rounded-xl border border-[#464554]/30 space-y-2">
               <div className="flex items-center gap-2 text-white font-bold text-sm">
                 <Server className="w-4 h-4 text-cyan-400" />
-                <span>Redis Idempotency Key Guard</span>
+                <span>Penjaga Kunci Idempotensi Redis</span>
               </div>
               <p className="text-[#908fa0] leading-relaxed">
-                Prevents duplicate transactions from network re-tries and double-clicks by locking
-                client-generated UUID headers for 120s with 24-hour response caching.
+                Mencegah transaksi ganda dari klik berulang atau koneksi retry dengan mengunci
+                header UUID selama 120 detik dan caching respon 24 jam.
               </p>
               <span className="inline-block text-[10px] font-bold text-cyan-300 bg-cyan-500/10 px-2.5 py-1 rounded-md">
-                Active in Request Interceptors
+                Aktif di Interceptor Permintaan
               </span>
             </div>
 
             <div className="bg-[#13131b] p-5 rounded-xl border border-[#464554]/30 space-y-2">
               <div className="flex items-center gap-2 text-white font-bold text-sm">
                 <Sparkles className="w-4 h-4 text-purple-400" />
-                <span>Smart Order Auto-Recovery (Late Settlement Handler)</span>
+                <span>Pemulihan Otomatis Pembayaran Terlambat (Auto-Recovery)</span>
               </div>
               <p className="text-[#908fa0] leading-relaxed">
-                If an order is cancelled by the worker before the bank sends the webhook, the system
-                automatically checks live ticket capacity and restores the order to{' '}
+                Jika order dibatalkan oleh timer sebelum transfer terkonfirmasi, sistem secara
+                otomatis mengecek kuota live dan memulihkan status tiket menjadi{' '}
                 <code className="text-emerald-400 font-mono">PAID</code>.
               </p>
               <span className="inline-block text-[10px] font-bold text-purple-300 bg-purple-500/10 px-2.5 py-1 rounded-md">
-                Active in Webhook & Sync Handlers
+                Aktif di Webhook & Handler Status
               </span>
             </div>
           </div>

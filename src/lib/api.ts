@@ -30,7 +30,7 @@ api.interceptors.response.use(
         window.location.pathname.startsWith('/login') ||
         window.location.pathname.startsWith('/register');
 
-      // Jika token expired / user tidak ditemukan di DB, hapus token & minta login ulang
+      // Jika token expired (401), hapus token & minta login ulang
       if (status === 401 && !isAuthRoute) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');

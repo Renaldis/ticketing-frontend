@@ -18,6 +18,7 @@ export const useEventDetail = (slugOrId: string) => {
   const [categories, setCategories] = useState<TicketCategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [quantity, setQuantity] = useState<number>(1);
+  const [feePercent, setFeePercent] = useState<number>(2);
   const [loading, setLoading] = useState(true);
   const [bookingLoading, setBookingLoading] = useState(false);
   const [error, setError] = useState('');
@@ -28,9 +29,15 @@ export const useEventDetail = (slugOrId: string) => {
   const fetchDetail = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await api.get(`/events/${slugOrId}`);
+      const [res, feeRes] = await Promise.all([
+        api.get(`/events/${slugOrId}`),
+        api.get('/settings/fee').catch(() => ({ data: { data: { feePercent: 2 } } })),
+      ]);
+
       const data = res.data?.data?.event;
       setEvent(data);
+      setFeePercent(feeRes.data?.data?.feePercent ?? 2);
+
       if (data?.ticketCategories?.length > 0) {
         setCategories(data.ticketCategories);
         setSelectedCategory((prev) => prev || data.ticketCategories[0].id);
@@ -60,7 +67,7 @@ export const useEventDetail = (slugOrId: string) => {
         if (data.type === 'INITIAL_QUOTA' || data.type === 'QUOTA_UPDATE') {
           if (data.categories && Array.isArray(data.categories)) {
             setCategories((prevCategories) => {
-              return prevCategories.map((prev) => {
+              const updated = prevCategories.map((prev) => {
                 const matched = data.categories.find((c: any) => c.id === prev.id);
                 if (matched) {
                   return {
@@ -71,6 +78,13 @@ export const useEventDetail = (slugOrId: string) => {
                 }
                 return prev;
               });
+
+              // Sinkronkan juga ke state `event` utama
+              setEvent((prevEvent) =>
+                prevEvent ? { ...prevEvent, ticketCategories: updated } : null,
+              );
+
+              return updated;
             });
           }
         }
@@ -83,6 +97,12 @@ export const useEventDetail = (slugOrId: string) => {
       eventSource.close();
     };
   }, [slugOrId]);
+
+  const activeCategory = categories.find((c: TicketCategory) => c.id === selectedCategory);
+  const subtotal = activeCategory ? Number(activeCategory.price) * quantity : 0;
+  const isFree = subtotal === 0;
+  const platformFee = isFree ? 0 : Math.round((subtotal * feePercent) / 100);
+  const grandTotal = subtotal + platformFee;
 
   const handleBooking = async () => {
     if (!user) {
@@ -114,7 +134,14 @@ export const useEventDetail = (slugOrId: string) => {
         },
       );
 
-      const { payment } = res.data.data;
+      const { payment, order } = res.data.data;
+
+      // Jika tiket gratis (total bayar Rp 0 / payment null)
+      if (!payment || Number(order?.totalAmount) === 0) {
+        toast.success('Tiket Gratis Berhasil Diklaim! Mengalihkan ke Tiket Saya...');
+        router.push('/my-orders');
+        return;
+      }
 
       if (payment?.token && window.snap) {
         window.snap.pay(payment.token, {
@@ -143,11 +170,6 @@ export const useEventDetail = (slugOrId: string) => {
     }
   };
 
-  const activeCategory = categories.find((c: TicketCategory) => c.id === selectedCategory);
-  const subtotal = activeCategory ? Number(activeCategory.price) * quantity : 0;
-  const platformFee = Math.round(subtotal * 0.02);
-  const grandTotal = subtotal + platformFee;
-
   return {
     event,
     categories,
@@ -160,8 +182,10 @@ export const useEventDetail = (slugOrId: string) => {
     error,
     activeCategory,
     subtotal,
+    feePercent,
     platformFee,
     grandTotal,
+    isFree,
     handleBooking,
   };
 };
