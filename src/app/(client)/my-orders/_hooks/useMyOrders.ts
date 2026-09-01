@@ -134,7 +134,8 @@ export const useMyOrders = () => {
   const now = new Date();
   const filteredOrders = orders.filter((ord) => {
     const eventDate = ord.event?.date ? new Date(ord.event.date) : null;
-    const isPassed = eventDate ? eventDate < now : false;
+    const eventEndTime = eventDate ? new Date(eventDate.getTime() + 24 * 60 * 60 * 1000) : null;
+    const isPassed = eventEndTime ? now > eventEndTime : false;
 
     if (activeTab === 'ALL') return true;
     if (activeTab === 'PENDING') return ord.status === 'PENDING';
