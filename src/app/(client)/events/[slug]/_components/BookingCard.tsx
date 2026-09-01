@@ -1,7 +1,6 @@
 import React from 'react';
 import { Lock, ShieldCheck, AlertCircle, Loader2, Plus, Minus, Flame } from 'lucide-react';
 import { EventItem, TicketCategory } from '@/types';
-import { useEventRealtimeQuota } from '../_hooks/useEventRealtimeQuota';
 
 interface BookingCardProps {
   event: EventItem;
@@ -40,10 +39,8 @@ export const BookingCard = ({
 }: BookingCardProps) => {
   const isEventEnded = new Date(event.date) < new Date();
 
-  // Integrasi Real-time SSE Live Quota
-  const liveCategories = useEventRealtimeQuota(event.id, categories);
   const currentActiveCat =
-    liveCategories.find((c: TicketCategory) => c.id === selectedCategory) || activeCategory;
+    categories.find((c: TicketCategory) => c.id === selectedCategory) || activeCategory;
 
   return (
     <div className="lg:col-span-4">
@@ -79,7 +76,7 @@ export const BookingCard = ({
         )}
 
         <div className="space-y-3">
-          {liveCategories.map((cat: TicketCategory) => {
+          {categories.map((cat: TicketCategory) => {
             const isSoldOut = cat.remainingCapacity <= 0;
             const isSelected = selectedCategory === cat.id;
 
@@ -91,7 +88,7 @@ export const BookingCard = ({
                   isSoldOut
                     ? 'opacity-40 border-[#464554]/40 bg-[#13131b] cursor-not-allowed'
                     : isSelected
-                      ? 'border-[#4cd7f6] bg-[#03b5d3]/10'
+                      ? 'border-[#4cd7f6] bg-[#03b5d3]/10 shadow-lg shadow-cyan-500/10'
                       : 'border-[#464554]/40 hover:border-[#464554] bg-[#13131b]'
                 }`}
               >
@@ -106,8 +103,9 @@ export const BookingCard = ({
                     {isSoldOut ? (
                       <span className="text-rose-400 font-bold">Habis Terjual</span>
                     ) : (
-                      <span className="text-emerald-400 font-semibold">
-                        Tersisa {cat.remainingCapacity} tiket
+                      <span className="text-emerald-400 font-semibold flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block"></span>
+                        <span>Tersisa {cat.remainingCapacity} tiket</span>
                       </span>
                     )}
                   </span>

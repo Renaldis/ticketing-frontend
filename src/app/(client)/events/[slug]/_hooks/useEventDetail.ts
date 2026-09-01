@@ -78,12 +78,23 @@ export const useEventDetail = (slugOrId: string) => {
                 return prev;
               });
 
-              // Sinkronkan juga ke state `event` utama
-              setEvent((prevEvent) =>
-                prevEvent ? { ...prevEvent, ticketCategories: updated } : null,
-              );
-
               return updated;
+            });
+
+            // Sinkronkan juga ke state `event` utama
+            setEvent((prevEvent) => {
+              if (!prevEvent) return null;
+              const updatedCategories = prevEvent.ticketCategories?.map((prevCat) => {
+                const matched = data.categories.find((c: any) => c.id === prevCat.id);
+                return matched
+                  ? {
+                      ...prevCat,
+                      remainingCapacity: matched.remainingCapacity,
+                      totalCapacity: matched.totalCapacity,
+                    }
+                  : prevCat;
+              });
+              return { ...prevEvent, ticketCategories: updatedCategories || [] };
             });
           }
         }
@@ -159,7 +170,7 @@ export const useEventDetail = (slugOrId: string) => {
             setError('Transaksi pembayaran dibatalkan.');
           },
           onClose: function () {
-            router.push(`/my-orders?order_id=${newOrderId}`);
+            router.push('/my-orders');
           },
         });
       } else {
